@@ -2,7 +2,6 @@
 .Thumbs.db
 node_modules/
 playground-umd/dist
-dist/
 playground/dist/
 deploy/
 npm-debug.log
