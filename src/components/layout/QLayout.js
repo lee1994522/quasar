@@ -1,14 +1,14 @@
 import { h, ref, reactive, computed, watch, provide, onUnmounted, getCurrentInstance } from 'vue'
 
-import { isRuntimeSsrPreHydration } from '../../plugins/Platform.js'
+import { isRuntimeSsrPreHydration } from '../../plugins/platform/Platform.js'
 
 import QScrollObserver from '../scroll-observer/QScrollObserver.js'
 import QResizeObserver from '../resize-observer/QResizeObserver.js'
 
-import { createComponent } from '../../utils/private/create.js'
-import { getScrollbarWidth } from '../../utils/scroll.js'
-import { hMergeSlot } from '../../utils/private/render.js'
-import { layoutKey } from '../../utils/private/symbols.js'
+import { createComponent } from '../../utils/private.create/create.js'
+import { getScrollbarWidth } from '../../utils/scroll/scroll.js'
+import { hMergeSlot } from '../../utils/private.render/render.js'
+import { layoutKey } from '../../utils/private.symbols/symbols.js'
 
 export default createComponent({
   name: 'QLayout',
@@ -122,7 +122,7 @@ export default createComponent({
       }
     }
 
-    let timer
+    let animateTimer = null
 
     const $layout = {
       instances: {},
@@ -153,16 +153,16 @@ export default createComponent({
       scroll,
 
       animate () {
-        if (timer !== void 0) {
-          clearTimeout(timer)
+        if (animateTimer !== null) {
+          clearTimeout(animateTimer)
         }
         else {
           document.body.classList.add('q-body--layout-animate')
         }
 
-        timer = setTimeout(() => {
+        animateTimer = setTimeout(() => {
+          animateTimer = null
           document.body.classList.remove('q-body--layout-animate')
-          timer = void 0
         }, 155)
       },
 

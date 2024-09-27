@@ -6,70 +6,70 @@
 //  but they are useful only for Quasar CLI projects
 // They are typed via module augmentation by `@quasar/app-webpack` / `@quasar/app-vite`
 
-module.exports.boot = function (callback) {
+export function boot (callback) {
   return callback
 }
 
-module.exports.ssrMiddleware = function (callback) {
+export function configure (callback) {
   return callback
 }
 
-module.exports.configure = function (callback) {
+export function preFetch (callback) {
   return callback
 }
 
-module.exports.preFetch = function (callback) {
+export function route (callback) {
   return callback
 }
 
-module.exports.route = function (callback) {
+export function store (callback) {
   return callback
 }
 
-module.exports.store = function (callback) {
+export function ssrMiddleware (callback) {
   return callback
 }
 
-module.exports.bexBackground = function (callback) {
+export function bexBackground (callback) {
   return callback
 }
 
-module.exports.bexContent = function (callback) {
+export function bexContent (callback) {
   return callback
 }
 
-module.exports.bexDom = function (callback) {
-  return callback
-}
-
-/**
- * Below only for @quasar/app-webpack
- */
-
-module.exports.ssrProductionExport = function (callback) {
+export function bexDom (callback) {
   return callback
 }
 
 /**
- * Below only for @quasar/app-vite
+ * Below only for @quasar/app-webpack v3
  */
 
-module.exports.ssrCreate = function (callback) {
+export function ssrProductionExport (callback) {
   return callback
 }
 
-module.exports.ssrListen = function (callback) {
+/**
+ * Below only for @quasar/app-vite & @quasar/app-webpack v4+
+ */
+
+export function ssrCreate (callback) {
   return callback
 }
 
-module.exports.ssrClose = function (callback) {
+export function ssrListen (callback) {
   return callback
 }
 
-module.exports.ssrServeStaticContent = function (callback) {
+export function ssrClose (callback) {
   return callback
 }
 
-module.exports.ssrRenderPreloadTag = function (callback) {
+export function ssrServeStaticContent (callback) {
+  return callback
+}
+
+export function ssrRenderPreloadTag (callback) {
   return callback
 }

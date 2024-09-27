@@ -2,12 +2,12 @@ import { h, computed, provide, getCurrentInstance } from 'vue'
 
 import StepHeader from './StepHeader.js'
 
-import useDark, { useDarkProps } from '../../composables/private/use-dark.js'
-import usePanel, { usePanelProps, usePanelEmits } from '../../composables/private/use-panel.js'
+import useDark, { useDarkProps } from '../../composables/private.use-dark/use-dark.js'
+import usePanel, { usePanelProps, usePanelEmits } from '../../composables/private.use-panel/use-panel.js'
 
-import { createComponent } from '../../utils/private/create.js'
-import { stepperKey } from '../../utils/private/symbols.js'
-import { hSlot, hMergeSlot, hDir } from '../../utils/private/render.js'
+import { createComponent } from '../../utils/private.create/create.js'
+import { stepperKey } from '../../utils/private.symbols/symbols.js'
+import { hSlot, hMergeSlot, hDir } from '../../utils/private.render/render.js'
 
 const camelRE = /(-\w)/g
 
@@ -66,8 +66,8 @@ export default createComponent({
 
     const classes = computed(() =>
       `q-stepper q-stepper--${ props.vertical === true ? 'vertical' : 'horizontal' }`
-      + (props.flat === true || isDark.value === true ? ' q-stepper--flat no-shadow' : '')
-      + (props.bordered === true || (isDark.value === true && props.flat === false) ? ' q-stepper--bordered' : '')
+      + (props.flat === true ? ' q-stepper--flat' : '')
+      + (props.bordered === true ? ' q-stepper--bordered' : '')
       + (isDark.value === true ? ' q-stepper--dark q-dark' : '')
     )
 

@@ -1,13 +1,13 @@
 import { h, ref, computed, getCurrentInstance, toRaw } from 'vue'
 
-import useDark, { useDarkProps } from '../../composables/private/use-dark.js'
-import useSize, { useSizeProps } from '../../composables/private/use-size.js'
-import useRefocusTarget from '../../composables/private/use-refocus-target.js'
-import { useFormInject, useFormProps } from '../../composables/private/use-form.js'
+import useDark, { useDarkProps } from '../../composables/private.use-dark/use-dark.js'
+import useSize, { useSizeProps } from '../../composables/private.use-size/use-size.js'
+import useRefocusTarget from '../../composables/private.use-refocus-target/use-refocus-target.js'
+import { useFormInject, useFormProps } from '../../composables/use-form/private.use-form.js'
 
-import optionSizes from '../../utils/private/option-sizes.js'
-import { stopAndPrevent } from '../../utils/event.js'
-import { hSlot, hMergeSlot } from '../../utils/private/render.js'
+import optionSizes from '../../utils/private.option-sizes/option-sizes.js'
+import { stopAndPrevent } from '../../utils/event/event.js'
+import { hSlot, hMergeSlot } from '../../utils/private.render/render.js'
 
 export const useCheckboxProps = {
   ...useDarkProps,
@@ -70,7 +70,7 @@ export default function (type, getInner) {
 
   const isTrue = computed(() => (
     modelIsArray.value === true
-      ? index.value > -1
+      ? index.value !== -1
       : toRaw(props.modelValue) === toRaw(props.trueValue)
   ))
 
@@ -112,6 +112,8 @@ export default function (type, getInner) {
     const prop = { type: 'checkbox' }
 
     props.name !== void 0 && Object.assign(prop, {
+      // see https://vuejs.org/guide/extras/render-function.html#creating-vnodes (.prop)
+      '.checked': isTrue.value,
       '^checked': isTrue.value === true ? 'checked' : void 0,
       name: props.name,
       value: modelIsArray.value === true

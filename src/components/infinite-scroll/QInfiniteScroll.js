@@ -1,11 +1,11 @@
 import { h, ref, computed, watch, onMounted, onActivated, onDeactivated, onBeforeUnmount, nextTick, getCurrentInstance } from 'vue'
 
-import { createComponent } from '../../utils/private/create.js'
-import debounce from '../../utils/debounce.js'
-import { height } from '../../utils/dom.js'
-import { getScrollTarget, getScrollHeight, getVerticalScrollPosition, setVerticalScrollPosition } from '../../utils/scroll.js'
-import { listenOpts } from '../../utils/event.js'
-import { hSlot, hUniqueSlot } from '../../utils/private/render.js'
+import { createComponent } from '../../utils/private.create/create.js'
+import debounce from '../../utils/debounce/debounce.js'
+import { height } from '../../utils/dom/dom.js'
+import { getScrollTarget, getScrollHeight, getVerticalScrollPosition, setVerticalScrollPosition, scrollTargetProp } from '../../utils/scroll/scroll.js'
+import { listenOpts } from '../../utils/event/event.js'
+import { hSlot, hUniqueSlot } from '../../utils/private.render/render.js'
 
 const { passive } = listenOpts
 
@@ -23,11 +23,12 @@ export default createComponent({
       default: 100
     },
 
-    scrollTarget: {
-      default: void 0
-    },
+    scrollTarget: scrollTargetProp,
 
-    initialIndex: Number,
+    initialIndex: {
+      type: Number,
+      default: 0
+    },
 
     disable: Boolean,
     reverse: Boolean
@@ -39,8 +40,9 @@ export default createComponent({
     const isFetching = ref(false)
     const isWorking = ref(true)
     const rootRef = ref(null)
+    const loadingRef = ref(null)
 
-    let index = props.initialIndex || 0
+    let index = props.initialIndex
     let localScrollTarget, poll
 
     const classes = computed(() =>
@@ -170,12 +172,32 @@ export default createComponent({
       }
     }
 
+    function updateSvgAnimations (isRetry) {
+      if (renderLoadingSlot.value === true) {
+        if (loadingRef.value === null) {
+          isRetry !== true && nextTick(() => { updateSvgAnimations(true) })
+          return
+        }
+
+        // we need to pause svg animations (if any) when hiding
+        // otherwise the browser will keep on recalculating the style
+        const action = `${ isFetching.value === true ? 'un' : '' }pauseAnimations`
+        Array.from(loadingRef.value.getElementsByTagName('svg')).forEach(el => {
+          el[ action ]()
+        })
+      }
+    }
+
+    const renderLoadingSlot = computed(() => props.disable !== true && isWorking.value === true)
+
+    watch([ isFetching, renderLoadingSlot ], () => { updateSvgAnimations() })
+
     watch(() => props.disable, val => {
       if (val === true) { stop() }
       else { resume() }
     })
 
-    watch(() => props.reverse, val => {
+    watch(() => props.reverse, () => {
       if (isFetching.value === false && isWorking.value === true) {
         immediatePoll()
       }
@@ -206,23 +228,24 @@ export default createComponent({
 
     onMounted(() => {
       setDebounce(props.debounce)
-
       updateScrollTarget()
+
+      isFetching.value === false && updateSvgAnimations()
     })
 
     // expose public methods
     const vm = getCurrentInstance()
     Object.assign(vm.proxy, {
       poll: () => { poll !== void 0 && poll() },
-      trigger, stop, reset, resume, setIndex
+      trigger, stop, reset, resume, setIndex, updateScrollTarget
     })
 
     return () => {
       const child = hUniqueSlot(slots.default, [])
 
-      if (props.disable !== true && isWorking.value === true) {
+      if (renderLoadingSlot.value === true) {
         child[ props.reverse === false ? 'push' : 'unshift' ](
-          h('div', { class: classes.value }, hSlot(slots.loading))
+          h('div', { ref: loadingRef, class: classes.value }, hSlot(slots.loading))
         )
       }
 

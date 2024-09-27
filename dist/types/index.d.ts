@@ -2,7 +2,7 @@
 /// <reference types="@quasar/app" />
 /// <reference types="@quasar/app-webpack" />
 /// <reference types="@quasar/app-vite" />
-import { App, Component, ComponentPublicInstance, VNode } from "vue";
+import { App, Component, ComponentPublicInstance, Directive, VNode } from "vue";
 import { ComponentConstructor, GlobalComponentConstructor } from "./ts-helpers";
 
 export interface AddressbarColor {
@@ -84,6 +84,10 @@ export interface BottomSheet {
        */
       classes?: VueClassProp;
       /**
+       * Style definitions to be attributed to this action element
+       */
+      style?: VueStyleProp;
+      /**
        * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
        */
       icon?: string;
@@ -92,9 +96,9 @@ export interface BottomSheet {
        */
       img?: string;
       /**
-       * Display img as avatar (round borders)
+       * Path to an avatar image for this action
        */
-      avatar?: boolean;
+      avatar?: string;
       /**
        * Action label
        */
@@ -102,7 +106,7 @@ export interface BottomSheet {
       /**
        * Any other custom props
        */
-      [key: string]: any;
+      [key: string]: any | undefined;
     }[];
     /**
      * Display actions as a grid instead of as a list
@@ -110,14 +114,15 @@ export interface BottomSheet {
     grid?: boolean;
     /**
      * Apply dark mode
+     * Default value: null
      */
-    dark?: boolean;
+    dark?: boolean | null;
     /**
      * Put Bottom Sheet into seamless mode; Does not use a backdrop so user is able to interact with the rest of the page too
      */
     seamless?: boolean;
     /**
-     * User cannot dismiss Bottom Sheet if clicking outside of it or hitting ESC key
+     * User cannot dismiss Bottom Sheet if clicking outside of it or hitting ESC key; Also, an app route change won't dismiss it
      */
     persistent?: boolean;
   }) => DialogChainObject;
@@ -173,7 +178,7 @@ export interface Cookies {
        * Raw string for other cookie options; To be used as a last resort for possible newer props that are currently not yet implemented in Quasar
        */
       other?: string;
-    }
+    },
   ) => void;
   /**
    * Check if cookie exists
@@ -197,7 +202,7 @@ export interface Cookies {
        * Cookie domain
        */
       domain?: string;
-    }
+    },
   ) => void;
   /**
    * For SSR usage only, and only on the global import (not on $q.cookies)
@@ -236,6 +241,1763 @@ export interface Dialog {
   create: (opts: QDialogOptions) => DialogChainObject;
 }
 
+export interface IconSet {
+  /**
+   * Contents (icons) of the Quasar icon set
+   */
+  props: {
+    /**
+     * Name of the Quasar icon set
+     */
+    name: string;
+    /**
+     * Generic types
+     */
+    type: {
+      /**
+       * Icon name following Quasar convention
+       */
+      positive: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      negative: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      info: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      warning: string;
+    };
+    /**
+     * Arrow types
+     */
+    arrow: {
+      /**
+       * Icon name following Quasar convention
+       */
+      up: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      right: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      down: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      left: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      dropdown: string;
+    };
+    /**
+     * Chevron types
+     */
+    chevron: {
+      /**
+       * Icon name following Quasar convention
+       */
+      left: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      right: string;
+    };
+    /**
+     * Used by QColorPicker
+     */
+    colorPicker: {
+      /**
+       * Icon name following Quasar convention
+       */
+      spectrum: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      tune: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      palette: string;
+    };
+    /**
+     * Used by QPullToRefresh
+     */
+    pullToRefresh: {
+      /**
+       * Icon name following Quasar convention
+       */
+      icon: string;
+    };
+    /**
+     * Used by QCarousel
+     */
+    carousel: {
+      /**
+       * Icon name following Quasar convention
+       */
+      left: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      right: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      up: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      down: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      navigationIcon: string;
+    };
+    /**
+     * Used by QChip
+     */
+    chip: {
+      /**
+       * Icon name following Quasar convention
+       */
+      remove: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      selected: string;
+    };
+    /**
+     * Used by QDate/QTime
+     */
+    datetime: {
+      /**
+       * Icon name following Quasar convention
+       */
+      arrowLeft: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      arrowRight: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      now: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      today: string;
+    };
+    /**
+     * Used by QEditor
+     */
+    editor: {
+      /**
+       * Icon name following Quasar convention
+       */
+      bold: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      italic: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      strikethrough: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      underline: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      unorderedList: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      orderedList: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      subscript: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      superscript: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      hyperlink: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      toggleFullscreen: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      quote: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      left: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      center: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      right: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      justify: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      print: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      outdent: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      indent: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      removeFormat: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      formatting: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      fontSize: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      align: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      hr: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      undo: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      redo: string;
+      /**
+       * Used only when headingX is missing; Icon name following Quasar convention
+       */
+      heading: string;
+      /**
+       * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+       */
+      heading1: string;
+      /**
+       * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+       */
+      heading2: string;
+      /**
+       * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+       */
+      heading3: string;
+      /**
+       * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+       */
+      heading4: string;
+      /**
+       * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+       */
+      heading5: string;
+      /**
+       * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+       */
+      heading6: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      code: string;
+      /**
+       * Used only when sizeX is missing; Icon name following Quasar convention
+       */
+      size: string;
+      /**
+       * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+       */
+      size1: string;
+      /**
+       * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+       */
+      size2: string;
+      /**
+       * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+       */
+      size3: string;
+      /**
+       * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+       */
+      size4: string;
+      /**
+       * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+       */
+      size5: string;
+      /**
+       * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+       */
+      size6: string;
+      /**
+       * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+       */
+      size7: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      font: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      viewSource: string;
+    };
+    /**
+     * Used by QExpansionItem
+     */
+    expansionItem: {
+      /**
+       * Icon name following Quasar convention
+       */
+      icon: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      denseIcon: string;
+    };
+    /**
+     * Used by QFab
+     */
+    fab: {
+      /**
+       * Icon name following Quasar convention
+       */
+      icon: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      activeIcon: string;
+    };
+    /**
+     * Used by QField/QInput/QSelect/...
+     */
+    field: {
+      /**
+       * Icon name following Quasar convention
+       */
+      clear: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      error: string;
+    };
+    /**
+     * Used by QPagination
+     */
+    pagination: {
+      /**
+       * Icon name following Quasar convention
+       */
+      first: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      prev: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      next: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      last: string;
+    };
+    /**
+     * Used by QRating
+     */
+    rating: {
+      /**
+       * Icon name following Quasar convention
+       */
+      icon: string;
+    };
+    /**
+     * Used by QStepper
+     */
+    stepper: {
+      /**
+       * Icon name following Quasar convention
+       */
+      done: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      active: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      error: string;
+    };
+    /**
+     * Used by QTabs
+     */
+    tabs: {
+      /**
+       * Icon name following Quasar convention
+       */
+      left: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      right: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      up: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      down: string;
+    };
+    /**
+     * Used by QTable
+     */
+    table: {
+      /**
+       * Icon name following Quasar convention
+       */
+      arrowUp: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      warning: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      firstPage: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      prevPage: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      nextPage: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      lastPage: string;
+    };
+    /**
+     * Used by QTree
+     */
+    tree: {
+      /**
+       * Icon name following Quasar convention
+       */
+      icon: string;
+    };
+    /**
+     * Used by QUploader
+     */
+    uploader: {
+      /**
+       * Icon name following Quasar convention
+       */
+      done: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      clear: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      add: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      upload: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      removeQueue: string;
+      /**
+       * Icon name following Quasar convention
+       */
+      removeUploaded: string;
+    };
+  };
+  /**
+   * Function to map icon names to other icon names; It is designed to be used internally by Quasar only; Only assign a function to it, but do not call it yourself
+   * @param iconName Icon name to test
+   * @returns The icon  following Quasar convention
+   */
+  iconMapFn:
+    | ((iconName: string) =>
+        | {
+            /**
+             * The mapped icon string, which will be handled by Quasar as if the original icon name was this value; ; Either use only 'icon' or 'cls' + 'content'
+             */
+            icon?: string;
+            /**
+             * CSS classes to apply to the created DOM element; Either use 'cls' + 'content' or only 'icon'
+             */
+            cls?: string;
+            /**
+             * Optional, in case you are using a ligature font and you need it as content of the created DOM element; Either use 'cls' + 'content' or only 'icon'
+             */
+            content?: string;
+          }
+        | undefined)
+    | null;
+  /**
+   * Set another Quasar Icon Set
+   * @param iconSet Usually you will import such an object directly from quasar (eg: import qIconSet from 'quasar/icon-set/<icon-set-name>')
+   * @param ssrContent Required for SSR only
+   */
+  set: (
+    iconSet: {
+      /**
+       * Name of the Quasar icon set
+       */
+      name: string;
+      /**
+       * Generic types
+       */
+      type: {
+        /**
+         * Icon name following Quasar convention
+         */
+        positive: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        negative: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        info: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        warning: string;
+      };
+      /**
+       * Arrow types
+       */
+      arrow: {
+        /**
+         * Icon name following Quasar convention
+         */
+        up: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        right: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        down: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        left: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        dropdown: string;
+      };
+      /**
+       * Chevron types
+       */
+      chevron: {
+        /**
+         * Icon name following Quasar convention
+         */
+        left: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        right: string;
+      };
+      /**
+       * Used by QColorPicker
+       */
+      colorPicker?: {
+        /**
+         * Icon name following Quasar convention
+         */
+        spectrum: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        tune: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        palette: string;
+      };
+      /**
+       * Used by QPullToRefresh
+       */
+      pullToRefresh: {
+        /**
+         * Icon name following Quasar convention
+         */
+        icon: string;
+      };
+      /**
+       * Used by QCarousel
+       */
+      carousel: {
+        /**
+         * Icon name following Quasar convention
+         */
+        left: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        right: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        up: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        down: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        navigationIcon: string;
+      };
+      /**
+       * Used by QChip
+       */
+      chip: {
+        /**
+         * Icon name following Quasar convention
+         */
+        remove: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        selected: string;
+      };
+      /**
+       * Used by QDate/QTime
+       */
+      datetime: {
+        /**
+         * Icon name following Quasar convention
+         */
+        arrowLeft: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        arrowRight: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        now: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        today: string;
+      };
+      /**
+       * Used by QEditor
+       */
+      editor: {
+        /**
+         * Icon name following Quasar convention
+         */
+        bold: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        italic: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        strikethrough: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        underline: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        unorderedList: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        orderedList: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        subscript: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        superscript: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        hyperlink: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        toggleFullscreen: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        quote: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        left: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        center: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        right: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        justify: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        print: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        outdent: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        indent: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        removeFormat: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        formatting: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        fontSize: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        align: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        hr: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        undo: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        redo: string;
+        /**
+         * Used only when headingX is missing; Icon name following Quasar convention
+         */
+        heading: string;
+        /**
+         * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+         */
+        heading1?: string;
+        /**
+         * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+         */
+        heading2?: string;
+        /**
+         * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+         */
+        heading3?: string;
+        /**
+         * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+         */
+        heading4?: string;
+        /**
+         * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+         */
+        heading5?: string;
+        /**
+         * (Can be omitted; defaults to 'heading' instead) Icon name following Quasar convention
+         */
+        heading6?: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        code: string;
+        /**
+         * Used only when sizeX is missing; Icon name following Quasar convention
+         */
+        size: string;
+        /**
+         * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+         */
+        size1?: string;
+        /**
+         * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+         */
+        size2?: string;
+        /**
+         * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+         */
+        size3?: string;
+        /**
+         * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+         */
+        size4?: string;
+        /**
+         * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+         */
+        size5?: string;
+        /**
+         * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+         */
+        size6?: string;
+        /**
+         * (Can be omitted; defaults to 'size' instead) Icon name following Quasar convention
+         */
+        size7?: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        font: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        viewSource: string;
+      };
+      /**
+       * Used by QExpansionItem
+       */
+      expansionItem: {
+        /**
+         * Icon name following Quasar convention
+         */
+        icon: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        denseIcon: string;
+      };
+      /**
+       * Used by QFab
+       */
+      fab: {
+        /**
+         * Icon name following Quasar convention
+         */
+        icon: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        activeIcon: string;
+      };
+      /**
+       * Used by QField/QInput/QSelect/...
+       */
+      field: {
+        /**
+         * Icon name following Quasar convention
+         */
+        clear: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        error: string;
+      };
+      /**
+       * Used by QPagination
+       */
+      pagination: {
+        /**
+         * Icon name following Quasar convention
+         */
+        first: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        prev: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        next: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        last: string;
+      };
+      /**
+       * Used by QRating
+       */
+      rating: {
+        /**
+         * Icon name following Quasar convention
+         */
+        icon: string;
+      };
+      /**
+       * Used by QStepper
+       */
+      stepper: {
+        /**
+         * Icon name following Quasar convention
+         */
+        done: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        active: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        error: string;
+      };
+      /**
+       * Used by QTabs
+       */
+      tabs: {
+        /**
+         * Icon name following Quasar convention
+         */
+        left: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        right: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        up: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        down: string;
+      };
+      /**
+       * Used by QTable
+       */
+      table: {
+        /**
+         * Icon name following Quasar convention
+         */
+        arrowUp: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        warning: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        firstPage: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        prevPage: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        nextPage: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        lastPage: string;
+      };
+      /**
+       * Used by QTree
+       */
+      tree: {
+        /**
+         * Icon name following Quasar convention
+         */
+        icon: string;
+      };
+      /**
+       * Used by QUploader
+       */
+      uploader: {
+        /**
+         * Icon name following Quasar convention
+         */
+        done: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        clear: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        add: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        upload: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        removeQueue: string;
+        /**
+         * Icon name following Quasar convention
+         */
+        removeUploaded: string;
+      };
+    },
+    ssrContent?: any,
+  ) => void;
+}
+
+export interface Lang {
+  /**
+   * Quasar language pack
+   */
+  props: {
+    /**
+     * The ISO name of the Quasar language pack
+     */
+    isoName: string;
+    /**
+     * The native name of the Quasar language pack
+     */
+    nativeName: string;
+    /**
+     * Whether the language is RTL (right-to-left)
+     */
+    rtl: boolean;
+    /**
+     * Generic labels
+     */
+    label: {
+      /**
+       * Label
+       */
+      clear: string;
+      /**
+       * Label
+       */
+      ok: string;
+      /**
+       * Label
+       */
+      cancel: string;
+      /**
+       * Label
+       */
+      close: string;
+      /**
+       * Label
+       */
+      set: string;
+      /**
+       * Label
+       */
+      select: string;
+      /**
+       * Label
+       */
+      reset: string;
+      /**
+       * Label
+       */
+      remove: string;
+      /**
+       * Label
+       */
+      update: string;
+      /**
+       * Label
+       */
+      create: string;
+      /**
+       * Label
+       */
+      search: string;
+      /**
+       * Label
+       */
+      filter: string;
+      /**
+       * Label
+       */
+      refresh: string;
+      /**
+       * Label function
+       * @param label Item to expand
+       * @returns Label
+       */
+      expand: (label?: string) => string;
+      /**
+       * Label function
+       * @param label Item to collapse
+       * @returns Label
+       */
+      collapse: (label?: string) => string;
+    };
+    /**
+     * QDate labels
+     */
+    date: {
+      /**
+       * Label
+       */
+      days: readonly any[];
+      /**
+       * Label
+       */
+      daysShort: readonly any[];
+      /**
+       * Label
+       */
+      months: readonly any[];
+      /**
+       * Label
+       */
+      monthsShort: readonly any[];
+      /**
+       * 0-6, 0 - Sunday, 1 Monday, ...
+       */
+      firstDayOfWeek: number;
+      /**
+       * Uses 24-hour format
+       */
+      format24h: boolean;
+      /**
+       * Label
+       */
+      pluralDay: string;
+    };
+    /**
+     * QTable labels
+     */
+    table: {
+      /**
+       * Label
+       */
+      noData: string;
+      /**
+       * Label
+       */
+      noResults: string;
+      /**
+       * Label
+       */
+      loading: string;
+      /**
+       * Label function
+       * @param rows Number of selected rows
+       * @returns Label
+       */
+      selectedRecords: (rows: number) => string;
+      /**
+       * Label
+       */
+      recordsPerPage: string;
+      /**
+       * Label
+       */
+      allRows: string;
+      /**
+       * Label function
+       * @param start Page start index
+       * @param end Page end index
+       * @param total Total number of rows
+       * @returns Label
+       */
+      pagination: (start: number, end: number, total: number) => string;
+      /**
+       * Label
+       */
+      columns: string;
+    };
+    /**
+     * QEditor labels
+     */
+    editor: {
+      /**
+       * Label
+       */
+      url: string;
+      /**
+       * Label
+       */
+      bold: string;
+      /**
+       * Label
+       */
+      italic: string;
+      /**
+       * Label
+       */
+      strikethrough: string;
+      /**
+       * Label
+       */
+      underline: string;
+      /**
+       * Label
+       */
+      unorderedList: string;
+      /**
+       * Label
+       */
+      orderedList: string;
+      /**
+       * Label
+       */
+      subscript: string;
+      /**
+       * Label
+       */
+      superscript: string;
+      /**
+       * Label
+       */
+      hyperlink: string;
+      /**
+       * Label
+       */
+      toggleFullscreen: string;
+      /**
+       * Label
+       */
+      quote: string;
+      /**
+       * Label
+       */
+      left: string;
+      /**
+       * Label
+       */
+      center: string;
+      /**
+       * Label
+       */
+      right: string;
+      /**
+       * Label
+       */
+      justify: string;
+      /**
+       * Label
+       */
+      print: string;
+      /**
+       * Label
+       */
+      outdent: string;
+      /**
+       * Label
+       */
+      indent: string;
+      /**
+       * Label
+       */
+      removeFormat: string;
+      /**
+       * Label
+       */
+      formatting: string;
+      /**
+       * Label
+       */
+      fontSize: string;
+      /**
+       * Label
+       */
+      align: string;
+      /**
+       * Label
+       */
+      hr: string;
+      /**
+       * Label
+       */
+      undo: string;
+      /**
+       * Label
+       */
+      redo: string;
+      /**
+       * Label
+       */
+      heading1: string;
+      /**
+       * Label
+       */
+      heading2: string;
+      /**
+       * Label
+       */
+      heading3: string;
+      /**
+       * Label
+       */
+      heading4: string;
+      /**
+       * Label
+       */
+      heading5: string;
+      /**
+       * Label
+       */
+      heading6: string;
+      /**
+       * Label
+       */
+      paragraph: string;
+      /**
+       * Label
+       */
+      code: string;
+      /**
+       * Label
+       */
+      size1: string;
+      /**
+       * Label
+       */
+      size2: string;
+      /**
+       * Label
+       */
+      size3: string;
+      /**
+       * Label
+       */
+      size4: string;
+      /**
+       * Label
+       */
+      size5: string;
+      /**
+       * Label
+       */
+      size6: string;
+      /**
+       * Label
+       */
+      size7: string;
+      /**
+       * Label
+       */
+      defaultFont: string;
+      /**
+       * Label
+       */
+      viewSource: string;
+    };
+    /**
+     * QTree labels
+     */
+    tree: {
+      /**
+       * Label
+       */
+      noNodes: string;
+      /**
+       * Label
+       */
+      noResults: string;
+    };
+  };
+  /**
+   * Set another Quasar Language Pack
+   * @param quasarLanguagePack Usually you will import such an object directly from quasar (eg: import qIconSet from 'quasar/lang/<lang-name>')
+   * @param ssrContent Required for SSR only
+   */
+  set: (
+    quasarLanguagePack: {
+      /**
+       * The ISO name of the Quasar language pack
+       */
+      isoName: string;
+      /**
+       * The native name of the Quasar language pack
+       */
+      nativeName: string;
+      /**
+       * Whether the language is RTL (right-to-left)
+       * Default value: true
+       */
+      rtl?: boolean;
+      /**
+       * Generic labels
+       */
+      label: {
+        /**
+         * Label
+         */
+        clear: string;
+        /**
+         * Label
+         */
+        ok: string;
+        /**
+         * Label
+         */
+        cancel: string;
+        /**
+         * Label
+         */
+        close: string;
+        /**
+         * Label
+         */
+        set: string;
+        /**
+         * Label
+         */
+        select: string;
+        /**
+         * Label
+         */
+        reset: string;
+        /**
+         * Label
+         */
+        remove: string;
+        /**
+         * Label
+         */
+        update: string;
+        /**
+         * Label
+         */
+        create: string;
+        /**
+         * Label
+         */
+        search: string;
+        /**
+         * Label
+         */
+        filter: string;
+        /**
+         * Label
+         */
+        refresh: string;
+        /**
+         * Label function
+         * @param label Item to expand
+         * @returns Label
+         */
+        expand: (label?: string) => string;
+        /**
+         * Label function
+         * @param label Item to collapse
+         * @returns Label
+         */
+        collapse: (label?: string) => string;
+      };
+      /**
+       * QDate labels
+       */
+      date: {
+        /**
+         * Label
+         */
+        days: readonly any[];
+        /**
+         * Label
+         */
+        daysShort: readonly any[];
+        /**
+         * Label
+         */
+        months: readonly any[];
+        /**
+         * Label
+         */
+        monthsShort: readonly any[];
+        /**
+         * 0-6, 0 - Sunday, 1 Monday, ...
+         */
+        firstDayOfWeek: number;
+        /**
+         * Uses 24-hour format
+         */
+        format24h: boolean;
+        /**
+         * Label
+         */
+        pluralDay: string;
+      };
+      /**
+       * QTable labels
+       */
+      table: {
+        /**
+         * Label
+         */
+        noData: string;
+        /**
+         * Label
+         */
+        noResults: string;
+        /**
+         * Label
+         */
+        loading: string;
+        /**
+         * Label function
+         * @param rows Number of selected rows
+         * @returns Label
+         */
+        selectedRecords: (rows: number) => string;
+        /**
+         * Label
+         */
+        recordsPerPage: string;
+        /**
+         * Label
+         */
+        allRows: string;
+        /**
+         * Label function
+         * @param start Page start index
+         * @param end Page end index
+         * @param total Total number of rows
+         * @returns Label
+         */
+        pagination: (start: number, end: number, total: number) => string;
+        /**
+         * Label
+         */
+        columns: string;
+      };
+      /**
+       * QEditor labels
+       */
+      editor: {
+        /**
+         * Label
+         */
+        url: string;
+        /**
+         * Label
+         */
+        bold: string;
+        /**
+         * Label
+         */
+        italic: string;
+        /**
+         * Label
+         */
+        strikethrough: string;
+        /**
+         * Label
+         */
+        underline: string;
+        /**
+         * Label
+         */
+        unorderedList: string;
+        /**
+         * Label
+         */
+        orderedList: string;
+        /**
+         * Label
+         */
+        subscript: string;
+        /**
+         * Label
+         */
+        superscript: string;
+        /**
+         * Label
+         */
+        hyperlink: string;
+        /**
+         * Label
+         */
+        toggleFullscreen: string;
+        /**
+         * Label
+         */
+        quote: string;
+        /**
+         * Label
+         */
+        left: string;
+        /**
+         * Label
+         */
+        center: string;
+        /**
+         * Label
+         */
+        right: string;
+        /**
+         * Label
+         */
+        justify: string;
+        /**
+         * Label
+         */
+        print: string;
+        /**
+         * Label
+         */
+        outdent: string;
+        /**
+         * Label
+         */
+        indent: string;
+        /**
+         * Label
+         */
+        removeFormat: string;
+        /**
+         * Label
+         */
+        formatting: string;
+        /**
+         * Label
+         */
+        fontSize: string;
+        /**
+         * Label
+         */
+        align: string;
+        /**
+         * Label
+         */
+        hr: string;
+        /**
+         * Label
+         */
+        undo: string;
+        /**
+         * Label
+         */
+        redo: string;
+        /**
+         * Label
+         */
+        heading1: string;
+        /**
+         * Label
+         */
+        heading2: string;
+        /**
+         * Label
+         */
+        heading3: string;
+        /**
+         * Label
+         */
+        heading4: string;
+        /**
+         * Label
+         */
+        heading5: string;
+        /**
+         * Label
+         */
+        heading6: string;
+        /**
+         * Label
+         */
+        paragraph: string;
+        /**
+         * Label
+         */
+        code: string;
+        /**
+         * Label
+         */
+        size1: string;
+        /**
+         * Label
+         */
+        size2: string;
+        /**
+         * Label
+         */
+        size3: string;
+        /**
+         * Label
+         */
+        size4: string;
+        /**
+         * Label
+         */
+        size5: string;
+        /**
+         * Label
+         */
+        size6: string;
+        /**
+         * Label
+         */
+        size7: string;
+        /**
+         * Label
+         */
+        defaultFont: string;
+        /**
+         * Label
+         */
+        viewSource: string;
+      };
+      /**
+       * QTree labels
+       */
+      tree: {
+        /**
+         * Label
+         */
+        noNodes: string;
+        /**
+         * Label
+         */
+        noResults: string;
+      };
+    },
+    ssrContent?: any,
+  ) => void;
+  /**
+   * Get the browser locale ISO name; Returns undefined when it cannot determine current browser locale or when running on server in SSR mode
+   * @returns Browser locale ISO name
+   */
+  getLocale: () => string | undefined;
+}
+
 export interface Loading {
   /**
    * Is Loading active?
@@ -267,7 +2029,7 @@ export interface Loading {
     message?: string;
     /**
      * Default Loading group name
-     * Default value: __default_quasar_group__
+     * Default value: '__default_quasar_group__'
      */
     group?: string;
     /**
@@ -277,15 +2039,15 @@ export interface Loading {
     /**
      * Color name for spinner from the Quasar Color Palette
      */
-    spinnerColor?: string;
+    spinnerColor?: NamedColor;
     /**
      * Color name for text from the Quasar Color Palette
      */
-    messageColor?: string;
+    messageColor?: NamedColor;
     /**
      * Color name for background from the Quasar Color Palette
      */
-    backgroundColor?: string;
+    backgroundColor?: NamedColor;
     /**
      * One of the QSpinners
      */
@@ -320,81 +2082,7 @@ export interface LoadingBar {
    * Set the inner QAjaxBar's props
    * @param props QAjaxBar component props
    */
-  setDefaults: (props: any) => void;
-}
-
-export interface LocalStorage {
-  /**
-   * Check if storage item exists
-   * @param key Entry key
-   * @returns Does the item exists or not?
-   */
-  has: (key: string) => boolean;
-  /**
-   * Get storage number of entries
-   * @returns Number of entries
-   */
-  getLength: () => number;
-  /**
-   * Get a storage item value
-   * @param key Entry key
-   * @returns Storage item value
-   */
-  getItem: WebStorageGetItemMethodType;
-  /**
-   * Get the storage item value at specific index
-   * @param index Entry index
-   * @returns Storage item index
-   */
-  getIndex: WebStorageGetIndexMethodType;
-  /**
-   * Get the storage key at specific index
-   * @param index Entry index
-   * @returns Storage key
-   */
-  getKey: WebStorageGetKeyMethodType;
-  /**
-   * Retrieve all items in storage
-   * @returns Object syntax: item name as Object key and its value
-   */
-  getAll: () => any;
-  /**
-   * Retrieve all keys in storage
-   * @returns Storage keys (Array of Strings)
-   */
-  getAllKeys: WebStorageGetAllKeysMethodType;
-  /**
-   * Set item in storage
-   * @param key Entry key
-   * @param value Entry value
-   */
-  set: (
-    key: string,
-    value:
-      | Date
-      | RegExp
-      | number
-      | boolean
-      | ((...params: readonly any[]) => any)
-      | any
-      | readonly any[]
-      | string
-      | null
-  ) => void;
-  /**
-   * Remove a storage item
-   * @param key Storage key
-   */
-  remove: (key: string) => void;
-  /**
-   * Remove everything from the storage
-   */
-  clear: () => void;
-  /**
-   * Determine if storage has any items
-   * @returns Tells if storage is empty or not
-   */
-  isEmpty: () => boolean;
+  setDefaults: (props: QLoadingBarOptions) => void;
 }
 
 export interface Meta {}
@@ -406,17 +2094,17 @@ export interface Notify {
    * @returns Calling this function with no parameters hides the notification; When called with one Object parameter (the original notification must NOT be grouped), it updates the notification (specified properties are shallow merged with previous ones; note that group and position cannot be changed while updating and so they are ignored)
    */
   create: (
-    opts: QNotifyCreateOptions | string
+    opts: QNotifyCreateOptions | string,
   ) => (props?: QNotifyUpdateOptions) => void;
   /**
    * Merge options into the default ones
-   * @param opts Notification options (See 'opts' param of 'create()' for object properties)
+   * @param opts Notification options except 'ignoreDefaults' (See 'opts' param of 'create()' for object properties)
    */
   setDefaults: (opts: QNotifyOptions) => void;
   /**
    * Register a new type of notification (or override an existing one)
    * @param typeName Name of the type (to be used as 'type' prop later on)
-   * @param typeOpts Notification options (See 'opts' param of 'create()' for object properties)
+   * @param typeOpts Notification options except 'ignoreDefaults' (See 'opts' param of 'create()' for object properties)
    */
   registerType: (typeName: string, typeOpts: QNotifyOptions) => void;
 }
@@ -447,113 +2135,129 @@ export interface Platform {
      */
     versionNumber?: number;
     /**
-     * Whether the platform is desktop
-     */
-    desktop?: boolean;
-    /**
      * Whether the platform is mobile
      */
-    mobile?: boolean;
+    mobile: boolean;
     /**
-     * Whether the platform is Electron
+     * Whether the platform is desktop
      */
-    electron?: boolean;
-    /**
-     * Whether the platform is BEX(Browser Extension)
-     */
-    bex?: boolean;
-    /**
-     * Whether the platform is Capacitor
-     */
-    capacitor?: boolean;
+    desktop: boolean;
     /**
      * Whether the platform is Cordova
      */
-    cordova?: boolean;
+    cordova: boolean;
+    /**
+     * Whether the platform is Capacitor
+     */
+    capacitor: boolean;
     /**
      * Whether the platform is a native mobile wrapper
      */
-    nativeMobile?: boolean;
+    nativeMobile: boolean;
     /**
      * Type of the native mobile wrapper
      */
     nativeMobileWrapper?: "cordova" | "capacitor";
     /**
-     * Whether the browser is Google Chrome
+     * Whether the platform is Electron
      */
-    chrome?: boolean;
+    electron: boolean;
     /**
-     * Whether the browser is Firefox
+     * Whether the platform is BEX(Browser Extension)
      */
-    firefox?: boolean;
-    /**
-     * Whether the browser is Safari
-     */
-    safari?: boolean;
-    /**
-     * Whether the browser is Microsoft Edge (Chromium)
-     */
-    edgeChromium?: boolean;
-    /**
-     * Whether the browser is Microsoft Edge Legacy
-     */
-    edge?: boolean;
-    /**
-     * Whether the browser is Opera
-     */
-    opera?: boolean;
-    /**
-     * Whether the browser is Vivaldi
-     */
-    vivaldi?: boolean;
-    /**
-     * Whether the operating system is Windows
-     */
-    win?: boolean;
+    bex: boolean;
     /**
      * Whether the operating system is Linux
      */
-    linux?: boolean;
+    linux: boolean;
     /**
      * Whether the operating system is Mac OS
      */
-    mac?: boolean;
+    mac: boolean;
+    /**
+     * Whether the operating system is Windows
+     */
+    win: boolean;
     /**
      * Whether the operating system is Chrome OS
      */
-    cros?: boolean;
+    cros: boolean;
+    /**
+     * Whether the browser is Google Chrome
+     */
+    chrome: boolean;
+    /**
+     * Whether the browser is Firefox
+     */
+    firefox: boolean;
+    /**
+     * Whether the browser is Opera
+     */
+    opera: boolean;
+    /**
+     * Whether the browser is Safari
+     */
+    safari: boolean;
+    /**
+     * Whether the browser is Vivaldi
+     */
+    vivaldi: boolean;
+    /**
+     * Whether the browser is Microsoft Edge Legacy
+     */
+    edge: boolean;
+    /**
+     * Whether the browser is Microsoft Edge (Chromium)
+     */
+    edgeChromium: boolean;
+    /**
+     * Whether the browser is Internet Explorer
+     */
+    ie: boolean;
+    /**
+     * Whether the browser is a Webkit or Webkit-based one
+     */
+    webkit: boolean;
     /**
      * Whether the operating system is Android
      */
-    android?: boolean;
+    android: boolean;
     /**
      * Whether the operating system is iOS
      */
-    ios?: boolean;
-    /**
-     * Whether the operating system is Windows Phone
-     */
-    winphone?: boolean;
-    /**
-     * Whether the device is an iPhone
-     */
-    iphone?: boolean;
+    ios: boolean;
     /**
      * Whether the device is an iPad
      */
-    ipad?: boolean;
+    ipad: boolean;
+    /**
+     * Whether the device is an iPhone
+     */
+    iphone: boolean;
     /**
      * Whether the device is an iPod
      */
-    ipod?: boolean;
+    ipod: boolean;
     /**
      * Whether the device is a Kindle
      */
-    kindle?: boolean;
+    kindle: boolean;
+    /**
+     * Whether the operating system is Windows Phone
+     */
+    winphone: boolean;
+    /**
+     * Whether the device is a Blackberry
+     */
+    blackberry: boolean;
+    /**
+     * Whether the device is a Blackberry Playbook
+     */
+    playbook: boolean;
     /**
      * Whether the browser is Amazon Silk
      */
-    silk?: boolean;
+    silk: boolean;
   };
   /**
    * Client browser detectable properties
@@ -710,13 +2414,13 @@ export interface Screen {
   setDebounce: (amount: number) => void;
 }
 
-export interface SessionStorage {
+export interface LocalStorage {
   /**
    * Check if storage item exists
    * @param key Entry key
    * @returns Does the item exists or not?
    */
-  has: (key: string) => boolean;
+  hasItem: (key: string) => boolean;
   /**
    * Get storage number of entries
    * @returns Number of entries
@@ -755,24 +2459,24 @@ export interface SessionStorage {
    * @param key Entry key
    * @param value Entry value
    */
-  set: (
+  setItem: (
     key: string,
     value:
-      | Date
-      | RegExp
       | number
       | boolean
+      | Date
+      | RegExp
       | ((...params: readonly any[]) => any)
       | any
       | readonly any[]
       | string
-      | null
+      | null,
   ) => void;
   /**
    * Remove a storage item
    * @param key Storage key
    */
-  remove: (key: string) => void;
+  removeItem: (key: string) => void;
   /**
    * Remove everything from the storage
    */
@@ -782,45 +2486,902 @@ export interface SessionStorage {
    * @returns Tells if storage is empty or not
    */
   isEmpty: () => boolean;
+  /**
+   * (Alias of "hasItem") Check if storage item exists
+   * @param key Entry key
+   * @returns Does the item exists or not?
+   */
+  has: (key: string) => boolean;
+  /**
+   * (Alias of "setItem") Set item in storage
+   * @param key Entry key
+   * @param value Entry value
+   */
+  set: (
+    key: string,
+    value:
+      | number
+      | boolean
+      | Date
+      | RegExp
+      | ((...params: readonly any[]) => any)
+      | any
+      | readonly any[]
+      | string
+      | null,
+  ) => void;
+  /**
+   * (Alias of "removeItem") Remove a storage item
+   * @param key Storage key
+   */
+  remove: (key: string) => void;
 }
 
-export interface ClosePopup {}
+export interface SessionStorage {
+  /**
+   * Check if storage item exists
+   * @param key Entry key
+   * @returns Does the item exists or not?
+   */
+  hasItem: (key: string) => boolean;
+  /**
+   * Get storage number of entries
+   * @returns Number of entries
+   */
+  getLength: () => number;
+  /**
+   * Get a storage item value
+   * @param key Entry key
+   * @returns Storage item value
+   */
+  getItem: WebStorageGetItemMethodType;
+  /**
+   * Get the storage item value at specific index
+   * @param index Entry index
+   * @returns Storage item index
+   */
+  getIndex: WebStorageGetIndexMethodType;
+  /**
+   * Get the storage key at specific index
+   * @param index Entry index
+   * @returns Storage key
+   */
+  getKey: WebStorageGetKeyMethodType;
+  /**
+   * Retrieve all items in storage
+   * @returns Object syntax: item name as Object key and its value
+   */
+  getAll: () => any;
+  /**
+   * Retrieve all keys in storage
+   * @returns Storage keys (Array of Strings)
+   */
+  getAllKeys: WebStorageGetAllKeysMethodType;
+  /**
+   * Set item in storage
+   * @param key Entry key
+   * @param value Entry value
+   */
+  setItem: (
+    key: string,
+    value:
+      | number
+      | boolean
+      | Date
+      | RegExp
+      | ((...params: readonly any[]) => any)
+      | any
+      | readonly any[]
+      | string
+      | null,
+  ) => void;
+  /**
+   * Remove a storage item
+   * @param key Storage key
+   */
+  removeItem: (key: string) => void;
+  /**
+   * Remove everything from the storage
+   */
+  clear: () => void;
+  /**
+   * Determine if storage has any items
+   * @returns Tells if storage is empty or not
+   */
+  isEmpty: () => boolean;
+  /**
+   * (Alias of "hasItem") Check if storage item exists
+   * @param key Entry key
+   * @returns Does the item exists or not?
+   */
+  has: (key: string) => boolean;
+  /**
+   * (Alias of "setItem") Set item in storage
+   * @param key Entry key
+   * @param value Entry value
+   */
+  set: (
+    key: string,
+    value:
+      | number
+      | boolean
+      | Date
+      | RegExp
+      | ((...params: readonly any[]) => any)
+      | any
+      | readonly any[]
+      | string
+      | null,
+  ) => void;
+  /**
+   * (Alias of "removeItem") Remove a storage item
+   * @param key Storage key
+   */
+  remove: (key: string) => void;
+}
 
-export interface Intersection {}
-
-export interface Morph {}
-
-export interface Mutation {}
-
-export interface Ripple {}
-
-export interface Scroll {}
-
-export interface ScrollFire {}
-
-export interface TouchHold {}
-
-export interface TouchPan {}
-
-export interface TouchRepeat {}
-
-export interface TouchSwipe {}
-
+/**
+ * If value is 0 or 'false' then directive is disabled; if value is < 0 then it closes all popups in the chain; if value is 1 or 'true' or undefined then it closes only the parent popup; if value is > 1 it closes the specified number of parent popups in the chain (note that chained QMenus are considered 1 popup only & QPopupProxy separates chained menus)
+ *
+ * @see https://v2.quasar.dev/vue-directives/close-popup
+ */
+export type ClosePopupValue = boolean | number | string;
+/**
+ * If value is 0 or 'false' then directive is disabled; if value is < 0 then it closes all popups in the chain; if value is 1 or 'true' or undefined then it closes only the parent popup; if value is > 1 it closes the specified number of parent popups in the chain (note that chained QMenus are considered 1 popup only & QPopupProxy separates chained menus)
+ *
+ * @see https://v2.quasar.dev/vue-directives/close-popup
+ */
+export type ClosePopup = Directive<any, ClosePopupValue>;
+/**
+ * Function to call when scrolling occurs (identical to description of 'handler' prop of the Object form); If using the Object form, it is HIGHLY recommended to reference it from your vue component scope, otherwise the directive update cycle will continuously recreate the observer which hits performance hard
+ *
+ * @see https://v2.quasar.dev/vue-directives/intersection
+ */
+export type IntersectionValue =
+  | {
+      /**
+       * The handler function to be called
+       * @param entry The IntersectionObserverEntry object
+       * @returns If you return Boolean false from the handler, the observer stops
+       */
+      handler?: (entry?: IntersectionObserverEntry) => boolean;
+      /**
+       * Intersection observer options (can be omitted and all its props are optional)
+       */
+      cfg?: {
+        /**
+         * Lets you define an alternative to the viewport as your root (through its DOM element); It is important to keep in mind that root needs to be an ancestor of the observed element
+         */
+        root?: Element;
+        /**
+         * Allows you to specify the margins for the root, effectively allowing you to either grow or shrink the area used for intersections
+         */
+        rootMargin?: string;
+        /**
+         * Threshold(s) at which to trigger callback, specified as a ratio, or list of ratios, of (visible area / total area) of the observed element
+         */
+        threshold?: readonly any[];
+      };
+    }
+  | ((entry: IntersectionObserverEntry) => boolean);
+/**
+ * Function to call when scrolling occurs (identical to description of 'handler' prop of the Object form); If using the Object form, it is HIGHLY recommended to reference it from your vue component scope, otherwise the directive update cycle will continuously recreate the observer which hits performance hard
+ *
+ * Modifiers:
+ *  - once:
+ *    - type: boolean
+ *    - description: Call handler only once, when the conditions are first met
+ *    - examples:
+ *      - # v-intersection.once
+ *
+ * @see https://v2.quasar.dev/vue-directives/intersection
+ */
+export type Intersection = Directive<any, IntersectionValue>;
+/**
+ * Configuration object or trigger value
+ *
+ * @see https://v2.quasar.dev/vue-directives/morph
+ */
+export type MorphValue =
+  | {
+      /**
+       * Name of the morph group the element belongs to
+       */
+      group?: string;
+      /**
+       * Name of the morph inside the group that the element belongs to
+       */
+      name?: string;
+      /**
+       * Current value of the group model; when it becomes the same as the 'name' it triggers the morphing
+       */
+      model?: string;
+      /**
+       * Duration of the animation (in milliseconds)
+       * Default value: 300
+       */
+      duration?: number;
+      /**
+       * Delay for the animation (in milliseconds)
+       * Default value: 0
+       */
+      delay?: number;
+      /**
+       * Timing function for the animation (CSS easing format)
+       * Default value: 'ease-in-out'
+       */
+      easing?: string;
+      /**
+       * Fill mode for the animation
+       * Default value: 'none'
+       */
+      fill?: string;
+      /**
+       * Class names to be added to the destination element during the animation
+       */
+      classes?: string;
+      /**
+       * Styles to be added to the destination element during the animation
+       */
+      style?: string | any;
+      /**
+       * Use resize instead of scaling during animation
+       */
+      resize?: boolean;
+      /**
+       * Use CSS animations instead of the Animation API
+       */
+      useCSS?: boolean;
+      /**
+       * Hide the spacer for the initial element during animation; Use it if the initial element is not removed or resizing of the space occupied by the initial element is not desired
+       */
+      hideFromClone?: boolean;
+      /**
+       * Keep a clone of the final element visible during animation
+       */
+      keepToClone?: boolean;
+      /**
+       * Use an opacity tween between the initial and final elements
+       */
+      tween?: boolean;
+      /**
+       * If using tween it is the initial opacity of the initial element (will be animated to 0) - the initial element is placed on top of the final element
+       * Default value: 0.6
+       */
+      tweenFromOpacity?: number;
+      /**
+       * If using tween it is the initial opacity of the final element (will be animated to 1)
+       * Default value: 0.5
+       */
+      tweenToOpacity?: number;
+      /**
+       * Delay animation start for that number of milliseconds, or until a 'transitionend' event is emitted by the destination element, or until the promise is resolved (if the promise is rejected the morphing will abort, but the 'toggle function' was already called)
+       * Default value: 0
+       */
+      waitFor?: number | string | Promise<void>;
+      /**
+       * A function that will be called once the morphing is finished; Not called if morphing is aborted
+       * @param direction 'to' if the morphing was finished in the final state or 'from' if it was finished in the initial state
+       * @param aborted Was the morphing aborted?
+       */
+      onEnd?: (direction?: "to" | "from", aborted?: boolean) => void;
+    }
+  | any;
+/**
+ * Configuration object or trigger value
+ *
+ * Directive argument:
+ *  - type: string
+ *  - description: x:x2:y:z, where x is the morph element name, x2 is the morph group, y is the animation duration (in milliseconds) and z is the amount of time to wait (in milliseconds) or the 'transitionend' string
+ *  - examples:
+ *    - # v-morph:name="options"
+ *    - # v-morph:name:groupName="options"
+ *    - # v-morph:name:groupName:400="options"
+ *    - # v-morph:name:groupName:400:100="options"
+ *    - # v-morph:name:groupName:400:transitionend="options"
+ *
+ * Modifiers:
+ *  - resize:
+ *    - type: boolean
+ *    - description: Use resize instead of scale transform for morph (forceResize option of the morph function)
+ *  - useCSS:
+ *    - type: boolean
+ *    - description: Use CSS animations for morph (forceCssAnimation option of the morph function)
+ *  - hideFromClone:
+ *    - type: boolean
+ *    - description: Hide the spacer for the initial element (hideFromClone option of the morph function)
+ *  - keepToClone:
+ *    - type: boolean
+ *    - description: Keep the final element visible while morphing (keepToClone option of the morph function)
+ *  - tween:
+ *    - type: boolean
+ *    - description: Use opacity tween morphing between initial and final elements (tween option of the morph function)
+ *
+ * @see https://v2.quasar.dev/vue-directives/morph
+ */
+export type Morph = Directive<any, MorphValue>;
+/**
+ * Function to call when mutation occurs; It is HIGHLY recommended to reference it from your vue component scope, otherwise the directive update cycle will continuously recreate the observer which hits performance hard
+ *
+ * @see https://v2.quasar.dev/vue-directives/mutation
+ */
+export type MutationValue = (
+  mutationList: {
+    /**
+     * Type of mutation
+     */
+    type?: "childList" | "attributes" | "characterData";
+    /**
+     * The DOM element that the mutation affected, depending on the mutation type
+     */
+    target?: Element;
+    /**
+     * The NodeList of the nodes that have been added
+     */
+    addedNodes?: readonly any[];
+    /**
+     * The NodeList of the nodes that have been removed
+     */
+    removedNodes?: readonly any[];
+    /**
+     * The previous sibling of the added or removed nodes, or null
+     */
+    previousSibling?: any;
+    /**
+     * The next sibling of the added or removed nodes, or null
+     */
+    nextSibling?: any;
+    /**
+     * The local name of the changed attribute, or null
+     */
+    attributeName?: string;
+    /**
+     * The namespace of the changed attribute, or null
+     */
+    attributeNamespace?: string;
+    /**
+     * Value depends on the mutation type; For attributes, it is the value of the changed attribute before the change; For characterData it is data of the changed node before the change; For childList it is null; Note that for this to work as expected, attributeOldValue or characterDataOldValue must be set
+     */
+    oldValue?: string;
+  }[],
+) => boolean;
+/**
+ * Function to call when mutation occurs; It is HIGHLY recommended to reference it from your vue component scope, otherwise the directive update cycle will continuously recreate the observer which hits performance hard
+ *
+ * Modifiers:
+ *  - once:
+ *    - type: boolean
+ *    - description: Call handler only once, when the first mutation was triggered, then stop monitoring
+ *    - examples:
+ *      - # v-mutation.once
+ *  - childList:
+ *    - type: boolean
+ *    - description: Monitor the target node (and, if 'subtree' is also set, its descendants) for the addition of new child nodes or removal of existing child nodes
+ *    - examples:
+ *      - # v-mutation.childList
+ *  - subtree:
+ *    - type: boolean
+ *    - description: Extend monitoring to the entire subtree of nodes rooted at target
+ *    - examples:
+ *      - # v-mutation.subtree
+ *  - attributes:
+ *    - type: boolean
+ *    - description: Watch for changes to the value of attributes on the node or nodes being monitored
+ *    - examples:
+ *      - # v-mutation.attributes
+ *  - characterData:
+ *    - type: boolean
+ *    - description: Monitor the specified target node or subtree for changes to the character data contained within the node or nodes
+ *    - examples:
+ *      - # v-mutation.characterData
+ *  - attributeOldValue:
+ *    - type: boolean
+ *    - description: Record the previous value of any attribute that changes when monitoring the node or nodes for attribute changes
+ *    - examples:
+ *      - # v-mutation.attributeOldValue
+ *  - characterDataOldValue:
+ *    - type: boolean
+ *    - description: Record the previous value of a node's text whenever the text changes on nodes being monitored
+ *    - examples:
+ *      - # v-mutation.characterDataOldValue
+ *
+ * @see https://v2.quasar.dev/vue-directives/mutation
+ */
+export type Mutation = Directive<any, MutationValue>;
+/**
+ * Boolean (if just wanting to enable/disable) or Object for configuring more options
+ *
+ * @see https://v2.quasar.dev/vue-directives/material-ripple
+ */
+export type RippleValue =
+  | boolean
+  | {
+      /**
+       * Trigger early/immediately on user interaction
+       */
+      early?: boolean;
+      /**
+       * Stop click/touch event propagation
+       */
+      stop?: boolean;
+      /**
+       * Ripple starts from the absolute center
+       */
+      center?: boolean;
+      /**
+       * Color name from Quasar Color Palette; Overrides default dynamic color
+       */
+      color?: string;
+      /**
+       * List of keyCode that should trigger the ripple
+       */
+      keyCodes?: readonly any[] | number;
+    };
+/**
+ * Boolean (if just wanting to enable/disable) or Object for configuring more options
+ *
+ * Directive argument:
+ *  - type: string
+ *  - description: Color name from Quasar Color Palette; Overrides default dynamic color
+ *  - examples:
+ *    - # v-ripple:orange-5
+ *
+ * Modifiers:
+ *  - early:
+ *    - type: boolean
+ *    - description: Trigger early/immediately on user interaction
+ *  - stop:
+ *    - type: boolean
+ *    - description: Stop click/touch event propagation
+ *    - examples:
+ *      - # v-ripple.stop
+ *  - center:
+ *    - type: boolean
+ *    - description: Ripple starts from the absolute center
+ *    - examples:
+ *      - # v-ripple.center
+ *
+ * @see https://v2.quasar.dev/vue-directives/material-ripple
+ */
+export type Ripple = Directive<any, RippleValue>;
+/**
+ * Function to call when scrolling occurs (use undefined to disable)
+ *
+ * @see https://v2.quasar.dev/vue-directives/scroll
+ */
+export type ScrollValue =
+  | ((verticalScrollPosition: number, horizontalScrollPosition: number) => void)
+  | undefined;
+/**
+ * Function to call when scrolling occurs (use undefined to disable)
+ *
+ * @see https://v2.quasar.dev/vue-directives/scroll
+ */
+export type Scroll = Directive<any, ScrollValue>;
+/**
+ * Function to call when scrolling and element comes into the viewport (use undefined to disable)
+ *
+ * @see https://v2.quasar.dev/vue-directives/scroll-fire
+ */
+export type ScrollFireValue = ((el: Element) => void) | undefined;
+/**
+ * Function to call when scrolling and element comes into the viewport (use undefined to disable)
+ *
+ * @see https://v2.quasar.dev/vue-directives/scroll-fire
+ */
+export type ScrollFire = Directive<any, ScrollFireValue>;
+/**
+ * Function to call after user has hold touch/click for the specified amount of time (use undefined to disable)
+ *
+ * @see https://v2.quasar.dev/vue-directives/touch-hold
+ */
+export type TouchHoldValue =
+  | ((details: {
+      /**
+       * Original JS event Object
+       */
+      evt?: Event;
+      /**
+       * Triggered by a touch event
+       */
+      touch?: boolean;
+      /**
+       * Triggered by a mouse event
+       */
+      mouse?: boolean;
+      /**
+       * Event Position Object
+       */
+      position?: {
+        /**
+         * Vertical offset from top of window
+         */
+        top?: number;
+        /**
+         * Horizontal offset from left of window
+         */
+        left?: number;
+      };
+      /**
+       * How long it took to trigger the event (in milliseconds)
+       */
+      duration?: number;
+    }) => void)
+  | undefined;
+/**
+ * Function to call after user has hold touch/click for the specified amount of time (use undefined to disable)
+ *
+ * Directive argument:
+ *  - type: string
+ *  - default: '600:5:7'
+ *  - description: x:y:z, where x is the amount of time to wait (in milliseconds), y is the touch event sensitivity (in pixels) and z is the mouse event sensitivity (in pixels)
+ *  - examples:
+ *    - # v-touch-hold:400="fnToCall"
+ *    - # v-touch-hold:400:15="fnToCall"
+ *    - # v-touch-hold:400:10:10="fnToCall"
+ *
+ * Modifiers:
+ *  - capture:
+ *    - type: boolean
+ *    - description: Use capture for touchstart event
+ *  - mouse:
+ *    - type: boolean
+ *    - description: Listen for mouse events too
+ *  - mouseCapture:
+ *    - type: boolean
+ *    - description: Use capture for mousedown event
+ *
+ * @see https://v2.quasar.dev/vue-directives/touch-hold
+ */
+export type TouchHold = Directive<any, TouchHoldValue>;
+/**
+ * Handler for panning (use undefined to disable)
+ *
+ * @see https://v2.quasar.dev/vue-directives/touch-pan
+ */
+export type TouchPanValue =
+  | ((details: {
+      /**
+       * Original JS event Object
+       */
+      evt?: Event;
+      /**
+       * Triggered by a touch event
+       */
+      touch?: boolean;
+      /**
+       * Triggered by a mouse event
+       */
+      mouse?: boolean;
+      /**
+       * Event Position Object
+       */
+      position?: {
+        /**
+         * Vertical offset from top of window
+         */
+        top?: number;
+        /**
+         * Horizontal offset from left of window
+         */
+        left?: number;
+      };
+      /**
+       * Direction of movement
+       */
+      direction?: "up" | "right" | "down" | "left";
+      /**
+       * Is first time the handler is called since movement started
+       */
+      isFirst?: boolean;
+      /**
+       * Is last time the handler is called since movement ended
+       */
+      isFinal?: boolean;
+      /**
+       * How long it took to trigger the event (in milliseconds)
+       */
+      duration?: number;
+      /**
+       * Absolute distance (in pixels) since movement started from initial point
+       */
+      distance?: {
+        /**
+         * Absolute distance horizontally
+         */
+        x?: number;
+        /**
+         * Absolute distance vertically
+         */
+        y?: number;
+      };
+      /**
+       * Distance (in pixels) since movement started from initial point
+       */
+      offset?: {
+        /**
+         * Distance horizontally
+         */
+        x?: number;
+        /**
+         * Distance vertically
+         */
+        y?: number;
+      };
+      /**
+       * Delta of distance (in pixels) since handler was called last time
+       */
+      delta?: {
+        /**
+         * Distance horizontally
+         */
+        x?: number;
+        /**
+         * Distance vertically
+         */
+        y?: number;
+      };
+    }) => void)
+  | undefined;
+/**
+ * Handler for panning (use undefined to disable)
+ *
+ * Modifiers:
+ *  - stop:
+ *    - type: boolean
+ *    - description: Stop event propagation for touch events
+ *  - prevent:
+ *    - type: boolean
+ *    - description: Calls event.preventDefault() for touch events
+ *  - capture:
+ *    - type: boolean
+ *    - description: Use capture for touchstart event
+ *  - mouse:
+ *    - type: boolean
+ *    - description: Listen for mouse events too
+ *  - mouseCapture:
+ *    - type: boolean
+ *    - description: Use capture for mousedown event
+ *  - mouseAllDir:
+ *    - type: boolean
+ *    - description: Ignore initial mouse move direction (do not abort if the first mouse move is in an unaccepted direction)
+ *  - preserveCursor:
+ *    - type: boolean
+ *    - description: Prevent the mouse cursor from automatically displaying as grabbing when panning
+ *  - horizontal:
+ *    - type: boolean
+ *    - description: Catch horizontal (left/right) movement
+ *  - vertical:
+ *    - type: boolean
+ *    - description: Catch vertical (up/down) movement
+ *  - up:
+ *    - type: boolean
+ *    - description: Catch panning to up
+ *  - right:
+ *    - type: boolean
+ *    - description: Catch panning to right
+ *  - down:
+ *    - type: boolean
+ *    - description: Catch panning to down
+ *  - left:
+ *    - type: boolean
+ *    - description: Catch panning to left
+ *
+ * @see https://v2.quasar.dev/vue-directives/touch-pan
+ */
+export type TouchPan = Directive<any, TouchPanValue>;
+/**
+ * Handler for touch-repeat (use undefined to disable)
+ *
+ * @see https://v2.quasar.dev/vue-directives/touch-repeat
+ */
+export type TouchRepeatValue =
+  | ((details: {
+      /**
+       * Original JS event Object
+       */
+      evt?: Event;
+      /**
+       * Triggered by a touch event
+       */
+      touch?: boolean;
+      /**
+       * Triggered by a mouse event
+       */
+      mouse?: boolean;
+      /**
+       * Triggered by a keyboard event
+       */
+      keyboard?: boolean;
+      /**
+       * Event Position Object; Supplied ONLY if it's a touch or mouse event
+       */
+      position?: {
+        /**
+         * Vertical offset from top of window
+         */
+        top?: number;
+        /**
+         * Horizontal offset from left of window
+         */
+        left?: number;
+      };
+      /**
+       * Keycode; Supplied ONLY if it's a keyboard event
+       */
+      keyCode?: number;
+      /**
+       * How long it took to trigger the event (in milliseconds)
+       */
+      duration?: number;
+      /**
+       * Handler called for nth time
+       */
+      repeatCount?: number;
+      /**
+       * Unix timestamp of the moment when event started; Equivalent to Date.now()
+       */
+      startTime?: number;
+    }) => void)
+  | undefined;
+/**
+ * Handler for touch-repeat (use undefined to disable)
+ *
+ * Directive argument:
+ *  - type: string
+ *  - default: '0:600:300'
+ *  - description: String of numbers (at least one number) separated by ':' which defines the amount of time to wait for 1st handler call, 2nd, 3rd and so on; All subsequent calls will use last value as time to wait until triggering
+ *  - examples:
+ *    - # v-touch-repeat:0:400="fnToCall"
+ *
+ * Modifiers:
+ *  - capture:
+ *    - type: boolean
+ *    - description: Use capture for touchstart event
+ *  - mouse:
+ *    - type: boolean
+ *    - description: Listen for mouse events too
+ *  - mouseCapture:
+ *    - type: boolean
+ *    - description: Use capture for mousedown event
+ *  - keyCapture:
+ *    - type: boolean
+ *    - description: Use capture for keydown event
+ *  - esc:
+ *    - type: boolean
+ *    - description: Catch ESC key
+ *  - tab:
+ *    - type: boolean
+ *    - description: Catch TAB key
+ *  - enter:
+ *    - type: boolean
+ *    - description: Catch ENTER key
+ *  - space:
+ *    - type: boolean
+ *    - description: Catch SPACE key
+ *  - up:
+ *    - type: boolean
+ *    - description: Catch UP arrow key
+ *  - left:
+ *    - type: boolean
+ *    - description: Catch LEFT arrow key
+ *  - right:
+ *    - type: boolean
+ *    - description: Catch RIGHT arrow key
+ *  - down:
+ *    - type: boolean
+ *    - description: Catch DOWN key
+ *  - delete:
+ *    - type: boolean
+ *    - description: Catch DELETE key
+ *  - [keycode]:
+ *    - type: number
+ *    - description: Key code to catch
+ *    - examples:
+ *      - # v-touch-repeat.68="fnToCall"
+ *
+ * @see https://v2.quasar.dev/vue-directives/touch-repeat
+ */
+export type TouchRepeat = Directive<any, TouchRepeatValue>;
+/**
+ * Handler for swipe (use undefined to disable)
+ *
+ * @see https://v2.quasar.dev/vue-directives/touch-swipe
+ */
+export type TouchSwipeValue =
+  | ((details: {
+      /**
+       * Original JS event Object
+       */
+      evt?: Event;
+      /**
+       * Triggered by a touch event
+       */
+      touch?: boolean;
+      /**
+       * Triggered by a mouse event
+       */
+      mouse?: boolean;
+      /**
+       * Direction of movement
+       */
+      direction?: "up" | "right" | "down" | "left";
+      /**
+       * How long it took to trigger the event (in milliseconds)
+       */
+      duration?: number;
+      /**
+       * Absolute distance (in pixels) since movement started from initial point
+       */
+      distance?: {
+        /**
+         * Absolute distance horizontally
+         */
+        x?: number;
+        /**
+         * Absolute distance vertically
+         */
+        y?: number;
+      };
+    }) => void)
+  | undefined;
+/**
+ * Handler for swipe (use undefined to disable)
+ *
+ * Directive argument:
+ *  - type: string
+ *  - default: '6e-2:6:50'
+ *  - description: x:y:z, where x is minimum velocity (dist/time; please use float without a dot, example: 6e-2 which is equivalent to 6 * 10^-2 = 0.06), y is minimum distance on first move on mobile, z is minimum distance on desktop until deciding if it's a swipe indeed
+ *  - examples:
+ *    - # v-touch-swipe:7e-2:10:100="fnToCall"
+ *
+ * Modifiers:
+ *  - capture:
+ *    - type: boolean
+ *    - description: Use capture for touchstart event
+ *  - mouse:
+ *    - type: boolean
+ *    - description: Listen for mouse events too
+ *  - mouseCapture:
+ *    - type: boolean
+ *    - description: Use capture for mousedown event
+ *  - horizontal:
+ *    - type: boolean
+ *    - description: Catch horizontal (left/right) movement
+ *  - vertical:
+ *    - type: boolean
+ *    - description: Catch vertical (up/down) movement
+ *  - up:
+ *    - type: boolean
+ *    - description: Catch swipe to up
+ *  - right:
+ *    - type: boolean
+ *    - description: Catch swipe to right
+ *  - down:
+ *    - type: boolean
+ *    - description: Catch swipe to down
+ *  - left:
+ *    - type: boolean
+ *    - description: Catch swipe to left
+ *
+ * @see https://v2.quasar.dev/vue-directives/touch-swipe
+ */
+export type TouchSwipe = Directive<any, TouchSwipeValue>;
 export interface QAjaxBarProps {
   /**
    * Position within window of where QAjaxBar should be displayed
-   * Default value: top
+   * Default value: 'top'
    */
   position?: "top" | "right" | "bottom" | "left" | undefined;
   /**
    * Size in CSS units, including unit name
-   * Default value: 2px
+   * Default value: '2px'
    */
   size?: string | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Reverse direction of progress
    */
@@ -879,11 +3440,11 @@ export interface QAvatarProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
    */
@@ -911,11 +3472,11 @@ export interface QBadgeProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Tell QBadge if it should float to the top right side of the relative positioned parent element or not
    */
@@ -970,8 +3531,9 @@ export interface QBannerProps {
   rounded?: boolean | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
 }
 
 export interface QBannerSlots {
@@ -998,8 +3560,9 @@ export interface QBarProps {
   dense?: boolean | undefined;
   /**
    * The component background color lights up the parent's background (as opposed to default behavior which is to darken it); Works unless you specify a CSS background color for it
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
 }
 
 export interface QBarSlots {
@@ -1014,26 +3577,26 @@ export interface QBar extends ComponentPublicInstance<QBarProps> {}
 export interface QBreadcrumbsProps {
   /**
    * The string used to separate the breadcrumbs
-   * Default value: /
+   * Default value: '/'
    */
   separator?: string | undefined;
   /**
    * The color of the active breadcrumb, which can be any color from the Quasar Color Palette
-   * Default value: primary
+   * Default value: 'primary'
    */
-  activeColor?: string | undefined;
+  activeColor?: NamedColor | undefined;
   /**
    * The gutter value allows you control over the space between the breadcrumb elements.
-   * Default value: sm
+   * Default value: 'sm'
    */
   gutter?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | undefined;
   /**
    * The color used to color the separator, which can be any color from the Quasar Color Palette
    */
-  separatorColor?: string | undefined;
+  separatorColor?: NamedColor | undefined;
   /**
    * Specify how to align the breadcrumbs horizontally
-   * Default value: left
+   * Default value: 'left'
    */
   align?:
     | "left"
@@ -1074,10 +3637,12 @@ export interface QBreadcrumbsElProps {
   replace?: boolean | undefined;
   /**
    * Equivalent to Vue Router <router-link> 'active-class' property; Superseded by 'href' prop if used
+   * Default value: 'q-router-link--active'
    */
   activeClass?: string | undefined;
   /**
    * Equivalent to Vue Router <router-link> 'active-class' property; Superseded by 'href' prop if used
+   * Default value: 'q-router-link--exact-active'
    */
   exactActiveClass?: string | undefined;
   /**
@@ -1102,7 +3667,7 @@ export interface QBreadcrumbsElProps {
   icon?: string | undefined;
   /**
    * HTML tag to use
-   * Default value: span
+   * Default value: 'span'
    */
   tag?: string | undefined;
   /**
@@ -1125,7 +3690,7 @@ export interface QBreadcrumbsElProps {
        * Return the router error, if any; Otherwise the returned Promise will always fulfill
        */
       returnRouterError?: boolean;
-    }) => Promise<any>
+    }) => Promise<any>,
   ) => void;
 }
 
@@ -1139,33 +3704,14 @@ export interface QBreadcrumbsElSlots {
 export interface QBreadcrumbsEl
   extends ComponentPublicInstance<QBreadcrumbsElProps> {}
 
-export interface QBtnDropdownProps {
-  /**
-   * One of Quasar's embedded transitions
-   * Default value: fade
-   */
-  transitionShow?: string | undefined;
-  /**
-   * One of Quasar's embedded transitions
-   * Default value: fade
-   */
-  transitionHide?: string | undefined;
-  /**
-   * Transition duration (in milliseconds, without unit)
-   * Default value: 300
-   */
-  transitionDuration?: string | number | undefined;
-  /**
-   * Controls Menu show/hidden state; Either use this property (along with a listener for 'update:modelValue' event) OR use v-model directive
-   */
-  modelValue?: boolean;
+export interface QBtnProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
    */
   size?: string | undefined;
   /**
    * 1) Define the button native type attribute (submit, reset, button) or 2) render component with <a> tag so you can access events even if disable or 3) Use 'href' prop and specify 'type' as a media tag
-   * Default value: button
+   * Default value: 'button'
    */
   type?: string | undefined;
   /**
@@ -1239,11 +3785,11 @@ export interface QBtnDropdownProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Avoid turning label text into caps (which happens by default)
    */
@@ -1267,7 +3813,7 @@ export interface QBtnDropdownProps {
   tabindex?: number | string | undefined;
   /**
    * Label or content alignment
-   * Default value: center
+   * Default value: 'center'
    */
   align?:
     | "left"
@@ -1287,8 +3833,219 @@ export interface QBtnDropdownProps {
   stretch?: boolean | undefined;
   /**
    * Put button into loading state (displays a QSpinner -- can be overridden by using a 'loading' slot)
+   * Default value: null
    */
-  loading?: boolean | undefined;
+  loading?: boolean | null | undefined;
+  /**
+   * Put component in disabled mode
+   */
+  disable?: boolean | undefined;
+  /**
+   * Makes a circle shaped button
+   */
+  round?: boolean | undefined;
+  /**
+   * Percentage (0.0 < x < 100.0); To be used along 'loading' prop; Display a progress bar on the background
+   */
+  percentage?: number | undefined;
+  /**
+   * Progress bar on the background should have dark color; To be used along with 'percentage' and 'loading' props
+   */
+  darkPercentage?: boolean | undefined;
+  /**
+   * Emitted when the component is clicked
+   * @param evt JS event object; If you are using route navigation ('to'/'replace' props) and you want to cancel navigation then call evt.preventDefault() synchronously in your event handler
+   * @param go Available ONLY if you are using route navigation ('to'/'replace' props); When you need to control the time at which the component should trigger the route navigation then call evt.preventDefault() synchronously and then call this function at your convenience; Useful if you have async work to be done before the actual route navigation or if you want to redirect somewhere else
+   */
+  onClick?: (
+    evt: Event,
+    go?: (opts?: {
+      /**
+       * Equivalent to Vue Router <router-link> 'to' property; Specify it explicitly otherwise it will be set with same value as component's 'to' prop
+       */
+      to?: string | any;
+      /**
+       * Equivalent to Vue Router <router-link> 'replace' property; Specify it explicitly otherwise it will be set with same value as component's 'replace' prop
+       */
+      replace?: boolean;
+      /**
+       * Return the router error, if any; Otherwise the returned Promise will always fulfill
+       */
+      returnRouterError?: boolean;
+    }) => Promise<any>,
+  ) => void;
+}
+
+export interface QBtnSlots {
+  /**
+   * Use for custom content, instead of relying on 'icon' and 'label' props
+   */
+  default: () => VNode[];
+  /**
+   * Override the default QSpinner when in 'loading' state
+   */
+  loading: () => VNode[];
+}
+
+export interface QBtn extends ComponentPublicInstance<QBtnProps> {
+  /**
+   * Emulate click on QBtn
+   * @param evt JS event object
+   */
+  click: (evt?: Event) => void;
+}
+
+export interface QBtnDropdownProps {
+  /**
+   * One of Quasar's embedded transitions
+   * Default value: 'fade'
+   */
+  transitionShow?: string | undefined;
+  /**
+   * One of Quasar's embedded transitions
+   * Default value: 'fade'
+   */
+  transitionHide?: string | undefined;
+  /**
+   * Transition duration (in milliseconds, without unit)
+   * Default value: 300
+   */
+  transitionDuration?: string | number | undefined;
+  /**
+   * Model of the component defining shown/hidden state; Either use this property (along with a listener for 'update:model-value' event) OR use v-model directive
+   */
+  modelValue?: boolean;
+  /**
+   * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   */
+  size?: string | undefined;
+  /**
+   * 1) Define the button native type attribute (submit, reset, button) or 2) render component with <a> tag so you can access events even if disable or 3) Use 'href' prop and specify 'type' as a media tag
+   * Default value: 'button'
+   */
+  type?: string | undefined;
+  /**
+   * Equivalent to Vue Router <router-link> 'to' property; Superseded by 'href' prop if used
+   */
+  to?: string | any | undefined;
+  /**
+   * Equivalent to Vue Router <router-link> 'replace' property; Superseded by 'href' prop if used
+   */
+  replace?: boolean | undefined;
+  /**
+   * Native <a> link href attribute; Has priority over the 'to' and 'replace' props
+   */
+  href?: string | undefined;
+  /**
+   * Native <a> link target attribute; Use it only with 'to' or 'href' props
+   */
+  target?: string | undefined;
+  /**
+   * The text that will be shown on the button
+   */
+  label?: string | number | undefined;
+  /**
+   * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
+   */
+  icon?: string | undefined;
+  /**
+   * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
+   */
+  iconRight?: string | undefined;
+  /**
+   * Use 'outline' design
+   */
+  outline?: boolean | undefined;
+  /**
+   * Use 'flat' design
+   */
+  flat?: boolean | undefined;
+  /**
+   * Remove shadow
+   */
+  unelevated?: boolean | undefined;
+  /**
+   * Applies a more prominent border-radius for a squared shape button
+   */
+  rounded?: boolean | undefined;
+  /**
+   * Use 'push' design
+   */
+  push?: boolean | undefined;
+  /**
+   * Removes border-radius so borders are squared
+   */
+  square?: boolean | undefined;
+  /**
+   * Applies a glossy effect
+   */
+  glossy?: boolean | undefined;
+  /**
+   * Makes button size and shape to fit a Floating Action Button
+   */
+  fab?: boolean | undefined;
+  /**
+   * Makes button size and shape to fit a small Floating Action Button
+   */
+  fabMini?: boolean | undefined;
+  /**
+   * Apply custom padding (vertical [horizontal]); Size in CSS units, including unit name or standard size name (none|xs|sm|md|lg|xl); Also removes the min width and height when set
+   */
+  padding?: string | undefined;
+  /**
+   * Color name for component from the Quasar Color Palette
+   */
+  color?: NamedColor | undefined;
+  /**
+   * Overrides text color (if needed); Color name from the Quasar Color Palette
+   */
+  textColor?: NamedColor | undefined;
+  /**
+   * Avoid turning label text into caps (which happens by default)
+   */
+  noCaps?: boolean | undefined;
+  /**
+   * Avoid label text wrapping
+   */
+  noWrap?: boolean | undefined;
+  /**
+   * Dense mode; occupies less space
+   */
+  dense?: boolean | undefined;
+  /**
+   * Configure material ripple (disable it by setting it to 'false' or supply a config object)
+   * Default value: true
+   */
+  ripple?: boolean | any | undefined;
+  /**
+   * Tabindex HTML attribute value
+   */
+  tabindex?: number | string | undefined;
+  /**
+   * Label or content alignment
+   * Default value: 'center'
+   */
+  align?:
+    | "left"
+    | "right"
+    | "center"
+    | "around"
+    | "between"
+    | "evenly"
+    | undefined;
+  /**
+   * Stack icon and label vertically instead of on same line (like it is by default)
+   */
+  stack?: boolean | undefined;
+  /**
+   * When used on flexbox parent, button will stretch to parent's height
+   */
+  stretch?: boolean | undefined;
+  /**
+   * Put button into loading state (displays a QSpinner -- can be overridden by using a 'loading' slot)
+   * Default value: null
+   */
+  loading?: boolean | null | undefined;
   /**
    * Put component in disabled mode
    */
@@ -1326,7 +4083,7 @@ export interface QBtnDropdownProps {
    */
   cover?: boolean | undefined;
   /**
-   * Allows the menu to not be dismissed by a click/tap outside of the menu or by hitting the ESC key
+   * Allows the menu to not be dismissed by a click/tap outside of the menu or by hitting the ESC key; Also, an app route change won't dismiss it
    */
   persistent?: boolean | undefined;
   /**
@@ -1339,7 +4096,7 @@ export interface QBtnDropdownProps {
   autoClose?: boolean | undefined;
   /**
    * Two values setting the starting position or anchor point of the menu relative to its target
-   * Default value: bottom end
+   * Default value: 'bottom end'
    */
   menuAnchor?:
     | "top left"
@@ -1360,7 +4117,7 @@ export interface QBtnDropdownProps {
     | undefined;
   /**
    * Two values setting the menu's own position relative to its target
-   * Default value: top end
+   * Default value: 'top end'
    */
   menuSelf?:
     | "top left"
@@ -1537,25 +4294,25 @@ export interface QBtnToggleProps {
     /**
      * Any other QBtn props (including class and style)
      */
-    [props: string]: any;
+    [props: string]: any | undefined;
   }[];
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Color name for component from the Quasar Color Palette
-   * Default value: primary
+   * Default value: 'primary'
    */
-  toggleColor?: string | undefined;
+  toggleColor?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  toggleTextColor?: string | undefined;
+  toggleTextColor?: NamedColor | undefined;
   /**
    * Spread horizontally to all available space
    */
@@ -1653,201 +4410,12 @@ export interface QBtnToggleSlots {
 
 export interface QBtnToggle extends ComponentPublicInstance<QBtnToggleProps> {}
 
-export interface QBtnProps {
-  /**
-   * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
-   */
-  size?: string | undefined;
-  /**
-   * 1) Define the button native type attribute (submit, reset, button) or 2) render component with <a> tag so you can access events even if disable or 3) Use 'href' prop and specify 'type' as a media tag
-   * Default value: button
-   */
-  type?: string | undefined;
-  /**
-   * Equivalent to Vue Router <router-link> 'to' property; Superseded by 'href' prop if used
-   */
-  to?: string | any | undefined;
-  /**
-   * Equivalent to Vue Router <router-link> 'replace' property; Superseded by 'href' prop if used
-   */
-  replace?: boolean | undefined;
-  /**
-   * Native <a> link href attribute; Has priority over the 'to' and 'replace' props
-   */
-  href?: string | undefined;
-  /**
-   * Native <a> link target attribute; Use it only with 'to' or 'href' props
-   */
-  target?: string | undefined;
-  /**
-   * The text that will be shown on the button
-   */
-  label?: string | number | undefined;
-  /**
-   * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
-   */
-  icon?: string | undefined;
-  /**
-   * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
-   */
-  iconRight?: string | undefined;
-  /**
-   * Use 'outline' design
-   */
-  outline?: boolean | undefined;
-  /**
-   * Use 'flat' design
-   */
-  flat?: boolean | undefined;
-  /**
-   * Remove shadow
-   */
-  unelevated?: boolean | undefined;
-  /**
-   * Applies a more prominent border-radius for a squared shape button
-   */
-  rounded?: boolean | undefined;
-  /**
-   * Use 'push' design
-   */
-  push?: boolean | undefined;
-  /**
-   * Removes border-radius so borders are squared
-   */
-  square?: boolean | undefined;
-  /**
-   * Applies a glossy effect
-   */
-  glossy?: boolean | undefined;
-  /**
-   * Makes button size and shape to fit a Floating Action Button
-   */
-  fab?: boolean | undefined;
-  /**
-   * Makes button size and shape to fit a small Floating Action Button
-   */
-  fabMini?: boolean | undefined;
-  /**
-   * Apply custom padding (vertical [horizontal]); Size in CSS units, including unit name or standard size name (none|xs|sm|md|lg|xl); Also removes the min width and height when set
-   */
-  padding?: string | undefined;
-  /**
-   * Color name for component from the Quasar Color Palette
-   */
-  color?: string | undefined;
-  /**
-   * Overrides text color (if needed); Color name from the Quasar Color Palette
-   */
-  textColor?: string | undefined;
-  /**
-   * Avoid turning label text into caps (which happens by default)
-   */
-  noCaps?: boolean | undefined;
-  /**
-   * Avoid label text wrapping
-   */
-  noWrap?: boolean | undefined;
-  /**
-   * Dense mode; occupies less space
-   */
-  dense?: boolean | undefined;
-  /**
-   * Configure material ripple (disable it by setting it to 'false' or supply a config object)
-   * Default value: true
-   */
-  ripple?: boolean | any | undefined;
-  /**
-   * Tabindex HTML attribute value
-   */
-  tabindex?: number | string | undefined;
-  /**
-   * Label or content alignment
-   * Default value: center
-   */
-  align?:
-    | "left"
-    | "right"
-    | "center"
-    | "around"
-    | "between"
-    | "evenly"
-    | undefined;
-  /**
-   * Stack icon and label vertically instead of on same line (like it is by default)
-   */
-  stack?: boolean | undefined;
-  /**
-   * When used on flexbox parent, button will stretch to parent's height
-   */
-  stretch?: boolean | undefined;
-  /**
-   * Put button into loading state (displays a QSpinner -- can be overridden by using a 'loading' slot)
-   */
-  loading?: boolean | undefined;
-  /**
-   * Put component in disabled mode
-   */
-  disable?: boolean | undefined;
-  /**
-   * Makes a circle shaped button
-   */
-  round?: boolean | undefined;
-  /**
-   * Percentage (0.0 < x < 100.0); To be used along 'loading' prop; Display a progress bar on the background
-   */
-  percentage?: number | undefined;
-  /**
-   * Progress bar on the background should have dark color; To be used along with 'percentage' and 'loading' props
-   */
-  darkPercentage?: boolean | undefined;
-  /**
-   * Emitted when the component is clicked
-   * @param evt JS event object; If you are using route navigation ('to'/'replace' props) and you want to cancel navigation then call evt.preventDefault() synchronously in your event handler
-   * @param go Available ONLY if you are using route navigation ('to'/'replace' props); When you need to control the time at which the component should trigger the route navigation then call evt.preventDefault() synchronously and then call this function at your convenience; Useful if you have async work to be done before the actual route navigation or if you want to redirect somewhere else
-   */
-  onClick?: (
-    evt: Event,
-    go?: (opts?: {
-      /**
-       * Equivalent to Vue Router <router-link> 'to' property; Specify it explicitly otherwise it will be set with same value as component's 'to' prop
-       */
-      to?: string | any;
-      /**
-       * Equivalent to Vue Router <router-link> 'replace' property; Specify it explicitly otherwise it will be set with same value as component's 'replace' prop
-       */
-      replace?: boolean;
-      /**
-       * Return the router error, if any; Otherwise the returned Promise will always fulfill
-       */
-      returnRouterError?: boolean;
-    }) => Promise<any>
-  ) => void;
-}
-
-export interface QBtnSlots {
-  /**
-   * Use for custom content, instead of relying on 'icon' and 'label' props
-   */
-  default: () => VNode[];
-  /**
-   * Override the default QSpinner when in 'loading' state
-   */
-  loading: () => VNode[];
-}
-
-export interface QBtn extends ComponentPublicInstance<QBtnProps> {
-  /**
-   * Emulate click on QBtn
-   * @param evt JS event object
-   */
-  click: (evt?: Event) => void;
-}
-
 export interface QCardProps {
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Removes border-radius so borders are squared
    */
@@ -1862,7 +4430,7 @@ export interface QCardProps {
   bordered?: boolean | undefined;
   /**
    * HTML tag to use
-   * Default value: div
+   * Default value: 'div'
    */
   tag?: string | undefined;
 }
@@ -1878,8 +4446,8 @@ export interface QCard extends ComponentPublicInstance<QCardProps> {}
 
 export interface QCardActionsProps {
   /**
-   * Specify how to align the actions
-   * Default value: left (for horizontal mode) / stretch (for vertical mode)
+   * Specify how to align the actions; For horizontal mode, the default is 'left', while for vertical mode, the default is 'stretch'
+   * Default value: # 'left'/'stretch'
    */
   align?:
     | "left"
@@ -1913,7 +4481,7 @@ export interface QCardSectionProps {
   horizontal?: boolean | undefined;
   /**
    * HTML tag to use
-   * Default value: div
+   * Default value: 'div'
    */
   tag?: string | undefined;
 }
@@ -1940,7 +4508,7 @@ export interface QCarouselProps {
   /**
    * Model of the component defining the current panel's name; If a Number is used, it does not define the panel's index, but rather the panel's name which can also be an Integer; Either use this property (along with a listener for 'update:model-value' event) OR use the v-model directive.
    */
-  modelValue?: any;
+  modelValue: any;
   /**
    * Equivalent to using Vue's native <keep-alive> component on the content
    */
@@ -1975,12 +4543,12 @@ export interface QCarouselProps {
   vertical?: boolean | undefined;
   /**
    * One of Quasar's embedded transitions (has effect only if 'animated' prop is set)
-   * Default value: fade
+   * Default value: 'fade'
    */
   transitionPrev?: string | undefined;
   /**
    * One of Quasar's embedded transitions (has effect only if 'animated' prop is set)
-   * Default value: fade
+   * Default value: 'fade'
    */
   transitionNext?: string | undefined;
   /**
@@ -1990,8 +4558,9 @@ export interface QCarouselProps {
   transitionDuration?: string | number | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Height of Carousel in CSS units, including unit name
    */
@@ -2003,13 +4572,14 @@ export interface QCarouselProps {
   /**
    * Color name for QCarousel button controls (arrows, navigation) from the Quasar Color Palette
    */
-  controlColor?: string | undefined;
+  controlColor?: NamedColor | undefined;
   /**
    * Color name for text color of QCarousel button controls (arrows, navigation) from the Quasar Color Palette
    */
-  controlTextColor?: string | undefined;
+  controlTextColor?: NamedColor | undefined;
   /**
    * Type of button to use for controls (arrows, navigation)
+   * Default value: 'flat'
    */
   controlType?:
     | "regular"
@@ -2040,7 +4610,7 @@ export interface QCarouselProps {
   navigation?: boolean | undefined;
   /**
    * Side to stick navigation to
-   * Default value: bottom/right
+   * Default value: # 'bottom'/'right'
    */
   navigationPosition?: "top" | "right" | "bottom" | "left" | undefined;
   /**
@@ -2056,6 +4626,16 @@ export interface QCarouselProps {
    */
   thumbnails?: boolean | undefined;
   /**
+   * Emitted when fullscreen state changes
+   * @param value Fullscreen state (showing/hidden)
+   */
+  onFullscreen?: (value: boolean) => void;
+  /**
+   * Used by Vue on 'v-model:fullscreen' prop for updating its value
+   * @param value Fullscreen state (showing/hidden)
+   */
+  "onUpdate:fullscreen"?: (value: boolean) => void;
+  /**
    * Emitted when the component changes the model; This event _isn't_ fired if the model is changed externally; Is also used by v-model
    * @param value New current panel name
    */
@@ -2067,7 +4647,7 @@ export interface QCarouselProps {
    */
   onBeforeTransition?: (
     newVal: string | number,
-    oldVal: string | number
+    oldVal: string | number,
   ) => void;
   /**
    * Emitted after component transitioned to a new panel
@@ -2150,7 +4730,7 @@ export interface QCarousel extends ComponentPublicInstance<QCarouselProps> {
 export interface QCarouselControlProps {
   /**
    * Side/corner to stick to
-   * Default value: bottom-right
+   * Default value: 'bottom-right'
    */
   position?:
     | "top-right"
@@ -2164,7 +4744,7 @@ export interface QCarouselControlProps {
     | undefined;
   /**
    * An array of two numbers to offset the component horizontally and vertically (in pixels)
-   * Default value: [18, 18]
+   * Default value: [ 18, 18 ]
    */
   offset?: readonly any[] | undefined;
 }
@@ -2216,11 +4796,11 @@ export interface QChatMessageProps {
   /**
    * Color name (from the Quasar Color Palette) for chat bubble background
    */
-  bgColor?: string | undefined;
+  bgColor?: NamedColor | undefined;
   /**
    * Color name (from the Quasar Color Palette) for chat bubble text
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Author's name
    */
@@ -2296,6 +4876,7 @@ export interface QCheckboxProps {
   size?: string | undefined;
   /**
    * Model of the component; Either use this property (along with a listener for 'update:model-value' event) OR use v-model directive
+   * Default value: null
    */
   modelValue: any | any[];
   /**
@@ -2309,15 +4890,16 @@ export interface QCheckboxProps {
   trueValue?: any | undefined;
   /**
    * What model value should be considered as unchecked/unticked/off?
+   * Default value: false
    */
   falseValue?: any | undefined;
   /**
    * What model value should be considered as 'indeterminate'?
+   * Default value: null
    */
   indeterminateValue?: any | undefined;
   /**
    * Determines toggle order of the two states ('t' stands for state of true, 'f' for state of false); If 'toggle-indeterminate' is true, then the order is: indet -> first state -> second state -> indet (and repeat), otherwise: indet -> first state -> second state -> first state -> second state -> ...
-   * Default value: tf
    */
   toggleOrder?: "tf" | "ft" | undefined;
   /**
@@ -2347,15 +4929,16 @@ export interface QCheckboxProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Should the color (if specified any) be kept when the component is unticked/ off?
    */
   keepColor?: boolean | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Dense mode; occupies less space
    */
@@ -2401,8 +4984,9 @@ export interface QChipProps {
   size?: string | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
    */
@@ -2426,11 +5010,11 @@ export interface QChipProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Model of the component determining if QChip should be rendered or not
    * Default value: true
@@ -2438,8 +5022,9 @@ export interface QChipProps {
   modelValue?: boolean;
   /**
    * Model for QChip if it's selected or not
+   * Default value: null
    */
-  selected?: boolean | undefined;
+  selected?: boolean | null | undefined;
   /**
    * Sets a low value for border-radius instead of the default one, making it close to a square
    */
@@ -2479,6 +5064,11 @@ export interface QChipProps {
    */
   onClick?: (evt: Event) => void;
   /**
+   * Emitted when the component needs to change the model; Is also used by v-model
+   * @param value New model value
+   */
+  "onUpdate:modelValue"?: (value: any) => void;
+  /**
    * Used by Vue on 'v-model:selected' for updating its value
    * @param state Selected state
    */
@@ -2506,10 +5096,12 @@ export interface QCircularProgressProps {
   size?: string | undefined;
   /**
    * Current progress (must be between min/max)
+   * Default value: 0
    */
   value?: number | undefined;
   /**
    * Minimum value defining 'no progress' (must be lower than 'max')
+   * Default value: 0
    */
   min?: number | undefined;
   /**
@@ -2520,18 +5112,17 @@ export interface QCircularProgressProps {
   /**
    * Color name for the arc progress from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Color name for the center part of the component from the Quasar Color Palette
    */
-  centerColor?: string | undefined;
+  centerColor?: NamedColor | undefined;
   /**
    * Color name for the track of the component from the Quasar Color Palette
    */
-  trackColor?: string | undefined;
+  trackColor?: NamedColor | undefined;
   /**
    * Size of text in CSS units, including unit name. Suggestion: use 'em' units to sync with component size
-   * Default value: 0.25em
    */
   fontSize?: string | undefined;
   /**
@@ -2545,6 +5136,7 @@ export interface QCircularProgressProps {
   thickness?: number | undefined;
   /**
    * Angle to rotate progress arc by
+   * Default value: 0
    */
   angle?: number | undefined;
   /**
@@ -2595,17 +5187,17 @@ export interface QColorProps {
   defaultValue?: string | undefined;
   /**
    * The default view of the picker
-   * Default value: spectrum
+   * Default value: 'spectrum'
    */
   defaultView?: "spectrum" | "tune" | "palette" | undefined;
   /**
    * Forces a certain model format upon the model
-   * Default value: auto
+   * Default value: 'auto'
    */
   formatModel?: "auto" | "hex" | "rgb" | "hexa" | "rgba" | undefined;
   /**
    * Use a custom palette of colors for the palette tab
-   * Default value: (hard-coded palette)
+   * Default value: # hard-coded palette
    */
   palette?: readonly any[] | undefined;
   /**
@@ -2642,8 +5234,9 @@ export interface QColorProps {
   readonly?: boolean | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Emitted when the component needs to change the model; Is also used by v-model
    * @param value New model value
@@ -2671,7 +5264,7 @@ export interface QDateProps {
   landscape?: boolean | undefined;
   /**
    * Mask (formatting string) used for parsing and formatting value
-   * Default value: YYYY/MM/DD
+   * Default value: 'YYYY/MM/DD'
    */
   mask?: string | undefined;
   /**
@@ -2699,21 +5292,22 @@ export interface QDateProps {
     | undefined;
   /**
    * Specify calendar type
-   * Default value: gregorian
+   * Default value: 'gregorian'
    */
   calendar?: "gregorian" | "persian" | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Removes border-radius so borders are squared
    */
@@ -2752,7 +5346,7 @@ export interface QDateProps {
   defaultYearMonth?: string | undefined;
   /**
    * The view which will be displayed by default
-   * Default value: Calendar
+   * Default value: 'Calendar'
    */
   defaultView?: "Calendar" | "Months" | "Years" | undefined;
   /**
@@ -2791,7 +5385,7 @@ export interface QDateProps {
   noUnset?: boolean | undefined;
   /**
    * Sets the day of the week that is considered the first day (0 - Sunday, 1 - Monday, ...); This day will show in the left-most column of the calendar
-   * Default value: (based on configured Quasar lang language)
+   * Default value: # based on configured Quasar lang language
    */
   firstDayOfWeek?: string | number | undefined;
   /**
@@ -2878,7 +5472,7 @@ export interface QDateProps {
          */
         day: number;
       };
-    }
+    },
   ) => void;
   /**
    * Emitted when user navigates to a different month or year (and even when the model changes from an outside source)
@@ -3016,19 +5610,19 @@ export interface QDate extends ComponentPublicInstance<QDateProps> {
        * The day of month
        */
       day?: number;
-    }
+    },
   ) => void;
 }
 
 export interface QDialogProps {
   /**
    * One of Quasar's embedded transitions
-   * Default value: fade
+   * Default value: 'fade'
    */
   transitionShow?: string | undefined;
   /**
    * One of Quasar's embedded transitions
-   * Default value: fade
+   * Default value: 'fade'
    */
   transitionHide?: string | undefined;
   /**
@@ -3038,8 +5632,9 @@ export interface QDialogProps {
   transitionDuration?: string | number | undefined;
   /**
    * Model of the component defining shown/hidden state; Either use this property (along with a listener for 'update:model-value' event) OR use v-model directive
+   * Default value: null
    */
-  modelValue?: boolean;
+  modelValue?: boolean | null;
   /**
    * User cannot dismiss Dialog if clicking outside of it or hitting ESC key; Also, an app route change won't dismiss it
    */
@@ -3065,6 +5660,10 @@ export interface QDialogProps {
    */
   seamless?: boolean | undefined;
   /**
+   * Apply a backdrop filter; The value needs to be the same as in the CSS specs for backdrop-filter; The examples are not an exhaustive list
+   */
+  backdropFilter?: string | undefined;
+  /**
    * Put Dialog into maximized mode
    */
   maximized?: boolean | undefined;
@@ -3078,7 +5677,7 @@ export interface QDialogProps {
   fullHeight?: boolean | undefined;
   /**
    * Stick dialog to one of the sides (top, right, bottom or left)
-   * Default value: standard
+   * Default value: 'standard'
    */
   position?: "standard" | "top" | "right" | "bottom" | "left" | undefined;
   /**
@@ -3178,11 +5777,12 @@ export interface QDialog extends ComponentPublicInstance<QDialogProps> {
 export interface QDrawerProps {
   /**
    * Model of the component defining shown/hidden state; Either use this property (along with a listener for 'update:model-value' event) OR use v-model directive
+   * Default value: null
    */
-  modelValue?: boolean;
+  modelValue?: boolean | null;
   /**
    * Side to attach to
-   * Default value: left
+   * Default value: 'left'
    */
   side?: "left" | "right" | undefined;
   /**
@@ -3200,17 +5800,22 @@ export interface QDrawerProps {
   mini?: boolean | undefined;
   /**
    * Width of drawer (in pixels) when in mini mode
-   * Default value: 60
+   * Default value: 57
    */
   miniWidth?: number | undefined;
-  /**
-   * Notify the component that the background is a dark color
-   */
-  dark?: boolean | undefined;
   /**
    * Mini mode will expand as an overlay
    */
   miniToOverlay?: boolean | undefined;
+  /**
+   * Disables animation of the drawer when toggling mini mode
+   */
+  noMiniAnimation?: boolean | undefined;
+  /**
+   * Notify the component that the background is a dark color
+   * Default value: null
+   */
+  dark?: boolean | null | undefined;
   /**
    * Breakpoint (in pixels) of layout width up to which mobile mode is used
    * Default value: 1023
@@ -3218,7 +5823,7 @@ export interface QDrawerProps {
   breakpoint?: number | undefined;
   /**
    * Overrides the default dynamic mode into which the drawer is put on
-   * Default value: default
+   * Default value: 'default'
    */
   behavior?: "default" | "desktop" | "mobile" | undefined;
   /**
@@ -3230,7 +5835,7 @@ export interface QDrawerProps {
    */
   elevated?: boolean | undefined;
   /**
-   * Prevents drawer from auto-closing when app's route changes
+   * Prevents drawer from auto-closing when app's route changes; Also, an app route change won't hide it
    */
   persistent?: boolean | undefined;
   /**
@@ -3280,17 +5885,17 @@ export interface QDrawerProps {
    */
   onOnLayout?: (state: boolean) => void;
   /**
-   * Emitted when user clicks/taps on the component and drawer is NOT in mobile mode; Useful for when taking a decision to toggle mini mode
+   * Emitted when user clicks/taps on the component; Useful for when taking a decision to toggle mini mode
    * @param evt JS event object
    */
   onClick?: (evt: Event) => void;
   /**
-   * Emitted when user moves mouse cursor over the component and drawer is NOT in mobile mode; Useful for when taking a decision to toggle mini mode
+   * Emitted when user moves mouse cursor over the component; Useful for when taking a decision to toggle mini mode
    * @param evt JS event object
    */
   onMouseover?: (evt: Event) => void;
   /**
-   * Emitted when user moves mouse cursor out of the component and drawer is NOT in mobile mode; Useful for when taking a decision to toggle mini mode
+   * Emitted when user moves mouse cursor out of the component; Useful for when taking a decision to toggle mini mode
    * @param evt JS event object
    */
   onMouseout?: (evt: Event) => void;
@@ -3361,15 +5966,16 @@ export interface QEditorProps {
   dense?: boolean | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Put component in disabled mode
    */
   disable?: boolean | undefined;
   /**
    * CSS unit for the minimum height of the editable area
-   * Default value: 10rem
+   * Default value: '10rem'
    */
   minHeight?: string | undefined;
   /**
@@ -3383,39 +5989,37 @@ export interface QEditorProps {
   /**
    * Definition of commands and their buttons to be included in the 'toolbar' prop
    */
-  definitions?:
-    | {
-        /**
-         * Command definition
-         */
-        [commandName: string]: QEditorCommand;
-      }
-    | undefined;
+  definitions?: {
+    /**
+     * Command definition
+     */
+    [commandName: string]: QEditorCommand | undefined;
+  };
   /**
    * Object with definitions of fonts
    */
   fonts?: any | undefined;
   /**
    * An array of arrays of Objects/Strings that you use to define the construction of the elements and commands available in the toolbar
-   * Default value: left,center,right,justify,bold,italic,underline,strike,undo,redo
+   * Default value: [ [ 'left', 'center', 'right', 'justify' ], [ 'bold', 'italic', 'underline', 'strike' ], [ 'undo', 'redo' ] ]
    */
   toolbar?: readonly any[] | undefined;
   /**
    * Font color (from the Quasar Palette) of buttons and text in the toolbar
    */
-  toolbarColor?: string | undefined;
+  toolbarColor?: NamedColor | undefined;
   /**
    * Text color (from the Quasar Palette) of toolbar commands
    */
-  toolbarTextColor?: string | undefined;
+  toolbarTextColor?: NamedColor | undefined;
   /**
    * Choose the active color (from the Quasar Palette) of toolbar commands button
-   * Default value: primary
+   * Default value: 'primary'
    */
   toolbarToggleColor?: string | undefined;
   /**
    * Toolbar background color (from Quasar Palette)
-   * Default value: grey-3
+   * Default value: 'grey-3'
    */
   toolbarBg?: string | undefined;
   /**
@@ -3432,6 +6036,7 @@ export interface QEditorProps {
   toolbarRounded?: boolean | undefined;
   /**
    * Paragraph tag to be used
+   * Default value: 'div'
    */
   paragraphTag?: "div" | "p" | undefined;
   /**
@@ -3447,13 +6052,56 @@ export interface QEditorProps {
    */
   placeholder?: string | undefined;
   /**
+   * Emitted when fullscreen state changes
+   * @param value Fullscreen state (showing/hidden)
+   */
+  onFullscreen?: (value: boolean) => void;
+  /**
+   * Used by Vue on 'v-model:fullscreen' prop for updating its value
+   * @param value Fullscreen state (showing/hidden)
+   */
+  "onUpdate:fullscreen"?: (value: boolean) => void;
+  /**
    * Emitted when the component needs to change the model; Is also used by v-model
    * @param value The pure HTML of the content
    */
   "onUpdate:modelValue"?: (value: string) => void;
+  /**
+   * Emitted after a dropdown in the toolbar has triggered show()
+   * @param evt JS event object
+   */
+  onDropdownShow?: (evt: Event) => void;
+  /**
+   * Emitted when a dropdown in the toolbar triggers show() but before it finishes doing it
+   * @param evt JS event object
+   */
+  onDropdownBeforeShow?: (evt: Event) => void;
+  /**
+   * Emitted after a dropdown in the toolbar has triggered hide()
+   * @param evt JS event object
+   */
+  onDropdownHide?: (evt: Event) => void;
+  /**
+   * Emitted when a dropdown in the toolbar triggers hide() but before it finishes doing it
+   * @param evt JS event object
+   */
+  onDropdownBeforeHide?: (evt: Event) => void;
+  /**
+   * Emitted when the toolbar for editing a link is shown
+   */
+  onLinkShow?: () => void;
+  /**
+   * Emitted when the toolbar for editing a link is hidden
+   */
+  onLinkHide?: () => void;
 }
 
-export interface QEditorSlots {}
+export interface QEditorSlots {
+  /**
+   * Content for the given command in the toolbar
+   */
+  [key: `${string}`]: () => VNode[];
+}
 
 export interface QEditor extends ComponentPublicInstance<QEditorProps> {
   /**
@@ -3509,10 +6157,12 @@ export interface QExpansionItemProps {
   replace?: boolean | undefined;
   /**
    * Equivalent to Vue Router <router-link> 'active-class' property; Superseded by 'href' prop if used
+   * Default value: 'q-router-link--active'
    */
   activeClass?: string | undefined;
   /**
    * Equivalent to Vue Router <router-link> 'active-class' property; Superseded by 'href' prop if used
+   * Default value: 'q-router-link--exact-active'
    */
   exactActiveClass?: string | undefined;
   /**
@@ -3528,9 +6178,10 @@ export interface QExpansionItemProps {
    */
   disable?: boolean | undefined;
   /**
-   * Model of the component defining 'open' state; Either use this property (along with a listener for 'update:modelValue' event) OR use v-model directive
+   * Model of the component defining shown/hidden state; Either use this property (along with a listener for 'update:model-value' event) OR use v-model directive
+   * Default value: null
    */
-  modelValue?: boolean;
+  modelValue?: boolean | null;
   /**
    * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
    */
@@ -3569,8 +6220,9 @@ export interface QExpansionItemProps {
   captionLines?: number | string | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Dense mode; occupies less space
    */
@@ -3721,7 +6373,7 @@ export interface QExpansionItem
 export interface QFabProps {
   /**
    * Define the button HTML DOM type
-   * Default value: a
+   * Default value: 'a'
    */
   type?: "a" | "submit" | "button" | "reset" | undefined;
   /**
@@ -3747,11 +6399,11 @@ export interface QFabProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Apply the glossy effect over the button
    */
@@ -3762,16 +6414,19 @@ export interface QFabProps {
   externalLabel?: boolean | undefined;
   /**
    * The label that will be shown when Fab is extended
+   * Default value: ''
    */
   label?: string | number | undefined;
   /**
    * Position of the label around the icon
+   * Default value: 'right'
    */
   labelPosition?: "top" | "right" | "bottom" | "left" | undefined;
   /**
    * Hide the label; Useful for animation purposes where you toggle the visibility of the label
+   * Default value: null
    */
-  hideLabel?: boolean | undefined;
+  hideLabel?: boolean | null | undefined;
   /**
    * Class definitions to be attributed to the label container
    */
@@ -3794,8 +6449,9 @@ export interface QFabProps {
   tabindex?: number | string | undefined;
   /**
    * Controls state of fab actions (showing/hidden); Works best with v-model directive, otherwise use along listening to 'update:modelValue' event
+   * Default value: null
    */
-  modelValue?: boolean;
+  modelValue?: boolean | null;
   /**
    * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
    */
@@ -3810,12 +6466,12 @@ export interface QFabProps {
   hideIcon?: boolean | undefined;
   /**
    * Direction to expand Fab Actions to
-   * Default value: right
+   * Default value: 'right'
    */
   direction?: "up" | "right" | "down" | "left" | undefined;
   /**
    * The side of the Fab where Fab Actions will expand (only when direction is 'up' or 'down')
-   * Default value: center
+   * Default value: 'center'
    */
   verticalActionsAlign?: "left" | "center" | "right" | undefined;
   /**
@@ -3911,7 +6567,7 @@ export interface QFab extends ComponentPublicInstance<QFabProps> {
 export interface QFabActionProps {
   /**
    * Define the button HTML DOM type
-   * Default value: a
+   * Default value: 'a'
    */
   type?: "a" | "submit" | "button" | "reset" | undefined;
   /**
@@ -3937,11 +6593,11 @@ export interface QFabActionProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Apply the glossy effect over the button
    */
@@ -3952,16 +6608,18 @@ export interface QFabActionProps {
   externalLabel?: boolean | undefined;
   /**
    * The label that will be shown when Fab is extended
+   * Default value: ''
    */
   label?: string | number | undefined;
   /**
    * Position of the label around the icon
+   * Default value: 'right'
    */
   labelPosition?: "top" | "right" | "bottom" | "left" | undefined;
   /**
    * Hide the label; Useful for animation purposes where you toggle the visibility of the label
    */
-  hideLabel?: boolean | undefined;
+  hideLabel?: boolean | null | undefined;
   /**
    * Class definitions to be attributed to the label container
    */
@@ -3984,6 +6642,7 @@ export interface QFabActionProps {
   tabindex?: number | string | undefined;
   /**
    * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
+   * Default value: ''
    */
   icon?: string | undefined;
   /**
@@ -4035,8 +6694,9 @@ export interface QFieldProps {
   modelValue?: any;
   /**
    * Does field have validation errors?
+   * Default value: null
    */
-  error?: boolean | undefined;
+  error?: boolean | null | undefined;
   /**
    * Validation error message (gets displayed only if 'error' is set to 'true')
    */
@@ -4055,6 +6715,7 @@ export interface QFieldProps {
   reactiveRules?: boolean | undefined;
   /**
    * If set to boolean true then it checks validation status against the 'rules' only after field loses focus for first time; If set to 'ondemand' then it will trigger only when component's validate() method is manually called or when the wrapper QForm submits itself
+   * Default value: false
    */
   lazyRules?: boolean | "ondemand" | undefined;
   /**
@@ -4084,19 +6745,20 @@ export interface QFieldProps {
   /**
    * Color name for the label from the Quasar Color Palette; Overrides the 'color' prop; The difference from 'color' prop is that the label will always have this color, even when field is not focused
    */
-  labelColor?: string | undefined;
+  labelColor?: NamedColor | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  bgColor?: string | undefined;
+  bgColor?: NamedColor | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Signals the user a process is in progress by displaying a spinner; Spinner can be customized by using the 'loading' slot.
    */
@@ -4174,18 +6836,14 @@ export interface QFieldProps {
    */
   for?: string | undefined;
   /**
-   * Used to specify the name of the control; Useful if dealing with forms; If not specified, it takes the value of 'for' prop, if it exists
-   */
-  name?: string | undefined;
-  /**
    * Specify a max length of model
    */
   maxlength?: string | number | undefined;
   /**
-   * When using the 'clearable' property, this event is emitted when the clear icon is clicked
-   * @param value The previous value before clearing it
+   * HTML tag to use
+   * Default value: 'label'
    */
-  onClear?: (value: any) => void;
+  tag?: string | undefined;
   /**
    * Emitted when the model changes, only when used with 'clearable' or the 'control' scoped slot.
    * @param value New model value
@@ -4201,6 +6859,11 @@ export interface QFieldProps {
    * @param evt JS event object
    */
   onBlur?: (evt: Event) => void;
+  /**
+   * When using the 'clearable' property, this event is emitted when the clear icon is clicked
+   * @param value The previous value before clearing it
+   */
+  onClear?: (value: any) => void;
 }
 
 export interface QFieldSlots {
@@ -4250,7 +6913,7 @@ export interface QFieldSlots {
    */
   control: (scope: {
     /**
-     * Element id used in the `for` attribute of the field label. Can be used to link the control to the label
+     * Element id used in the 'for' attribute of the field label. Can be used to link the control to the label
      */
     id: string;
     /**
@@ -4279,10 +6942,6 @@ export interface QFieldSlots {
      */
     emitValue: (value: any) => void;
   }) => VNode[];
-  /**
-   * undefined
-   */
-  rawControl: () => VNode[];
 }
 
 export interface QField extends ComponentPublicInstance<QFieldProps> {
@@ -4297,11 +6956,11 @@ export interface QField extends ComponentPublicInstance<QFieldProps> {
    */
   validate: (value?: any) => boolean | Promise<boolean>;
   /**
-   * Focus field
+   * Focus component
    */
   focus: () => void;
   /**
-   * Blur field (lose focus)
+   * Blur component (lose focus)
    */
   blur: () => void;
   /**
@@ -4344,15 +7003,16 @@ export interface QFileProps {
    * @param files Candidate files to be added to queue
    * @returns Filtered files to be added to queue
    */
-  filter?: ((files: FileList | readonly any[]) => readonly any[]) | undefined;
+  filter?: ((files: readonly any[] | FileList) => readonly any[]) | undefined;
   /**
    * Model of the component; Must be FileList or Array if using 'multiple' prop; Either use this property (along with a listener for 'update:modelValue' event) OR use v-model directive
    */
   modelValue: File | FileList | any[] | null | undefined;
   /**
    * Does field have validation errors?
+   * Default value: null
    */
-  error?: boolean | undefined;
+  error?: boolean | null | undefined;
   /**
    * Validation error message (gets displayed only if 'error' is set to 'true')
    */
@@ -4371,6 +7031,7 @@ export interface QFileProps {
   reactiveRules?: boolean | undefined;
   /**
    * If set to boolean true then it checks validation status against the 'rules' only after field loses focus for first time; If set to 'ondemand' then it will trigger only when component's validate() method is manually called or when the wrapper QForm submits itself
+   * Default value: false
    */
   lazyRules?: boolean | "ondemand" | undefined;
   /**
@@ -4400,19 +7061,20 @@ export interface QFileProps {
   /**
    * Color name for the label from the Quasar Color Palette; Overrides the 'color' prop; The difference from 'color' prop is that the label will always have this color, even when field is not focused
    */
-  labelColor?: string | undefined;
+  labelColor?: NamedColor | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  bgColor?: string | undefined;
+  bgColor?: NamedColor | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Signals the user a process is in progress by displaying a spinner; Spinner can be customized by using the 'loading' slot.
    */
@@ -4524,6 +7186,7 @@ export interface QFileProps {
     | undefined;
   /**
    * Tabindex HTML attribute value
+   * Default value: 0
    */
   tabindex?: number | string | undefined;
   /**
@@ -4540,15 +7203,25 @@ export interface QFileProps {
    */
   onRejected?: (rejectedEntries: QRejectedEntry[]) => void;
   /**
-   * When using the 'clearable' property, this event is emitted when the clear icon is clicked
-   * @param value The previous value before clearing it
-   */
-  onClear?: (value: any) => void;
-  /**
    * Emitted when the component needs to change the model; Is also used by v-model
    * @param value New model value
    */
   "onUpdate:modelValue"?: (value: any) => void;
+  /**
+   * Emitted when component gets focused
+   * @param evt JS event object
+   */
+  onFocus?: (evt: Event) => void;
+  /**
+   * Emitted when component loses focus
+   * @param evt JS event object
+   */
+  onBlur?: (evt: Event) => void;
+  /**
+   * When using the 'clearable' property, this event is emitted when the clear icon is clicked
+   * @param value The previous value before clearing it
+   */
+  onClear?: (value: any) => void;
 }
 
 export interface QFileSlots {
@@ -4618,7 +7291,7 @@ export interface QFileSlots {
     /**
      * Array of File objects
      */
-    files: FileList | readonly any[];
+    files: readonly any[] | FileList;
     /**
      * Reference to the QFile component
      */
@@ -4636,7 +7309,7 @@ export interface QFile extends ComponentPublicInstance<QFileProps> {
    * Add files programmatically
    * @param files Array of files (instances of File)
    */
-  addFiles: (files: FileList | readonly any[]) => void;
+  addFiles: (files: readonly any[] | FileList) => void;
   /**
    * Reset validation status
    */
@@ -4669,7 +7342,7 @@ export interface QFile extends ComponentPublicInstance<QFileProps> {
    * DEPRECATED; Access 'nativeEl' directly; Gets the native input DOM Element
    * @returns The underlying native input DOM Element
    */
-  getNativeElement: () => Element;
+  getNativeElement: () => QFileNativeElement;
   /**
    * Whether the component is in error state
    */
@@ -4677,7 +7350,7 @@ export interface QFile extends ComponentPublicInstance<QFileProps> {
   /**
    * The native input DOM Element
    */
-  readonly nativeEl: Element;
+  readonly nativeEl: QFileNativeElement;
 }
 
 export interface QFooterProps {
@@ -4789,10 +7462,10 @@ export interface QForm extends ComponentPublicInstance<QFormProps> {
    */
   reset: (evt?: Event) => void;
   /**
-   * Get array of children vue components that support validation
-   * @returns Vue components that support Quasar validation API
+   * Get an array of children Vue component instances that support Quasar validation API (derived from QField, or using useFormChild()/QFormChildMixin)
+   * @returns Quasar validation API-compatible Vue component instances
    */
-  getValidationComponents: () => readonly any[];
+  getValidationComponents: () => QFormChildComponent[];
 }
 
 export interface QFormChildMixinProps {}
@@ -4863,7 +7536,7 @@ export interface QIconProps {
   size?: string | undefined;
   /**
    * HTML tag to render, unless no icon is supplied or it's an svg icon
-   * Default value: i
+   * Default value: 'i'
    */
   tag?: string | undefined;
   /**
@@ -4873,7 +7546,7 @@ export interface QIconProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Useful if icon is on the left side of something: applies a standard margin on the right side of Icon
    */
@@ -4915,8 +7588,12 @@ export interface QImgProps {
    */
   placeholderSrc?: string | undefined;
   /**
+   * In case your image fails to load, you can use an error image
+   */
+  errorSrc?: string | undefined;
+  /**
    * Use it when not specifying 'ratio' but still wanting an initial aspect ratio
-   * Default value: 16/9
+   * Default value: 1.7778
    */
   initialRatio?: string | number | undefined;
   /**
@@ -4929,9 +7606,14 @@ export interface QImgProps {
   height?: string | undefined;
   /**
    * Lazy or immediate load; Same syntax as <img> loading attribute
-   * Default value: lazy
+   * Default value: 'lazy'
    */
   loading?: "lazy" | "eager" | undefined;
+  /**
+   * Delay showing the spinner when image changes; Gives time for the browser to load the image from cache to prevent flashing the spinner unnecessarily; Value should represent milliseconds
+   * Default value: 0
+   */
+  loadingShowDelay?: number | string | undefined;
   /**
    * Same syntax as <img> crossorigin attribute
    */
@@ -4955,17 +7637,17 @@ export interface QImgProps {
     | undefined;
   /**
    * Provides a hint of the relative priority to use when fetching the image
-   * Default value: auto
+   * Default value: 'auto'
    */
   fetchpriority?: "high" | "low" | "auto" | undefined;
   /**
    * How the image will fit into the container; Equivalent of the object-fit prop; Can be coordinated with 'position' prop
-   * Default value: cover
+   * Default value: 'cover'
    */
   fit?: "cover" | "fill" | "contain" | "none" | "scale-down" | undefined;
   /**
    * The alignment of the image into the container; Equivalent of the object-position CSS prop
-   * Default value: 50% 50%
+   * Default value: '50% 50%'
    */
   position?: string | undefined;
   /**
@@ -4987,7 +7669,7 @@ export interface QImgProps {
   /**
    * Color name for default Spinner (unless using a 'loading' slot)
    */
-  spinnerColor?: string | undefined;
+  spinnerColor?: NamedColor | undefined;
   /**
    * Size in CSS units, including unit name, for default Spinner (unless using a 'loading' slot)
    */
@@ -5011,9 +7693,9 @@ export interface QImgProps {
   onLoad?: (src: string) => void;
   /**
    * Emitted when browser could not load the image
-   * @param src JS Error object
+   * @param evt JS Event object (same as the browser's native 'error' event)
    */
-  onError?: (src: Error) => void;
+  onError?: (evt: Event) => void;
 }
 
 export interface QImgSlots {
@@ -5046,6 +7728,7 @@ export interface QInfiniteScrollProps {
   debounce?: string | number | undefined;
   /**
    * Initialize the pagination index (used for the @load event)
+   * Default value: 0
    */
   initialIndex?: number | undefined;
   /**
@@ -5115,12 +7798,12 @@ export interface QInfiniteScroll
 export interface QInnerLoadingProps {
   /**
    * One of Quasar's embedded transitions
-   * Default value: fade
+   * Default value: 'fade'
    */
   transitionShow?: string | undefined;
   /**
    * One of Quasar's embedded transitions
-   * Default value: fade
+   * Default value: 'fade'
    */
   transitionHide?: string | undefined;
   /**
@@ -5130,9 +7813,9 @@ export interface QInnerLoadingProps {
   transitionDuration?: string | number | undefined;
   /**
    * Size in CSS units, including unit name, or standard size name (xs|sm|md|lg|xl), for the inner Spinner (unless using the default slot)
-   * Default value: 42px
+   * Default value: '42px'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * State - loading or not
    */
@@ -5140,7 +7823,7 @@ export interface QInnerLoadingProps {
   /**
    * Color name for component from the Quasar Color Palette for the inner Spinner (unless using the default slot)
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Add a label; Gets overriden when using the default slot
    */
@@ -5155,8 +7838,9 @@ export interface QInnerLoadingProps {
   labelStyle?: VueStyleProp | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
 }
 
 export interface QInnerLoadingSlots {
@@ -5193,11 +7877,12 @@ export interface QInputProps {
   /**
    * Model of the component; Either use this property (along with a listener for 'update:modelValue' event) OR use v-model directive
    */
-  modelValue: string | number | null | undefined;
+  modelValue: string | number | FileList | null | undefined;
   /**
    * Does field have validation errors?
+   * Default value: null
    */
-  error?: boolean | undefined;
+  error?: boolean | null | undefined;
   /**
    * Validation error message (gets displayed only if 'error' is set to 'true')
    */
@@ -5216,6 +7901,7 @@ export interface QInputProps {
   reactiveRules?: boolean | undefined;
   /**
    * If set to boolean true then it checks validation status against the 'rules' only after field loses focus for first time; If set to 'ondemand' then it will trigger only when component's validate() method is manually called or when the wrapper QForm submits itself
+   * Default value: false
    */
   lazyRules?: boolean | "ondemand" | undefined;
   /**
@@ -5245,19 +7931,20 @@ export interface QInputProps {
   /**
    * Color name for the label from the Quasar Color Palette; Overrides the 'color' prop; The difference from 'color' prop is that the label will always have this color, even when field is not focused
    */
-  labelColor?: string | undefined;
+  labelColor?: NamedColor | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  bgColor?: string | undefined;
+  bgColor?: NamedColor | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Signals the user a process is in progress by displaying a spinner; Spinner can be customized by using the 'loading' slot.
    */
@@ -5340,7 +8027,7 @@ export interface QInputProps {
   shadowText?: string | undefined;
   /**
    * Input type
-   * Default value: text
+   * Default value: 'text'
    */
   type?:
     | "text"
@@ -5354,6 +8041,7 @@ export interface QInputProps {
     | "url"
     | "time"
     | "date"
+    | "datetime-local"
     | undefined;
   /**
    * Debounce amount (in milliseconds) when updating model
@@ -5376,11 +8064,6 @@ export interface QInputProps {
    */
   inputStyle?: VueStyleProp | undefined;
   /**
-   * When using the 'clearable' property, this event is emitted when the clear icon is clicked
-   * @param value The previous value before clearing it
-   */
-  onClear?: (value: any) => void;
-  /**
    * Emitted when the component needs to change the model; Is also used by v-model
    * @param value New model value
    */
@@ -5395,6 +8078,11 @@ export interface QInputProps {
    * @param evt JS event object
    */
   onBlur?: (evt: Event) => void;
+  /**
+   * When using the 'clearable' property, this event is emitted when the clear icon is clicked
+   * @param value The previous value before clearing it
+   */
+  onClear?: (value: any) => void;
 }
 
 export interface QInputSlots {
@@ -5467,7 +8155,7 @@ export interface QInput extends ComponentPublicInstance<QInputProps> {
    * DEPRECATED; Access 'nativeEl' directly instead; Get the native input/textarea DOM Element
    * @returns The underlying native input/textarea DOM Element
    */
-  getNativeElement: () => Element;
+  getNativeElement: () => QInputNativeElement;
   /**
    * Whether the component is in error state
    */
@@ -5475,13 +8163,13 @@ export interface QInput extends ComponentPublicInstance<QInputProps> {
   /**
    * The native input/textarea DOM Element
    */
-  readonly nativeEl: Element;
+  readonly nativeEl: QInputNativeElement;
 }
 
 export interface QIntersectionProps {
   /**
    * HTML tag to use
-   * Default value: div
+   * Default value: 'div'
    */
   tag?: string | undefined;
   /**
@@ -5494,8 +8182,9 @@ export interface QIntersectionProps {
   ssrPrerender?: boolean | undefined;
   /**
    * [Intersection API root prop] Lets you define an alternative to the viewport as your root (through its DOM element); It is important to keep in mind that root needs to be an ancestor of the observed element
+   * Default value: null
    */
-  root?: Element | undefined;
+  root?: Element | null | undefined;
   /**
    * [Intersection API rootMargin prop] Allows you to specify the margins for the root, effectively allowing you to either grow or shrink the area used for intersections
    */
@@ -5529,6 +8218,10 @@ export interface QIntersectionSlots {
    * Default slot in the devland unslotted content of the component
    */
   default: () => VNode[];
+  /**
+   * Slot for content to render when component is not on screen; Example: a text that the user can search for with the browser's search function
+   */
+  hidden: () => VNode[];
 }
 
 export interface QIntersection
@@ -5549,10 +8242,12 @@ export interface QItemProps {
   replace?: boolean | undefined;
   /**
    * Equivalent to Vue Router <router-link> 'active-class' property; Superseded by 'href' prop if used
+   * Default value: 'q-router-link--active'
    */
   activeClass?: string | undefined;
   /**
    * Equivalent to Vue Router <router-link> 'active-class' property; Superseded by 'href' prop if used
+   * Default value: 'q-router-link--exact-active'
    */
   exactActiveClass?: string | undefined;
   /**
@@ -5569,12 +8264,14 @@ export interface QItemProps {
   disable?: boolean | undefined;
   /**
    * Put item into 'active' state
+   * Default value: null
    */
-  active?: boolean | undefined;
+  active?: boolean | null | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Is QItem clickable? If it's the case, then it will add hover effects and emit 'click' events
    */
@@ -5593,7 +8290,7 @@ export interface QItemProps {
   tabindex?: number | string | undefined;
   /**
    * HTML tag to render; Suggestion: use 'label' when encapsulating a QCheckbox/QRadio/QToggle so that when user clicks/taps on the whole item it will trigger a model change for the mentioned components
-   * Default value: div
+   * Default value: 'div'
    */
   tag?: string | undefined;
   /**
@@ -5624,7 +8321,7 @@ export interface QItemProps {
        * Return the router error, if any; Otherwise the returned Promise will always fulfill
        */
       returnRouterError?: boolean;
-    }) => Promise<any>
+    }) => Promise<any>,
   ) => void;
 }
 
@@ -5713,15 +8410,16 @@ export interface QListProps {
   separator?: boolean | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Applies a material design-like padding on top and bottom
    */
   padding?: boolean | undefined;
   /**
    * HTML tag to use
-   * Default value: div
+   * Default value: 'div'
    */
   tag?: string | undefined;
 }
@@ -5750,10 +8448,12 @@ export interface QKnobProps {
   modelValue: number;
   /**
    * The minimum value that the model (the knob value) should start at
+   * Default value: 0
    */
   min?: number | undefined;
   /**
    * The maximum value that the model (the knob value) should go to
+   * Default value: 100
    */
   max?: number | undefined;
   /**
@@ -5780,20 +8480,23 @@ export interface QKnobProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Color name for the center part of the component from the Quasar Color Palette
    */
-  centerColor?: string | undefined;
+  centerColor?: NamedColor | undefined;
   /**
    * Color name for the track of the component from the Quasar Color Palette
    */
-  trackColor?: string | undefined;
+  trackColor?: NamedColor | undefined;
   /**
    * Size of text in CSS units, including unit name. Suggestion: use 'em' units to sync with component size
-   * Default value: 0.25em
    */
   fontSize?: string | undefined;
+  /**
+   * Rounding the arc of progress
+   */
+  rounded?: boolean | undefined;
   /**
    * Thickness of progress arc as a ratio (0.0 < x < 1.0) of component size
    * Default value: 0.2
@@ -5801,6 +8504,7 @@ export interface QKnobProps {
   thickness?: number | undefined;
   /**
    * Angle to rotate progress arc by
+   * Default value: 0
    */
   angle?: number | undefined;
   /**
@@ -5809,6 +8513,7 @@ export interface QKnobProps {
   showValue?: boolean | undefined;
   /**
    * Tabindex HTML attribute value
+   * Default value: 0
    */
   tabindex?: number | string | undefined;
   /**
@@ -5848,7 +8553,7 @@ export interface QKnob extends ComponentPublicInstance<QKnobProps> {}
 export interface QLayoutProps {
   /**
    * Defines how your layout components (header/footer/drawer) should be placed on screen; See docs examples
-   * Default value: hhh lpr fff
+   * Default value: 'hhh lpr fff'
    */
   view?: string | undefined;
   /**
@@ -5865,7 +8570,7 @@ export interface QLayoutProps {
      */
     height: number;
     /**
-     * Layout height
+     * Layout width
      */
     width: number;
   }) => void;
@@ -5918,6 +8623,7 @@ export interface QLinearProgressProps {
   size?: string | undefined;
   /**
    * Progress value (0.0 < x < 1.0)
+   * Default value: 0
    */
   value?: number | undefined;
   /**
@@ -5927,15 +8633,16 @@ export interface QLinearProgressProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Color name for component's track from the Quasar Color Palette
    */
-  trackColor?: string | undefined;
+  trackColor?: NamedColor | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Reverse direction of progress
    */
@@ -5984,8 +8691,9 @@ export interface QMarkupTableProps {
   dense?: boolean | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Applies a 'flat' design (no default shadow)
    */
@@ -6000,7 +8708,7 @@ export interface QMarkupTableProps {
   square?: boolean | undefined;
   /**
    * Use a separator/border between rows, columns or all cells
-   * Default value: horizontal
+   * Default value: 'horizontal'
    */
   separator?: "horizontal" | "vertical" | "cell" | "none" | undefined;
   /**
@@ -6022,12 +8730,12 @@ export interface QMarkupTable
 export interface QMenuProps {
   /**
    * One of Quasar's embedded transitions
-   * Default value: fade
+   * Default value: 'fade'
    */
   transitionShow?: string | undefined;
   /**
    * One of Quasar's embedded transitions
-   * Default value: fade
+   * Default value: 'fade'
    */
   transitionHide?: string | undefined;
   /**
@@ -6050,12 +8758,14 @@ export interface QMenuProps {
   contextMenu?: boolean | undefined;
   /**
    * Model of the component defining shown/hidden state; Either use this property (along with a listener for 'update:model-value' event) OR use v-model directive
+   * Default value: null
    */
-  modelValue?: boolean;
+  modelValue?: boolean | null;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Allows the menu to match at least the full width of its target
    */
@@ -6117,7 +8827,7 @@ export interface QMenuProps {
    */
   touchPosition?: boolean | undefined;
   /**
-   * Allows the menu to not be dismissed by a click/tap outside of the menu or by hitting the ESC key
+   * Allows the menu to not be dismissed by a click/tap outside of the menu or by hitting the ESC key; Also, an app route change won't dismiss it
    */
   persistent?: boolean | undefined;
   /**
@@ -6146,12 +8856,14 @@ export interface QMenuProps {
   noFocus?: boolean | undefined;
   /**
    * The maximum height of the menu; Size in CSS units, including unit name
+   * Default value: null
    */
-  maxHeight?: string | undefined;
+  maxHeight?: string | null | undefined;
   /**
    * The maximum width of the menu; Size in CSS units, including unit name
+   * Default value: null
    */
-  maxWidth?: string | undefined;
+  maxWidth?: string | null | undefined;
   /**
    * Emitted when showing/hidden state changes; Is also used by v-model
    * @param value New state (showing/hidden)
@@ -6223,7 +8935,7 @@ export interface QMenu extends ComponentPublicInstance<QMenuProps> {
 export interface QNoSsrProps {
   /**
    * HTML tag to use
-   * Default value: div
+   * Default value: 'div'
    */
   tag?: string | undefined;
   /**
@@ -6256,48 +8968,69 @@ export interface QOptionGroupProps {
   modelValue: any;
   /**
    * Array of objects with value, label, and disable (optional) props. The binary components will be created according to this array; Props from QToggle, QCheckbox or QRadio can also be added as key/value pairs to control the components singularly
+   * Default value: []
    */
-  options?:
-    | {
-        /**
-         * Label to display along the component
-         */
-        label: string;
-        /**
-         * Value of the option that will be used by the component model
-         */
-        value: any;
-        /**
-         * If true, the option will be disabled
-         */
-        disable?: boolean;
-        /**
-         * Any other props from QToggle, QCheckbox, or QRadio
-         */
-        [props: string]: any;
-      }[]
-    | undefined;
+  options?: {
+    /**
+     * Label to display along the component
+     */
+    label: string;
+    /**
+     * Value of the option that will be used by the component model
+     */
+    value: any;
+    /**
+     * If true, the option will be disabled
+     */
+    disable?: boolean;
+    /**
+     * Any other props from QToggle, QCheckbox, or QRadio
+     */
+    [props: string]: any | undefined;
+  }[];
+  /**
+   * Property of option which holds the 'value'; If using a function then for best performance, reference it from your scope and do not define it inline
+   * Default value: 'value'
+   * @param option The current option being processed
+   * @returns Value of the current option
+   */
+  optionValue?: ((option: string | any) => any) | string | undefined;
+  /**
+   * Property of option which holds the 'label'; If using a function then for best performance, reference it from your scope and do not define it inline
+   * Default value: 'label'
+   * @param option The current option being processed
+   * @returns Label of the current option
+   */
+  optionLabel?: ((option: string | any) => string) | string | undefined;
+  /**
+   * Property of option which tells it's disabled; The value of the property must be a Boolean; If using a function then for best performance, reference it from your scope and do not define it inline
+   * Default value: 'disable'
+   * @param option The current option being processed
+   * @returns If true, the current option will be disabled
+   */
+  optionDisable?: ((option: string | any) => boolean) | string | undefined;
   /**
    * Used to specify the name of the controls; Useful if dealing with forms submitted directly to a URL
    */
   name?: string | undefined;
   /**
    * The type of input component to be used
-   * Default value: radio
+   * Default value: 'radio'
    */
   type?: "radio" | "checkbox" | "toggle" | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Should the color (if specified any) be kept when input components are unticked?
    */
   keepColor?: boolean | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Dense mode; occupies less space
    */
@@ -6342,7 +9075,7 @@ export interface QOptionGroupSlots {
     /**
      * Any other props from QToggle, QCheckbox, or QRadio
      */
-    [props: string]: any;
+    [props: string]: any | undefined;
   }) => VNode[];
   /**
    * Slot to define the specific label for the option at '[name]' where name is a 0-based index; Overrides the generic 'label' slot if used
@@ -6364,17 +9097,52 @@ export interface QOptionGroupSlots {
     /**
      * Any other props from QToggle, QCheckbox, or QRadio
      */
-    [props: string]: any;
+    [props: string]: any | undefined;
   }) => VNode[];
 }
 
 export interface QOptionGroup
   extends ComponentPublicInstance<QOptionGroupProps> {}
 
+export interface QPageProps {
+  /**
+   * Applies a default responsive page padding
+   */
+  padding?: boolean | undefined;
+  /**
+   * Override default CSS style applied to the component (sets minHeight); Function(offset: Number) => CSS props/value: Object; For best performance, reference it from your scope and do not define it inline
+   * @param offset Header + Footer height (in pixels)
+   * @param height Value in pixels of container height (if containerized) or window height otherwise
+   * @returns Object with CSS properties to apply to Page DOM element
+   */
+  styleFn?: ((offset: number, height: number) => any) | undefined;
+}
+
+export interface QPageSlots {
+  /**
+   * Default slot in the devland unslotted content of the component
+   */
+  default: () => VNode[];
+}
+
+export interface QPage extends ComponentPublicInstance<QPageProps> {}
+
+export interface QPageContainerProps {}
+
+export interface QPageContainerSlots {
+  /**
+   * Encapsulates a QPage (either directly or through <router-view>)
+   */
+  default: () => VNode[];
+}
+
+export interface QPageContainer
+  extends ComponentPublicInstance<QPageContainerProps> {}
+
 export interface QPageScrollerProps {
   /**
    * Page side/corner to stick to
-   * Default value: bottom-right
+   * Default value: 'bottom-right'
    */
   position?:
     | "top-right"
@@ -6388,7 +9156,7 @@ export interface QPageScrollerProps {
     | undefined;
   /**
    * An array of two numbers to offset the component horizontally and vertically in pixels
-   * Default value: 18,18
+   * Default value: [ 18, 18 ]
    */
   offset?: readonly any[] | undefined;
   /**
@@ -6424,7 +9192,7 @@ export interface QPageScroller
 export interface QPageStickyProps {
   /**
    * Page side/corner to stick to
-   * Default value: bottom-right
+   * Default value: 'bottom-right'
    */
   position?:
     | "top-right"
@@ -6456,42 +9224,6 @@ export interface QPageStickySlots {
 export interface QPageSticky
   extends ComponentPublicInstance<QPageStickyProps> {}
 
-export interface QPageProps {
-  /**
-   * Applies a default responsive page padding
-   */
-  padding?: boolean | undefined;
-  /**
-   * Override default CSS style applied to the component (sets minHeight); Function(offset: Number) => CSS props/value: Object; For best performance, reference it from your scope and do not define it inline
-   * Default value: (see source code)
-   * @param offset Header + Footer height (in pixels)
-   * @param height Value in pixels of container height (if containerized) or window height otherwise
-   * @returns Object with CSS properties to apply to Page DOM element
-   */
-  styleFn?: ((offset: number, height: number) => any) | undefined;
-}
-
-export interface QPageSlots {
-  /**
-   * Default slot in the devland unslotted content of the component
-   */
-  default: () => VNode[];
-}
-
-export interface QPage extends ComponentPublicInstance<QPageProps> {}
-
-export interface QPageContainerProps {}
-
-export interface QPageContainerSlots {
-  /**
-   * Encapsulates a QPage (either directly or through <router-view>)
-   */
-  default: () => VNode[];
-}
-
-export interface QPageContainer
-  extends ComponentPublicInstance<QPageContainerProps> {}
-
 export interface QPaginationProps {
   /**
    * Current page (must be between min/max)
@@ -6508,8 +9240,9 @@ export interface QPaginationProps {
   max: number | string;
   /**
    * Notify the component that the background is a dark color (useful when you are using it along with the 'input' prop)
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Button size in CSS units, including unit name
    */
@@ -6541,27 +9274,32 @@ export interface QPaginationProps {
   /**
    * Generate link for page buttons; For best performance, reference it from your scope and do not define it inline
    * @param page Page number to navigate to
-   * @returns Object or String that can be passed to a <router-link> as `to` parameter
+   * @returns Object or String that can be passed to a <router-link> as 'to' parameter
    */
   toFn?: ((page: number) => any | string) | undefined;
   /**
    * Show boundary button links
+   * Default value: null
    */
-  boundaryLinks?: boolean | undefined;
+  boundaryLinks?: boolean | null | undefined;
   /**
    * Always show first and last page buttons (if not using 'input')
+   * Default value: null
    */
-  boundaryNumbers?: boolean | undefined;
+  boundaryNumbers?: boolean | null | undefined;
   /**
    * Show direction buttons
+   * Default value: null
    */
-  directionLinks?: boolean | undefined;
+  directionLinks?: boolean | null | undefined;
   /**
    * Show ellipses (...) when pages are available
+   * Default value: null
    */
-  ellipses?: boolean | undefined;
+  ellipses?: boolean | null | undefined;
   /**
    * Maximum number of page links to display at a time; 0 means Infinite
+   * Default value: 0
    */
   maxPages?: number | string | undefined;
   /**
@@ -6582,26 +9320,27 @@ export interface QPaginationProps {
   push?: boolean | undefined;
   /**
    * Color name from the Quasar Color Palette for the non-active buttons
-   * Default value: primary
+   * Default value: 'primary'
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Text color name from the Quasar Color Palette for the ACTIVE buttons
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * The design of the ACTIVE button, similar to the flat/outline/push/unelevated props (but those are used for non-active buttons)
+   * Default value: ''
    */
-  activeDesign?: "flat" | "outline" | "push" | "unelevated" | undefined;
+  activeDesign?: "flat" | "outline" | "push" | "unelevated" | "" | undefined;
   /**
    * Color name from the Quasar Color Palette for the ACTIVE button
-   * Default value: primary
+   * Default value: 'primary'
    */
-  activeColor?: string | undefined;
+  activeColor?: NamedColor | undefined;
   /**
    * Text color name from the Quasar Color Palette for the ACTIVE button
    */
-  activeTextColor?: string | undefined;
+  activeTextColor?: NamedColor | undefined;
   /**
    * Makes a circle shaped button for all buttons
    */
@@ -6616,11 +9355,12 @@ export interface QPaginationProps {
   glossy?: boolean | undefined;
   /**
    * Apply custom gutter; Size in CSS units, including unit name or standard size name (none|xs|sm|md|lg|xl)
-   * Default value: 2px
+   * Default value: '2px'
    */
   gutter?: string | undefined;
   /**
    * Apply custom padding (vertical [horizontal]); Size in CSS units, including unit name or standard size name (none|xs|sm|md|lg|xl); Also removes the min width and height when set
+   * Default value: '3px 2px'
    */
   padding?: string | undefined;
   /**
@@ -6635,7 +9375,7 @@ export interface QPaginationProps {
    * Configure buttons material ripple (disable it by setting it to 'false' or supply a config object); Does not applies to boundary and ellipsis buttons
    * Default value: true
    */
-  ripple?: boolean | any | undefined;
+  ripple?: boolean | any | null | undefined;
   /**
    * Emitted when the component needs to change the model; Is also used by v-model
    * @param value New model value
@@ -6670,6 +9410,7 @@ export interface QParallaxProps {
   height?: number | undefined;
   /**
    * Speed of parallax effect (0.0 < x < 1.0)
+   * Default value: 1
    */
   speed?: number | undefined;
   /**
@@ -6733,11 +9474,12 @@ export interface QPopupEditProps {
   autoSave?: boolean | undefined;
   /**
    * Color name for component from the Quasar Color Palette
-   * Default value: primary
+   * Default value: 'primary'
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Validates model then triggers 'save' and closes Popup; Returns a Boolean ('true' means valid, 'false' means abort); Syntax: validate(value); For best performance, reference it from your scope and do not define it inline
+   * Default value: () => true
    * @param value Model to validate
    * @returns Is the model valid or not?
    */
@@ -7010,11 +9752,11 @@ export interface QPullToRefreshProps {
   /**
    * Color name for the icon from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Color name for background of the icon container from the Quasar Color Palette
    */
-  bgColor?: string | undefined;
+  bgColor?: NamedColor | undefined;
   /**
    * Icon to display when refreshing the content
    */
@@ -7069,11 +9811,11 @@ export interface QRadioProps {
   /**
    * Model of the component; Either use this property (along with a listener for 'update:model-value' event) OR use v-model directive
    */
-  modelValue: number | string | null | undefined;
+  modelValue: any;
   /**
    * The actual value of the option with which model value is changed
    */
-  val: number | string | null | undefined;
+  val: any;
   /**
    * Label to display along the radio control (or use the default slot instead of this prop)
    */
@@ -7093,15 +9835,16 @@ export interface QRadioProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Should the color (if specified any) be kept when checkbox is unticked?
    */
   keepColor?: boolean | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Dense mode; occupies less space
    */
@@ -7143,6 +9886,7 @@ export interface QRangeProps {
   name?: string | undefined;
   /**
    * Minimum value of the model; Set track's minimum value
+   * Default value: 0
    */
   min?: number | undefined;
   /**
@@ -7178,11 +9922,11 @@ export interface QRangeProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Color name for the track (can be 'transparent' too) from the Quasar Color Palette
    */
-  trackColor?: string | undefined;
+  trackColor?: NamedColor | undefined;
   /**
    * Apply a pattern image on the track
    */
@@ -7190,7 +9934,7 @@ export interface QRangeProps {
   /**
    * Color name for the inner track (can be 'transparent' too) from the Quasar Color Palette
    */
-  innerTrackColor?: string | undefined;
+  innerTrackColor?: NamedColor | undefined;
   /**
    * Apply a pattern image on the inner track
    */
@@ -7198,7 +9942,7 @@ export interface QRangeProps {
   /**
    * Color name for the selection bar (can be 'transparent' too) from the Quasar Color Palette
    */
-  selectionColor?: string | undefined;
+  selectionColor?: NamedColor | undefined;
   /**
    * Apply a pattern image on the selection bar
    */
@@ -7210,11 +9954,11 @@ export interface QRangeProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  labelColor?: string | undefined;
+  labelColor?: NamedColor | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  labelTextColor?: string | undefined;
+  labelTextColor?: NamedColor | undefined;
   /**
    * Switch the position of the label (top <-> bottom or left <-> right)
    */
@@ -7243,27 +9987,28 @@ export interface QRangeProps {
   switchMarkerLabelsSide?: boolean | undefined;
   /**
    * Track size (including CSS unit)
-   * Default value: 4px
+   * Default value: '4px'
    */
   trackSize?: string | undefined;
   /**
    * Thumb size (including CSS unit)
-   * Default value: 20px
+   * Default value: '20px'
    */
   thumbSize?: string | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  thumbColor?: string | undefined;
+  thumbColor?: NamedColor | undefined;
   /**
    * Set custom thumb svg path
-   * Default value: M 4, 10 a 6,6 0 1,0 12,0 a 6,6 0 1,0 -12,0
+   * Default value: 'M 4, 10 a 6,6 0 1,0 12,0 a 6,6 0 1,0 -12,0'
    */
   thumbPath?: string | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Dense mode; occupies less space
    */
@@ -7282,6 +10027,7 @@ export interface QRangeProps {
   tabindex?: number | string | undefined;
   /**
    * Model of the component of type { min, max } (both values must be between global min/max); Either use this property (along with a listener for 'update:modelValue' event) OR use v-model directive
+   * Default value: { min: null, max: null }
    */
   modelValue:
     | {
@@ -7307,19 +10053,19 @@ export interface QRangeProps {
   /**
    * Color name for left label background from the Quasar Color Palette
    */
-  leftLabelColor?: string | undefined;
+  leftLabelColor?: NamedColor | undefined;
   /**
    * Color name for left label text from the Quasar Color Palette
    */
-  leftLabelTextColor?: string | undefined;
+  leftLabelTextColor?: NamedColor | undefined;
   /**
    * Color name for right label background from the Quasar Color Palette
    */
-  rightLabelColor?: string | undefined;
+  rightLabelColor?: NamedColor | undefined;
   /**
    * Color name for right label text from the Quasar Color Palette
    */
-  rightLabelTextColor?: string | undefined;
+  rightLabelTextColor?: NamedColor | undefined;
   /**
    * Override default label for min value
    */
@@ -7331,11 +10077,11 @@ export interface QRangeProps {
   /**
    * Color name (from the Quasar Color Palette) for left thumb
    */
-  leftThumbColor?: string | undefined;
+  leftThumbColor?: NamedColor | undefined;
   /**
    * Color name (from the Quasar Color Palette) for right thumb
    */
-  rightThumbColor?: string | undefined;
+  rightThumbColor?: NamedColor | undefined;
   /**
    * Emitted on lazy model value change (after user slides then releases the thumb)
    * @param value New model value
@@ -7366,7 +10112,7 @@ export interface QRangeSlots {
     /**
      * Array of marker label configs
      */
-    markerList: SliderMarkerLabelArrayConfig[];
+    markerList: SliderMarkerLabelConfig[];
     /**
      * Object with key-value where key is the model and the value is the marker label config
      */
@@ -7390,7 +10136,7 @@ export interface QRangeSlots {
     /**
      * Array of marker label configs
      */
-    markerList: SliderMarkerLabelArrayConfig[];
+    markerList: SliderMarkerLabelConfig[];
     /**
      * Object with key-value where key is the model and the value is the marker label config
      */
@@ -7447,15 +10193,15 @@ export interface QRatingProps {
   /**
    * Color name for component from the Quasar Color Palette; v1.5.0+: If an array is provided each rating value will use the corresponding color in the array (0 based)
    */
-  color?: string | readonly any[] | undefined;
+  color?: NamedColor | NamedColor[] | undefined;
   /**
    * Color name from the Quasar Palette for selected icons
    */
-  colorSelected?: string | readonly any[] | undefined;
+  colorSelected?: NamedColor | NamedColor[] | undefined;
   /**
    * Color name from the Quasar Palette for half selected icons
    */
-  colorHalf?: string | readonly any[] | undefined;
+  colorHalf?: NamedColor | NamedColor[] | undefined;
   /**
    * Does not lower opacity for unselected icons
    */
@@ -7541,8 +10287,19 @@ export interface QResponsive
 export interface QScrollAreaProps {
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
+  /**
+   * Adds [top, bottom] offset to vertical thumb
+   * Default value: # [ 0, 0 ]
+   */
+  verticalOffset?: readonly any[] | undefined;
+  /**
+   * Adds [left, right] offset to horizontal thumb
+   * Default value: # [ 0, 0 ]
+   */
+  horizontalOffset?: readonly any[] | undefined;
   /**
    * Object with CSS properties and values for custom styling the scrollbars (both vertical and horizontal)
    */
@@ -7577,8 +10334,9 @@ export interface QScrollAreaProps {
   contentActiveStyle?: VueStyleProp | undefined;
   /**
    * Manually control the visibility of the scrollbar; Overrides default mouse over/leave behavior
+   * Default value: null
    */
-  visible?: boolean | undefined;
+  visible?: boolean | null | undefined;
   /**
    * When content changes, the scrollbar appears; this delay defines the amount of time (in milliseconds) before scrollbars disappear again (if component is not hovered)
    * Default value: 1000
@@ -7614,6 +10372,10 @@ export interface QScrollAreaProps {
      */
     verticalContainerSize: number;
     /**
+     * Height of the container without the vertical offset (in px)
+     */
+    verticalContainerInnerSize: number;
+    /**
      * Horizontal scroll position (in px)
      */
     horizontalPosition: number;
@@ -7629,6 +10391,10 @@ export interface QScrollAreaProps {
      * Width of the container (in px)
      */
     horizontalContainerSize: number;
+    /**
+     * Width of the container without the horizontal offset (in px)
+     */
+    horizontalContainerInnerSize: number;
   }) => void;
 }
 
@@ -7667,6 +10433,10 @@ export interface QScrollArea extends ComponentPublicInstance<QScrollAreaProps> {
      */
     verticalContainerSize: number;
     /**
+     * Height of the container without the vertical offset (in px)
+     */
+    verticalContainerInnerSize: number;
+    /**
      * Horizontal scroll position (in px)
      */
     horizontalPosition: number;
@@ -7682,6 +10452,10 @@ export interface QScrollArea extends ComponentPublicInstance<QScrollAreaProps> {
      * Width of the container (in px)
      */
     horizontalContainerSize: number;
+    /**
+     * Width of the container without the horizontal offset (in px)
+     */
+    horizontalContainerInnerSize: number;
   };
   /**
    * Get current scroll position
@@ -7720,7 +10494,7 @@ export interface QScrollArea extends ComponentPublicInstance<QScrollAreaProps> {
   setScrollPosition: (
     axis: "vertical" | "horizontal",
     offset: number,
-    duration?: number
+    duration?: number,
   ) => void;
   /**
    * Set scroll position to a percentage (0.0 <= x <= 1.0) of the total scrolling size; If a duration (in milliseconds) is specified then the scroll is animated
@@ -7731,7 +10505,7 @@ export interface QScrollArea extends ComponentPublicInstance<QScrollAreaProps> {
   setScrollPercentage: (
     axis: "vertical" | "horizontal",
     offset: number,
-    duration?: number
+    duration?: number,
   ) => void;
 }
 
@@ -7742,7 +10516,7 @@ export interface QScrollObserverProps {
   debounce?: string | number | undefined;
   /**
    * Axis on which to detect changes
-   * Default value: vertical
+   * Default value: 'vertical'
    */
   axis?: "both" | "vertical" | "horizontal" | undefined;
   /**
@@ -7830,9 +10604,9 @@ export interface QSelectProps {
   virtualScrollHorizontal?: boolean | undefined;
   /**
    * Minimum number of items to render in the virtual list
-   * Default value: 30
+   * Default value: 10
    */
-  virtualScrollSliceSize?: number | string | undefined;
+  virtualScrollSliceSize?: number | string | null | undefined;
   /**
    * Ratio of number of items in visible zone to render before it
    * Default value: 1
@@ -7868,8 +10642,9 @@ export interface QSelectProps {
   modelValue: any;
   /**
    * Does field have validation errors?
+   * Default value: null
    */
-  error?: boolean | undefined;
+  error?: boolean | null | undefined;
   /**
    * Validation error message (gets displayed only if 'error' is set to 'true')
    */
@@ -7888,6 +10663,7 @@ export interface QSelectProps {
   reactiveRules?: boolean | undefined;
   /**
    * If set to boolean true then it checks validation status against the 'rules' only after field loses focus for first time; If set to 'ondemand' then it will trigger only when component's validate() method is manually called or when the wrapper QForm submits itself
+   * Default value: false
    */
   lazyRules?: boolean | "ondemand" | undefined;
   /**
@@ -7917,19 +10693,20 @@ export interface QSelectProps {
   /**
    * Color name for the label from the Quasar Color Palette; Overrides the 'color' prop; The difference from 'color' prop is that the label will always have this color, even when field is not focused
    */
-  labelColor?: string | undefined;
+  labelColor?: NamedColor | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  bgColor?: string | undefined;
+  bgColor?: NamedColor | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Signals the user a process is in progress by displaying a spinner; Spinner can be customized by using the 'loading' slot.
    */
@@ -8025,21 +10802,21 @@ export interface QSelectProps {
   options?: readonly any[] | undefined;
   /**
    * Property of option which holds the 'value'; If using a function then for best performance, reference it from your scope and do not define it inline
-   * Default value: value
+   * Default value: 'value'
    * @param option The current option being processed
    * @returns Value of the current option
    */
   optionValue?: ((option: string | any) => any) | string | undefined;
   /**
    * Property of option which holds the 'label'; If using a function then for best performance, reference it from your scope and do not define it inline
-   * Default value: label
+   * Default value: 'label'
    * @param option The current option being processed
    * @returns Label of the current option
    */
   optionLabel?: ((option: string | any) => string) | string | undefined;
   /**
    * Property of option which tells it's disabled; The value of the property must be a Boolean; If using a function then for best performance, reference it from your scope and do not define it inline
-   * Default value: disable
+   * Default value: 'disable'
    * @param option The current option being processed
    * @returns If true, the current option will be disabled
    */
@@ -8066,8 +10843,9 @@ export interface QSelectProps {
   optionsDense?: boolean | undefined;
   /**
    * Options menu will be colored with a dark color
+   * Default value: null
    */
-  optionsDark?: boolean | undefined;
+  optionsDark?: boolean | null | undefined;
   /**
    * CSS class name for options that are active/selected; Set it to an empty string to stop applying the default (which is text-* where * is the 'color' prop value)
    */
@@ -8137,13 +10915,21 @@ export interface QSelectProps {
    */
   popupContentStyle?: VueStyleProp | undefined;
   /**
-   * Use an input tag where users can type
+   * Changing route app won't dismiss the popup (menu or dialog)
    */
-  useInput?: boolean | undefined;
+  popupNoRouteDismiss?: boolean | undefined;
   /**
    * Use QChip to show what is currently selected
    */
   useChips?: boolean | undefined;
+  /**
+   * Use an input tag where users can type
+   */
+  useInput?: boolean | undefined;
+  /**
+   * Specify a max length for the inner input tag (if 'use-input' is enabled)
+   */
+  maxlength?: string | number | undefined;
   /**
    * Fills the input with current value; Useful along with 'hide-selected'; Does NOT works along with 'multiple' selection
    */
@@ -8157,11 +10943,15 @@ export interface QSelectProps {
    */
   mapOptions?: boolean | undefined;
   /**
+   * Prevents the tab key from confirming the currently hovered option
+   */
+  disableTabSelection?: boolean | undefined;
+  /**
    * Update model with the value of the selected option instead of the whole option
    */
   emitValue?: boolean | undefined;
   /**
-   * Debounce the input model update with an amount of milliseconds
+   * Debounce the input model update with an amount of milliseconds (also affects the 'filter' event, if used)
    * Default value: 500
    */
   inputDebounce?: number | string | undefined;
@@ -8175,6 +10965,7 @@ export interface QSelectProps {
   inputStyle?: VueStyleProp | undefined;
   /**
    * Tabindex HTML attribute value
+   * Default value: 0
    */
   tabindex?: number | string | undefined;
   /**
@@ -8183,12 +10974,12 @@ export interface QSelectProps {
   autocomplete?: string | undefined;
   /**
    * Transition when showing the menu/dialog; One of Quasar's embedded transitions
-   * Default value: fade
+   * Default value: 'fade'
    */
   transitionShow?: string | undefined;
   /**
    * Transition when hiding the menu/dialog; One of Quasar's embedded transitions
-   * Default value: fade
+   * Default value: 'fade'
    */
   transitionHide?: string | undefined;
   /**
@@ -8198,7 +10989,7 @@ export interface QSelectProps {
   transitionDuration?: string | number | undefined;
   /**
    * Overrides the default dynamic mode of showing as menu on desktop and dialog on mobiles
-   * Default value: default
+   * Default value: 'default'
    */
   behavior?: "default" | "menu" | "dialog" | undefined;
   /**
@@ -8228,15 +11019,25 @@ export interface QSelectProps {
     ref: QSelect;
   }) => void;
   /**
-   * When using the 'clearable' property, this event is emitted when the clear icon is clicked
-   * @param value The previous value before clearing it
-   */
-  onClear?: (value: any) => void;
-  /**
    * Emitted when the component needs to change the model; Is also used by v-model
    * @param value New model value
    */
   "onUpdate:modelValue"?: (value: any) => void;
+  /**
+   * Emitted when component gets focused
+   * @param evt JS event object
+   */
+  onFocus?: (evt: Event) => void;
+  /**
+   * Emitted when component loses focus
+   * @param evt JS event object
+   */
+  onBlur?: (evt: Event) => void;
+  /**
+   * When using the 'clearable' property, this event is emitted when the clear icon is clicked
+   * @param value The previous value before clearing it
+   */
+  onClear?: (value: any) => void;
   /**
    * Emitted when the value in the text input changes
    * @param value New text value
@@ -8277,7 +11078,7 @@ export interface QSelectProps {
    */
   onNewValue?: (
     inputValue: string,
-    doneFn: (item?: any, mode?: "add" | "add-unique" | "toggle") => void
+    doneFn: (item?: any, mode?: "add" | "add-unique" | "toggle") => void,
   ) => void;
   /**
    * Emitted when user wants to filter a value
@@ -8288,7 +11089,7 @@ export interface QSelectProps {
   onFilter?: (
     inputValue: string,
     doneFn: (callbackFn: () => void, afterFn?: (ref: QSelect) => void) => void,
-    abortFn: () => void
+    abortFn: () => void,
   ) => void;
   /**
    * Emitted when a filtering was aborted; Probably a new one was requested?
@@ -8446,14 +11247,14 @@ export interface QSelect extends ComponentPublicInstance<QSelectProps> {
    * @param edge The edge to align to if the item is not visible already (by default it aligns to end if scrolling towards the end and to start otherwise); If the '-force' version is used then it always aligns
    */
   scrollTo: (
-    index: string | number,
+    index: number | string,
     edge?:
       | "start"
       | "center"
       | "end"
       | "start-force"
       | "center-force"
-      | "end-force"
+      | "end-force",
   ) => void;
   /**
    * Resets the virtual scroll computations; Needed for custom edge-cases
@@ -8577,17 +11378,17 @@ export interface QSelect extends ComponentPublicInstance<QSelectProps> {
 export interface QSeparatorProps {
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * If set to true, the corresponding direction margins will be set to 8px; It can also be set to a size in CSS units, including unit name, or one of the xs|sm|md|lg|xl predefined sizes
-   * Default value: md
    */
   spaced?: boolean | string | undefined;
   /**
    * If set to Boolean true, the left and right margins will be set to 16px. If set to 'item' then it will match a QItem's design. If set to 'item-thumbnail' then it will match the design of a QItem with a thumbnail on the left side
    */
-  inset?: boolean | string | undefined;
+  inset?: boolean | "item" | "item-thumbnail" | undefined;
   /**
    * If set to true, the separator will be vertical.
    */
@@ -8599,7 +11400,7 @@ export interface QSeparatorProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSeparatorSlots {}
@@ -8609,11 +11410,12 @@ export interface QSeparator extends ComponentPublicInstance<QSeparatorProps> {}
 export interface QSkeletonProps {
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Type of skeleton placeholder
-   * Default value: rect
+   * Default value: 'rect'
    */
   type?:
     | "text"
@@ -8633,7 +11435,7 @@ export interface QSkeletonProps {
     | undefined;
   /**
    * The animation effect of the skeleton placeholder
-   * Default value: wave
+   * Default value: 'wave'
    */
   animation?:
     | "wave"
@@ -8646,7 +11448,7 @@ export interface QSkeletonProps {
     | undefined;
   /**
    * Animation speed (in milliseconds, without unit)
-   * Default value: 300
+   * Default value: 1500
    */
   animationSpeed?: string | number | undefined;
   /**
@@ -8671,7 +11473,7 @@ export interface QSkeletonProps {
   height?: string | undefined;
   /**
    * HTML tag to use
-   * Default value: div
+   * Default value: 'div'
    */
   tag?: string | undefined;
 }
@@ -8689,23 +11491,24 @@ export interface QSlideItemProps {
   /**
    * Color name for left-side background from the Quasar Color Palette
    */
-  leftColor?: string | undefined;
+  leftColor?: NamedColor | undefined;
   /**
    * Color name for right-side background from the Quasar Color Palette
    */
-  rightColor?: string | undefined;
+  rightColor?: NamedColor | undefined;
   /**
    * Color name for top-side background from the Quasar Color Palette
    */
-  topColor?: string | undefined;
+  topColor?: NamedColor | undefined;
   /**
    * Color name for bottom-side background from the Quasar Color Palette
    */
-  bottomColor?: string | undefined;
+  bottomColor?: NamedColor | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Emitted when user finished sliding the item to the left
    * @param details Details
@@ -8847,6 +11650,7 @@ export interface QSliderProps {
   name?: string | undefined;
   /**
    * Minimum value of the model; Set track's minimum value
+   * Default value: 0
    */
   min?: number | undefined;
   /**
@@ -8882,11 +11686,11 @@ export interface QSliderProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Color name for the track (can be 'transparent' too) from the Quasar Color Palette
    */
-  trackColor?: string | undefined;
+  trackColor?: NamedColor | undefined;
   /**
    * Apply a pattern image on the track
    */
@@ -8894,7 +11698,7 @@ export interface QSliderProps {
   /**
    * Color name for the inner track (can be 'transparent' too) from the Quasar Color Palette
    */
-  innerTrackColor?: string | undefined;
+  innerTrackColor?: NamedColor | undefined;
   /**
    * Apply a pattern image on the inner track
    */
@@ -8902,7 +11706,7 @@ export interface QSliderProps {
   /**
    * Color name for the selection bar (can be 'transparent' too) from the Quasar Color Palette
    */
-  selectionColor?: string | undefined;
+  selectionColor?: NamedColor | undefined;
   /**
    * Apply a pattern image on the selection bar
    */
@@ -8914,11 +11718,11 @@ export interface QSliderProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  labelColor?: string | undefined;
+  labelColor?: NamedColor | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  labelTextColor?: string | undefined;
+  labelTextColor?: NamedColor | undefined;
   /**
    * Switch the position of the label (top <-> bottom or left <-> right)
    */
@@ -8947,27 +11751,28 @@ export interface QSliderProps {
   switchMarkerLabelsSide?: boolean | undefined;
   /**
    * Track size (including CSS unit)
-   * Default value: 4px
+   * Default value: '4px'
    */
   trackSize?: string | undefined;
   /**
    * Thumb size (including CSS unit)
-   * Default value: 20px
+   * Default value: '20px'
    */
   thumbSize?: string | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  thumbColor?: string | undefined;
+  thumbColor?: NamedColor | undefined;
   /**
    * Set custom thumb svg path
-   * Default value: M 4, 10 a 6,6 0 1,0 12,0 a 6,6 0 1,0 -12,0
+   * Default value: 'M 4, 10 a 6,6 0 1,0 12,0 a 6,6 0 1,0 -12,0'
    */
   thumbPath?: string | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Dense mode; occupies less space
    */
@@ -8986,6 +11791,7 @@ export interface QSliderProps {
   tabindex?: number | string | undefined;
   /**
    * Model of the component (must be between min/max); Either use this property (along with a listener for 'update:modelValue' event) OR use v-model directive
+   * Default value: null
    */
   modelValue: number | null | undefined;
   /**
@@ -9022,7 +11828,7 @@ export interface QSliderSlots {
     /**
      * Array of marker label configs
      */
-    markerList: SliderMarkerLabelArrayConfig[];
+    markerList: SliderMarkerLabelConfig[];
     /**
      * Object with key-value where key is the model and the value is the marker label config
      */
@@ -9046,7 +11852,7 @@ export interface QSliderSlots {
     /**
      * Array of marker label configs
      */
-    markerList: SliderMarkerLabelArrayConfig[];
+    markerList: SliderMarkerLabelConfig[];
     /**
      * Object with key-value where key is the model and the value is the marker label config
      */
@@ -9075,12 +11881,13 @@ export interface QSpace extends ComponentPublicInstance<QSpaceProps> {}
 export interface QSpinnerProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Override value to use for stroke-width
    * Default value: 5
@@ -9095,12 +11902,13 @@ export interface QSpinner extends ComponentPublicInstance<QSpinnerProps> {}
 export interface QSpinnerAudioProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerAudioSlots {}
@@ -9111,12 +11919,13 @@ export interface QSpinnerAudio
 export interface QSpinnerBallProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerBallSlots {}
@@ -9127,12 +11936,13 @@ export interface QSpinnerBall
 export interface QSpinnerBarsProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerBarsSlots {}
@@ -9143,12 +11953,13 @@ export interface QSpinnerBars
 export interface QSpinnerBoxProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerBoxSlots {}
@@ -9159,12 +11970,13 @@ export interface QSpinnerBox
 export interface QSpinnerClockProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerClockSlots {}
@@ -9175,12 +11987,13 @@ export interface QSpinnerClock
 export interface QSpinnerCommentProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerCommentSlots {}
@@ -9191,12 +12004,13 @@ export interface QSpinnerComment
 export interface QSpinnerCubeProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerCubeSlots {}
@@ -9207,12 +12021,13 @@ export interface QSpinnerCube
 export interface QSpinnerDotsProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerDotsSlots {}
@@ -9223,12 +12038,13 @@ export interface QSpinnerDots
 export interface QSpinnerFacebookProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerFacebookSlots {}
@@ -9239,12 +12055,13 @@ export interface QSpinnerFacebook
 export interface QSpinnerGearsProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerGearsSlots {}
@@ -9255,12 +12072,13 @@ export interface QSpinnerGears
 export interface QSpinnerGridProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerGridSlots {}
@@ -9271,12 +12089,13 @@ export interface QSpinnerGrid
 export interface QSpinnerHeartsProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerHeartsSlots {}
@@ -9287,12 +12106,13 @@ export interface QSpinnerHearts
 export interface QSpinnerHourglassProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerHourglassSlots {}
@@ -9303,12 +12123,13 @@ export interface QSpinnerHourglass
 export interface QSpinnerInfinityProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerInfinitySlots {}
@@ -9319,12 +12140,13 @@ export interface QSpinnerInfinity
 export interface QSpinnerIosProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerIosSlots {}
@@ -9335,12 +12157,13 @@ export interface QSpinnerIos
 export interface QSpinnerOrbitProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerOrbitSlots {}
@@ -9351,12 +12174,13 @@ export interface QSpinnerOrbit
 export interface QSpinnerOvalProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerOvalSlots {}
@@ -9367,12 +12191,13 @@ export interface QSpinnerOval
 export interface QSpinnerPieProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerPieSlots {}
@@ -9383,12 +12208,13 @@ export interface QSpinnerPie
 export interface QSpinnerPuffProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerPuffSlots {}
@@ -9399,12 +12225,13 @@ export interface QSpinnerPuff
 export interface QSpinnerRadioProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerRadioSlots {}
@@ -9415,12 +12242,13 @@ export interface QSpinnerRadio
 export interface QSpinnerRingsProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerRingsSlots {}
@@ -9431,12 +12259,13 @@ export interface QSpinnerRings
 export interface QSpinnerTailProps {
   /**
    * Size in CSS units, including unit name or standard size name (xs|sm|md|lg|xl)
+   * Default value: '1em'
    */
-  size?: string | undefined;
+  size?: string | number | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
 }
 
 export interface QSpinnerTailSlots {}
@@ -9455,7 +12284,7 @@ export interface QSplitterProps {
   reverse?: boolean | undefined;
   /**
    * CSS unit for the model
-   * Default value: %
+   * Default value: '%'
    */
   unit?: "%" | "px" | undefined;
   /**
@@ -9467,8 +12296,8 @@ export interface QSplitterProps {
    */
   horizontal?: boolean | undefined;
   /**
-   * An array of two values representing the minimum and maximum split size of the two panels; When 'px' unit is set then you can use Infinity as the second value to make it unbound on the other side
-   * Default value: For '%' unit: [10, 90]; For 'px' unit: [50, Infinity]
+   * An array of two values representing the minimum and maximum split size of the two panels; When 'px' unit is set then you can use Infinity as the second value to make it unbound on the other side; Default value: for '%' unit it is [10, 90], while for 'px' unit it is [50, Infinity]
+   * Default value: # [10, 90]/[50, Infinity]
    */
   limits?: readonly any[] | undefined;
   /**
@@ -9493,8 +12322,9 @@ export interface QSplitterProps {
   separatorStyle?: VueStyleProp | undefined;
   /**
    * Applies a default lighter color on the separator; To be used when background is darker; Avoid using when you are overriding through separator-class or separator-style props
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Emitted when component's model value changes; Is also used by v-model
    * @param value New model value (0.0 < x < 100.0) defining the ratio between panels
@@ -9539,7 +12369,7 @@ export interface QStepProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Step title
    */
@@ -9559,7 +12389,7 @@ export interface QStepProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  doneColor?: string | undefined;
+  doneColor?: NamedColor | undefined;
   /**
    * Icon name following Quasar convention; If 'none' (String) is used as value, then it will defer to prefix or the regular icon for this state; Make sure you have the icon library installed unless you are using 'img:' prefix
    */
@@ -9567,7 +12397,7 @@ export interface QStepProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  activeColor?: string | undefined;
+  activeColor?: NamedColor | undefined;
   /**
    * Icon name following Quasar convention; If 'none' (String) is used as value, then it will defer to prefix or the regular icon for this state; Make sure you have the icon library installed unless you are using 'img:' prefix
    */
@@ -9575,7 +12405,7 @@ export interface QStepProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  errorColor?: string | undefined;
+  errorColor?: NamedColor | undefined;
   /**
    * Allow navigation through the header
    * Default value: true
@@ -9604,7 +12434,7 @@ export interface QStepperProps {
   /**
    * Model of the component defining the current panel's name; If a Number is used, it does not define the panel's index, but rather the panel's name which can also be an Integer; Either use this property (along with a listener for 'update:model-value' event) OR use the v-model directive.
    */
-  modelValue?: any;
+  modelValue: any;
   /**
    * Equivalent to using Vue's native <keep-alive> component on the content
    */
@@ -9639,12 +12469,12 @@ export interface QStepperProps {
   vertical?: boolean | undefined;
   /**
    * One of Quasar's embedded transitions (has effect only if 'animated' prop is set)
-   * Default value: slide-right/slide-down
+   * Default value: # slide-right/slide-down
    */
   transitionPrev?: string | undefined;
   /**
    * One of Quasar's embedded transitions (has effect only if 'animated' prop is set)
-   * Default value: slide-left/slide-up
+   * Default value: # slide-left/slide-up
    */
   transitionNext?: string | undefined;
   /**
@@ -9654,8 +12484,9 @@ export interface QStepperProps {
   transitionDuration?: string | number | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Applies a 'flat' design (no default shadow)
    */
@@ -9683,7 +12514,7 @@ export interface QStepperProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  inactiveColor?: string | undefined;
+  inactiveColor?: NamedColor | undefined;
   /**
    * Icon name following Quasar convention; If 'none' (String) is used as value, then it will defer to prefix or the regular icon for this state; Make sure you have the icon library installed unless you are using 'img:' prefix
    */
@@ -9691,7 +12522,7 @@ export interface QStepperProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  doneColor?: string | undefined;
+  doneColor?: NamedColor | undefined;
   /**
    * Icon name following Quasar convention; If 'none' (String) is used as value, then it will defer to prefix or the regular icon for this state; Make sure you have the icon library installed unless you are using 'img:' prefix
    */
@@ -9699,7 +12530,7 @@ export interface QStepperProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  activeColor?: string | undefined;
+  activeColor?: NamedColor | undefined;
   /**
    * Icon name following Quasar convention; If 'none' (String) is used as value, then it will defer to prefix or the regular icon for this state; Make sure you have the icon library installed unless you are using 'img:' prefix
    */
@@ -9707,7 +12538,7 @@ export interface QStepperProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  errorColor?: string | undefined;
+  errorColor?: NamedColor | undefined;
   /**
    * Class definitions to be attributed to the header
    */
@@ -9724,7 +12555,7 @@ export interface QStepperProps {
    */
   onBeforeTransition?: (
     newVal: string | number,
-    oldVal: string | number
+    oldVal: string | number,
   ) => void;
   /**
    * Emitted after component transitioned to a new panel
@@ -9786,10 +12617,6 @@ export interface QTabPanelProps {
    * Put component in disabled mode
    */
   disable?: boolean | undefined;
-  /**
-   * Notify the component that the background is a dark color
-   */
-  dark?: boolean | undefined;
 }
 
 export interface QTabPanelSlots {
@@ -9805,7 +12632,7 @@ export interface QTabPanelsProps {
   /**
    * Model of the component defining the current panel's name; If a Number is used, it does not define the panel's index, but rather the panel's name which can also be an Integer; Either use this property (along with a listener for 'update:model-value' event) OR use the v-model directive.
    */
-  modelValue?: any;
+  modelValue: any;
   /**
    * Equivalent to using Vue's native <keep-alive> component on the content
    */
@@ -9840,12 +12667,12 @@ export interface QTabPanelsProps {
   vertical?: boolean | undefined;
   /**
    * One of Quasar's embedded transitions (has effect only if 'animated' prop is set)
-   * Default value: slide-right/slide-down
+   * Default value: # slide-right/slide-down
    */
   transitionPrev?: string | undefined;
   /**
    * One of Quasar's embedded transitions (has effect only if 'animated' prop is set)
-   * Default value: slide-left/slide-up
+   * Default value: # slide-left/slide-up
    */
   transitionNext?: string | undefined;
   /**
@@ -9853,6 +12680,11 @@ export interface QTabPanelsProps {
    * Default value: 300
    */
   transitionDuration?: string | number | undefined;
+  /**
+   * Notify the component that the background is a dark color
+   * Default value: null
+   */
+  dark?: boolean | null | undefined;
   /**
    * Emitted when the component changes the model; This event _isn't_ fired if the model is changed externally; Is also used by v-model
    * @param value New current panel name
@@ -9865,7 +12697,7 @@ export interface QTabPanelsProps {
    */
   onBeforeTransition?: (
     newVal: string | number,
-    oldVal: string | number
+    oldVal: string | number,
   ) => void;
   /**
    * Emitted after component transitioned to a new panel
@@ -9910,10 +12742,10 @@ export interface QTableProps {
   /**
    * Rows of data to display
    */
-  rows?: readonly any[] | undefined;
+  rows: readonly any[];
   /**
    * Property of each row that defines the unique key of each row (the result must be a primitive, not Object, Array, etc); The value of property must be string or a function taking a row and returning the desired (nested) key in the row; If supplying a function then for best performance, reference it from your scope and do not define it inline
-   * Default value: id
+   * Default value: 'id'
    * @param row The current row being processed
    * @returns Current row's key
    */
@@ -9928,9 +12760,9 @@ export interface QTableProps {
   virtualScrollTarget?: Element | string | undefined;
   /**
    * Minimum number of rows to render in the virtual list
-   * Default value: 30
+   * Default value: 10
    */
-  virtualScrollSliceSize?: number | string | undefined;
+  virtualScrollSliceSize?: number | string | null | undefined;
   /**
    * Ratio of number of rows in visible zone to render before it
    * Default value: 1
@@ -9942,8 +12774,8 @@ export interface QTableProps {
    */
   virtualScrollSliceRatioAfter?: number | string | undefined;
   /**
-   * Default size in pixels of a row; This value is used for rendering the initial table; Try to use a value close to the minimum size of a row
-   * Default value: 48 (24 if dense)
+   * Default size in pixels of a row; This value is used for rendering the initial table; Try to use a value close to the minimum size of a row; Default value: 48 (24 if dense)
+   * Default value: # 48/24
    */
   virtualScrollItemSize?: number | string | undefined;
   /**
@@ -9962,9 +12794,9 @@ export interface QTableProps {
   tableColspan?: number | string | undefined;
   /**
    * Color name for component from the Quasar Color Palette
-   * Default value: grey-8
+   * Default value: 'grey-8'
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Icon name following Quasar convention for stepping to first page; Make sure you have the icon library installed unless you are using 'img:' prefix
    */
@@ -10018,15 +12850,16 @@ export interface QTableProps {
         required?: boolean;
         /**
          * Horizontal alignment of cells in this column
-         * Default value: right
+         * Default value: 'right'
          */
         align?: "left" | "right" | "center";
         /**
          * Tell QTable you want this column sortable
+         * Default value: false
          */
         sortable?: boolean;
         /**
-         * Compare function if you have some custom data or want a specific way to compare two rows
+         * Compare function if you have some custom data or want a specific way to compare two rows; rows with null/undefined values will get sorted without triggering this method (use 'rawSort' instead if you want to handle those values too)
          * @param a Value of the first comparison term
          * @param b Value of the second comparison term
          * @param rowA Full Row object in which is contained the first term
@@ -10035,8 +12868,17 @@ export interface QTableProps {
          */
         sort?: (a: any, b: any, rowA: any, rowB: any) => number;
         /**
+         * Compare function if you have some custom data or want a specific way to compare two rows; includes rows with null/undefined values (use 'sort' instead if you don't want that)
+         * @param a Value of the first comparison term
+         * @param b Value of the second comparison term
+         * @param rowA Full Row object in which is contained the first term
+         * @param rowB Full Row object in which is contained the second term
+         * @returns Comparison result of term 'a' with term 'b'. Less than 0 when 'a' should come first; greater than 0 if 'b' should come first; equal to 0 if their position must not be changed with respect to each other
+         */
+        rawSort?: (a: any, b: any, rowA: any, rowB: any) => number;
+        /**
          * Set column sort order: 'ad' (ascending-descending) or 'da' (descending-ascending); Overrides the 'column-sort-order' prop
-         * Default value: ad
+         * Default value: 'ad'
          */
         sortOrder?: "ad" | "da";
         /**
@@ -10100,8 +12942,9 @@ export interface QTableProps {
   hidePagination?: boolean | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Applies a 'flat' design (no default shadow)
    */
@@ -10116,7 +12959,7 @@ export interface QTableProps {
   square?: boolean | undefined;
   /**
    * Use a separator/border between rows, columns or all cells
-   * Default value: horizontal
+   * Default value: 'horizontal'
    */
   separator?: "horizontal" | "vertical" | "cell" | "none" | undefined;
   /**
@@ -10129,7 +12972,7 @@ export interface QTableProps {
   binaryStateSort?: boolean | undefined;
   /**
    * Set column sort order: 'ad' (ascending-descending) or 'da' (descending-ascending); It gets applied to all columns unless a column has its own sortOrder specified in the 'columns' definition prop
-   * Default value: ad
+   * Default value: 'ad'
    */
   columnSortOrder?: "ad" | "da" | undefined;
   /**
@@ -10165,7 +13008,7 @@ export interface QTableProps {
     | ((
         firstRowIndex: number,
         endRowIndex: number,
-        totalRowsNumber: number
+        totalRowsNumber: number,
       ) => string)
     | undefined;
   /**
@@ -10210,7 +13053,6 @@ export interface QTableProps {
   filter?: string | any | undefined;
   /**
    * The actual filtering mechanism; For best performance, reference it from your scope and do not define it inline
-   * Default value: (see source code)
    * @param rows Array of rows
    * @param terms Terms to filter with (is essentially the 'filter' prop value)
    * @param cols Column definitions
@@ -10222,7 +13064,7 @@ export interface QTableProps {
         rows: readonly any[],
         terms: string | any,
         cols: readonly any[],
-        getCellValue: (col: any, row: any) => any
+        getCellValue: (col: any, row: any) => any,
       ) => readonly any[])
     | undefined;
   /**
@@ -10233,7 +13075,7 @@ export interface QTableProps {
         /**
          * Column name (from column definition)
          */
-        sortBy?: string;
+        sortBy?: string | null;
         /**
          * Is sorting in descending order?
          */
@@ -10254,12 +13096,12 @@ export interface QTableProps {
     | undefined;
   /**
    * Options for user to pick (Numbers); Number 0 means 'Show all rows in one page'
-   * Default value: [ 3, 5, 7, 10, 15, 20, 25, 50, 0 ]
+   * Default value: [ 5, 7, 10, 15, 20, 25, 50, 0 ]
    */
   rowsPerPageOptions?: readonly any[] | undefined;
   /**
    * Selection type
-   * Default value: none
+   * Default value: 'none'
    */
   selection?: "single" | "multiple" | "none" | undefined;
   /**
@@ -10269,12 +13111,10 @@ export interface QTableProps {
   selected?: any[] | undefined;
   /**
    * Keeps the array with expanded rows keys
-   * Default value: []
    */
   expanded?: any[] | undefined;
   /**
    * The actual sort mechanism. Function (rows, sortBy, descending) => sorted rows; For best performance, reference it from your scope and do not define it inline
-   * Default value: (see source code)
    * @param rows Array with rows
    * @param sortBy Column name (from column definition)
    * @param descending Is sorting in descending order?
@@ -10284,9 +13124,19 @@ export interface QTableProps {
     | ((
         rows: readonly any[],
         sortBy: string,
-        descending: boolean
+        descending: boolean,
       ) => readonly any[])
     | undefined;
+  /**
+   * Emitted when fullscreen state changes
+   * @param value Fullscreen state (showing/hidden)
+   */
+  onFullscreen?: (value: boolean) => void;
+  /**
+   * Used by Vue on 'v-model:fullscreen' prop for updating its value
+   * @param value Fullscreen state (showing/hidden)
+   */
+  "onUpdate:fullscreen"?: (value: boolean) => void;
   /**
    * Emitted when user clicks/taps on a row; Is not emitted when using body/row/item scoped slots
    * @param evt JS event object
@@ -10376,7 +13226,7 @@ export interface QTableProps {
     /**
      * Column name (from column definition)
      */
-    sortBy: string;
+    sortBy: string | null;
     /**
      * Is sorting in descending order?
      */
@@ -10425,6 +13275,10 @@ export interface QTableProps {
      * Direction of change
      */
     direction: "increase" | "decrease";
+    /**
+     * Vue reference to the underlying QVirtualScroll instance
+     */
+    ref: Component;
   }) => void;
 }
 
@@ -10478,11 +13332,12 @@ export interface QTableSlots {
     /**
      * Color name for component from the Quasar Color Palette
      */
-    color: string;
+    color: NamedColor;
     /**
      * Notify the component that the background is a dark color
+     * Default value: null
      */
-    dark: boolean;
+    dark?: boolean | null;
     /**
      * Dense mode; occupies less space
      */
@@ -10533,11 +13388,12 @@ export interface QTableSlots {
     /**
      * Color name for component from the Quasar Color Palette
      */
-    color: string;
+    color: NamedColor;
     /**
      * Notify the component that the background is a dark color
+     * Default value: null
      */
-    dark: boolean;
+    dark?: boolean | null;
     /**
      * Dense mode; occupies less space
      */
@@ -10600,11 +13456,12 @@ export interface QTableSlots {
     /**
      * Color name for component from the Quasar Color Palette
      */
-    color: string;
+    color: NamedColor;
     /**
      * Notify the component that the background is a dark color
+     * Default value: null
      */
-    dark: boolean;
+    dark?: boolean | null;
     /**
      * Dense mode; occupies less space
      */
@@ -10663,11 +13520,12 @@ export interface QTableSlots {
     /**
      * Color name for component from the Quasar Color Palette
      */
-    color: string;
+    color: NamedColor;
     /**
      * Notify the component that the background is a dark color
+     * Default value: null
      */
-    dark: boolean;
+    dark?: boolean | null;
     /**
      * Dense mode; occupies less space
      */
@@ -10702,11 +13560,12 @@ export interface QTableSlots {
     /**
      * Color name for component from the Quasar Color Palette
      */
-    color: string;
+    color: NamedColor;
     /**
      * Notify the component that the background is a dark color
+     * Default value: null
      */
-    dark: boolean;
+    dark?: boolean | null;
     /**
      * Dense mode; occupies less space
      */
@@ -10753,11 +13612,12 @@ export interface QTableSlots {
     /**
      * Color name for component from the Quasar Color Palette
      */
-    color: string;
+    color: NamedColor;
     /**
      * Notify the component that the background is a dark color
+     * Default value: null
      */
-    dark: boolean;
+    dark?: boolean | null;
     /**
      * Dense mode; occupies less space
      */
@@ -10796,11 +13656,12 @@ export interface QTableSlots {
     /**
      * Color name for component from the Quasar Color Palette
      */
-    color: string;
+    color: NamedColor;
     /**
      * Notify the component that the background is a dark color
+     * Default value: null
      */
-    dark: boolean;
+    dark?: boolean | null;
     /**
      * Dense mode; occupies less space
      */
@@ -10851,11 +13712,12 @@ export interface QTableSlots {
     /**
      * Color name for component from the Quasar Color Palette
      */
-    color: string;
+    color: NamedColor;
     /**
      * Notify the component that the background is a dark color
+     * Default value: null
      */
-    dark: boolean;
+    dark?: boolean | null;
     /**
      * Dense mode; occupies less space
      */
@@ -10890,11 +13752,12 @@ export interface QTableSlots {
     /**
      * Color name for component from the Quasar Color Palette
      */
-    color: string;
+    color: NamedColor;
     /**
      * Notify the component that the background is a dark color
+     * Default value: null
      */
-    dark: boolean;
+    dark?: boolean | null;
     /**
      * Dense mode; occupies less space
      */
@@ -10932,7 +13795,7 @@ export interface QTableSlots {
       /**
        * Column name (from column definition)
        */
-      sortBy: string;
+      sortBy: string | null;
       /**
        * Is sorting in descending order?
        */
@@ -10995,7 +13858,7 @@ export interface QTableSlots {
       /**
        * Column name (from column definition)
        */
-      sortBy: string;
+      sortBy: string | null;
       /**
        * Is sorting in descending order?
        */
@@ -11058,7 +13921,7 @@ export interface QTableSlots {
       /**
        * Column name (from column definition)
        */
-      sortBy: string;
+      sortBy: string | null;
       /**
        * Is sorting in descending order?
        */
@@ -11121,7 +13984,7 @@ export interface QTableSlots {
       /**
        * Column name (from column definition)
        */
-      sortBy: string;
+      sortBy: string | null;
       /**
        * Is sorting in descending order?
        */
@@ -11184,7 +14047,7 @@ export interface QTableSlots {
       /**
        * Column name (from column definition)
        */
-      sortBy: string;
+      sortBy: string | null;
       /**
        * Is sorting in descending order?
        */
@@ -11247,7 +14110,7 @@ export interface QTableSlots {
       /**
        * Column name (from column definition)
        */
-      sortBy: string;
+      sortBy: string | null;
       /**
        * Is sorting in descending order?
        */
@@ -11369,7 +14232,7 @@ export interface QTable extends ComponentPublicInstance<QTableProps> {
       rows: readonly any[],
       terms: string | any,
       cols?: readonly any[],
-      getCellValue?: (col?: any, row?: any) => any
+      getCellValue?: (col?: any, row?: any) => any,
     ) => readonly any[];
   }) => void;
   /**
@@ -11382,7 +14245,7 @@ export interface QTable extends ComponentPublicInstance<QTableProps> {
       /**
        * Column name (from column definition)
        */
-      sortBy?: string;
+      sortBy?: string | null;
       /**
        * Is sorting in descending order?
        */
@@ -11396,7 +14259,7 @@ export interface QTable extends ComponentPublicInstance<QTableProps> {
        */
       rowsPerPage?: number;
     },
-    forceServerRequest?: boolean
+    forceServerRequest?: boolean,
   ) => void;
   /**
    * Navigates to first page
@@ -11447,17 +14310,17 @@ export interface QTable extends ComponentPublicInstance<QTableProps> {
   /**
    * Scroll the table to the row with the specified index in page (0 based)
    * @param index The index of the row in page (0 based)
-   * @param edge Only for virtual scroll - the edge to align to if the row is not visible already; If the '-force' version is used then it always aligns
+   * @param edge Only for virtual scroll - the edge to align to if the row is not visible already; If the '-force' version is used then it always aligns; Default value: end (if scrolling towards the end) / start (if scrolling towards the start)
    */
   scrollTo: (
-    index: string | number,
+    index: number | string,
     edge?:
       | "start"
       | "center"
       | "end"
       | "start-force"
       | "center-force"
-      | "end-force"
+      | "end-force",
   ) => void;
   /**
    * The filtered and sorted rows (same as the rows prop if using server-side fetching)
@@ -11552,10 +14415,12 @@ export interface QRouteTabProps {
   replace?: boolean | undefined;
   /**
    * Equivalent to Vue Router <router-link> 'active-class' property; Superseded by 'href' prop if used
+   * Default value: 'q-router-link--active'
    */
   activeClass?: string | undefined;
   /**
    * Equivalent to Vue Router <router-link> 'active-class' property; Superseded by 'href' prop if used
+   * Default value: 'q-router-link--exact-active'
    */
   exactActiveClass?: string | undefined;
   /**
@@ -11588,7 +14453,7 @@ export interface QRouteTabProps {
   alertIcon?: string | undefined;
   /**
    * Panel name
-   * Default value: A random UID
+   * Default value: # a random UUID
    */
   name?: number | string | undefined;
   /**
@@ -11628,7 +14493,7 @@ export interface QRouteTabProps {
        * Return the router error, if any; Otherwise the returned Promise will always fulfill
        */
       returnRouterError?: boolean;
-    }) => Promise<any>
+    }) => Promise<any>,
   ) => void;
 }
 
@@ -11660,7 +14525,7 @@ export interface QTabProps {
   alertIcon?: string | undefined;
   /**
    * Panel name
-   * Default value: A random UID
+   * Default value: # a random UUID
    */
   name?: number | string | undefined;
   /**
@@ -11714,7 +14579,7 @@ export interface QTabsProps {
   mobileArrows?: boolean | undefined;
   /**
    * Horizontal alignment the tabs within the tabs container
-   * Default value: center
+   * Default value: 'center'
    */
   align?: "left" | "center" | "right" | "justify" | undefined;
   /**
@@ -11725,15 +14590,15 @@ export interface QTabsProps {
   /**
    * The color to be attributed to the text of the active tab
    */
-  activeColor?: string | undefined;
+  activeColor?: NamedColor | undefined;
   /**
    * The color to be attributed to the background of the active tab
    */
-  activeBgColor?: string | undefined;
+  activeBgColor?: NamedColor | undefined;
   /**
    * The color to be attributed to the indicator (the underline) of the active tab
    */
-  indicatorColor?: string | undefined;
+  indicatorColor?: NamedColor | undefined;
   /**
    * Class definitions to be attributed to the content wrapper
    */
@@ -11805,9 +14670,9 @@ export interface QTimeProps {
   landscape?: boolean | undefined;
   /**
    * Mask (formatting string) used for parsing and formatting value
-   * Default value: HH:mm
+   * Default value: 'HH:mm'
    */
-  mask?: string | undefined;
+  mask?: string | null | undefined;
   /**
    * Locale formatting options
    */
@@ -11833,21 +14698,22 @@ export interface QTimeProps {
     | undefined;
   /**
    * Specify calendar type
-   * Default value: gregorian
+   * Default value: 'gregorian'
    */
   calendar?: "gregorian" | "persian" | undefined;
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Removes border-radius so borders are squared
    */
@@ -11873,13 +14739,13 @@ export interface QTimeProps {
    */
   modelValue: string | null | undefined;
   /**
-   * Forces 24 hour time display instead of AM/PM system
-   * Default value: (based on Quasar lang language being used)
+   * Forces 24 hour time display instead of AM/PM system; If prop is not set, then the default is based on Quasar lang language being used
+   * Default value: null
    */
-  format24h?: boolean | undefined;
+  format24h?: boolean | null | undefined;
   /**
    * The default date to use (in YYYY/MM/DD format) when model is unfilled (undefined or null)
-   * Default value: current day
+   * Default value: # current day
    */
   defaultDate?: string | undefined;
   /**
@@ -11887,10 +14753,13 @@ export interface QTimeProps {
    * @param hr Hour
    * @param min Minutes
    * @param sec Seconds
+   * @returns Is the user allowed to set the specified time?
    */
-  options?:
-    | ((hr: number, min: number | null, sec: number | null) => void)
-    | undefined;
+  options?: (
+    hr: number,
+    min: number | null,
+    sec: number | null,
+  ) => boolean | null | undefined;
   /**
    * Optionally configure what hours is the user allowed to set; Overrides 'options' prop if that is also set
    */
@@ -11951,7 +14820,7 @@ export interface QTimeProps {
        * Did the model change?
        */
       changed: boolean;
-    }
+    },
   ) => void;
 }
 
@@ -11972,22 +14841,24 @@ export interface QTime extends ComponentPublicInstance<QTimeProps> {
 export interface QTimelineProps {
   /**
    * Color name for component from the Quasar Color Palette
+   * Default value: 'primary'
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Side to place the timeline entries in dense and comfortable layout; For loose layout it gets overridden by QTimelineEntry side prop
-   * Default value: right
+   * Default value: 'right'
    */
   side?: "left" | "right" | undefined;
   /**
    * Layout of the timeline. Dense keeps content and labels on one side. Comfortable keeps content on one side and labels on the opposite side. Loose puts content on both sides.
-   * Default value: dense
+   * Default value: 'dense'
    */
   layout?: "dense" | "comfortable" | "loose" | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
 }
 
 export interface QTimelineSlots {
@@ -12006,12 +14877,12 @@ export interface QTimelineEntryProps {
   heading?: boolean | undefined;
   /**
    * Tag to use, if of type 'heading' only
-   * Default value: h3
+   * Default value: 'h3'
    */
   tag?: string | undefined;
   /**
    * Side to place the timeline entry; Works only if QTimeline layout is loose.
-   * Default value: right
+   * Default value: 'right'
    */
   side?: "left" | "right" | undefined;
   /**
@@ -12025,7 +14896,7 @@ export interface QTimelineEntryProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Title of timeline entry; Is overridden if using 'title' slot
    */
@@ -12069,6 +14940,7 @@ export interface QToggleProps {
   size?: string | undefined;
   /**
    * Model of the component; Either use this property (along with a listener for 'update:model-value' event) OR use v-model directive
+   * Default value: null
    */
   modelValue: any | any[];
   /**
@@ -12082,15 +14954,16 @@ export interface QToggleProps {
   trueValue?: any | undefined;
   /**
    * What model value should be considered as unchecked/unticked/off?
+   * Default value: false
    */
   falseValue?: any | undefined;
   /**
    * What model value should be considered as 'indeterminate'?
+   * Default value: null
    */
   indeterminateValue?: any | undefined;
   /**
    * Determines toggle order of the two states ('t' stands for state of true, 'f' for state of false); If 'toggle-indeterminate' is true, then the order is: indet -> first state -> second state -> indet (and repeat), otherwise: indet -> first state -> second state -> first state -> second state -> ...
-   * Default value: tf
    */
   toggleOrder?: "tf" | "ft" | undefined;
   /**
@@ -12120,15 +14993,16 @@ export interface QToggleProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Should the color (if specified any) be kept when the component is unticked/ off?
    */
   keepColor?: boolean | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Dense mode; occupies less space
    */
@@ -12148,7 +15022,7 @@ export interface QToggleProps {
   /**
    * Override default icon color (for truthy state only); Color name for component from the Quasar Color Palette
    */
-  iconColor?: string | undefined;
+  iconColor?: NamedColor | undefined;
   /**
    * Emitted when the component needs to change the model; Is also used by v-model
    * @param value New model value
@@ -12207,12 +15081,12 @@ export interface QToolbarTitle
 export interface QTooltipProps {
   /**
    * One of Quasar's embedded transitions
-   * Default value: jump-down
+   * Default value: 'jump-down'
    */
   transitionShow?: string | undefined;
   /**
    * One of Quasar's embedded transitions
-   * Default value: jump-up
+   * Default value: 'jump-up'
    */
   transitionHide?: string | undefined;
   /**
@@ -12221,20 +15095,32 @@ export interface QTooltipProps {
    */
   transitionDuration?: string | number | undefined;
   /**
-   * Model of the component defining shown/hidden state; Either use this property (along with a listener for 'update:model-value' event) OR use v-model directive
+   * Configure a target element to trigger component toggle; 'true' means it enables the parent DOM element, 'false' means it disables attaching events to any DOM elements; By using a String (CSS selector) or a DOM element it attaches the events to the specified DOM element (if it exists)
+   * Default value: true
    */
-  modelValue?: boolean;
+  target?: boolean | string | Element | undefined;
+  /**
+   * Skips attaching events to the target DOM element (that trigger the element to get shown)
+   */
+  noParentEvent?: boolean | undefined;
+  /**
+   * Model of the component defining shown/hidden state; Either use this property (along with a listener for 'update:model-value' event) OR use v-model directive
+   * Default value: null
+   */
+  modelValue?: boolean | null;
   /**
    * The maximum height of the Tooltip; Size in CSS units, including unit name
+   * Default value: null
    */
-  maxHeight?: string | undefined;
+  maxHeight?: string | null | undefined;
   /**
    * The maximum width of the Tooltip; Size in CSS units, including unit name
+   * Default value: null
    */
-  maxWidth?: string | undefined;
+  maxWidth?: string | null | undefined;
   /**
    * Two values setting the starting position or anchor point of the Tooltip relative to its target
-   * Default value: bottom middle
+   * Default value: 'bottom middle'
    */
   anchor?:
     | "top left"
@@ -12255,7 +15141,7 @@ export interface QTooltipProps {
     | undefined;
   /**
    * Two values setting the Tooltip's own position relative to its target
-   * Default value: top middle
+   * Default value: 'top middle'
    */
   self?:
     | "top left"
@@ -12276,7 +15162,7 @@ export interface QTooltipProps {
     | undefined;
   /**
    * An array of two numbers to offset the Tooltip horizontally and vertically in pixels
-   * Default value: [14, 14]
+   * Default value: [ 14, 14 ]
    */
   offset?: readonly any[] | undefined;
   /**
@@ -12284,22 +15170,19 @@ export interface QTooltipProps {
    */
   scrollTarget?: Element | string | undefined;
   /**
-   * Configure a target element to trigger Tooltip toggle; 'true' means it enables the parent DOM element, 'false' means it disables attaching events to any DOM elements; By using a String (CSS selector) it attaches the events to the specified DOM element (if it exists)
-   * Default value: true
-   */
-  target?: boolean | string | undefined;
-  /**
-   * Skips attaching events to the target DOM element (that trigger the element to get shown)
-   */
-  noParentEvent?: boolean | undefined;
-  /**
    * Configure Tooltip to appear with delay
+   * Default value: 0
    */
   delay?: number | undefined;
   /**
    * Configure Tooltip to disappear with delay
+   * Default value: 0
    */
   hideDelay?: number | undefined;
+  /**
+   * Prevents Tooltip from auto-closing when app's route changes
+   */
+  persistent?: boolean | undefined;
   /**
    * Emitted when showing/hidden state changes; Is also used by v-model
    * @param value New state (showing/hidden)
@@ -12371,12 +15254,12 @@ export interface QTreeProps {
   nodeKey: string;
   /**
    * The property name of each node object that holds the label of the node
-   * Default value: label
+   * Default value: 'label'
    */
   labelKey?: string | undefined;
   /**
    * The property name of each node object that holds the list of children of the node
-   * Default value: children
+   * Default value: 'children'
    */
   childrenKey?: string | undefined;
   /**
@@ -12386,34 +15269,35 @@ export interface QTreeProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Color name for controls (like checkboxes) from the Quasar Color Palette
    */
-  controlColor?: string | undefined;
+  controlColor?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Color name for selected nodes (from the Quasar Color Palette)
    */
-  selectedColor?: string | undefined;
+  selectedColor?: NamedColor | undefined;
   /**
    * Dense mode; occupies less space
    */
   dense?: boolean | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
    */
   icon?: string | undefined;
   /**
    * The type of strategy to use for the selection of the nodes
-   * Default value: none
+   * Default value: 'none'
    */
   tickStrategy?: "none" | "strict" | "leaf" | "leaf-filtered" | undefined;
   /**
@@ -12450,7 +15334,6 @@ export interface QTreeProps {
   filter?: string | undefined;
   /**
    * The function to use to filter the tree nodes; For best performance, reference it from your scope and do not define it inline
-   * Default value: (see source code)
    * @param node Node currently being filtered
    * @param filter Filter text to match against
    * @returns Matches or not
@@ -12722,14 +15605,14 @@ export interface QUploaderProps {
   url?: string | ((files: readonly any[]) => string) | undefined;
   /**
    * HTTP method to use for upload; Takes String or factory function which returns a String; Function is called right before upload; If using a function then for best performance, reference it from your scope and do not define it inline
-   * Default value: POST
+   * Default value: 'POST'
    * @param files Uploaded files
    * @returns HTTP method to use for upload
    */
   method?: "POST" | "PUT" | ((files: readonly any[]) => string) | undefined;
   /**
    * Field name for each file upload; This goes into the following header: 'Content-Disposition: form-data; name="__HERE__"; filename="somefile.png"; If using a function then for best performance, reference it from your scope and do not define it inline
-   * Default value: (file) => file.name
+   * Default value: file => file.name
    * @param files The current file being processed
    * @returns Field name for the current file upload
    */
@@ -12817,7 +15700,7 @@ export interface QUploaderProps {
    * @param files Candidate files to be added to queue
    * @returns Filtered files to be added to queue
    */
-  filter?: ((files: FileList | readonly any[]) => readonly any[]) | undefined;
+  filter?: ((files: readonly any[] | FileList) => readonly any[]) | undefined;
   /**
    * Label for the uploader
    */
@@ -12825,15 +15708,16 @@ export interface QUploaderProps {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string | undefined;
+  color?: NamedColor | undefined;
   /**
    * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string | undefined;
+  textColor?: NamedColor | undefined;
   /**
    * Notify the component that the background is a dark color
+   * Default value: null
    */
-  dark?: boolean | undefined;
+  dark?: boolean | null | undefined;
   /**
    * Removes border-radius so borders are squared
    */
@@ -12858,6 +15742,11 @@ export interface QUploaderProps {
    * Don't show the upload button
    */
   hideUploadBtn?: boolean | undefined;
+  /**
+   * How the thumbnail image will fit into the container; Equivalent of the background-size prop
+   * Default value: 'cover'
+   */
+  thumbnailFit?: string | undefined;
   /**
    * Put component in disabled mode
    */
@@ -12997,7 +15886,7 @@ export interface QUploader extends ComponentPublicInstance<QUploaderProps> {
   updateFileStatus: (
     file: File,
     status: "idle" | "failed" | "uploading" | "uploaded",
-    uploadedSize: number
+    uploadedSize: number,
   ) => void;
   /**
    * Is the component alive (activated but not unmounted); Useful to determine if you still need to compute anything going further
@@ -13068,17 +15957,17 @@ export interface QVideoProps {
   title?: string | undefined;
   /**
    * Provides a hint of the relative priority to use when fetching the iframe document
-   * Default value: auto
+   * Default value: 'auto'
    */
   fetchpriority?: "high" | "low" | "auto" | undefined;
   /**
    * Indicates how the browser should load the iframe
-   * Default value: eager
+   * Default value: 'eager'
    */
   loading?: "eager" | "lazy" | undefined;
   /**
    * Indicates which referrer to send when fetching the frame's resource
-   * Default value: strict-origin-when-cross-origin
+   * Default value: 'strict-origin-when-cross-origin'
    */
   referrerpolicy?:
     | "no-referrer"
@@ -13103,9 +15992,9 @@ export interface QVirtualScrollProps {
   virtualScrollHorizontal?: boolean | undefined;
   /**
    * Minimum number of items to render in the virtual list
-   * Default value: 30
+   * Default value: 10
    */
-  virtualScrollSliceSize?: number | string | undefined;
+  virtualScrollSliceSize?: number | string | null | undefined;
   /**
    * Ratio of number of items in visible zone to render before it
    * Default value: 1
@@ -13137,7 +16026,7 @@ export interface QVirtualScrollProps {
   tableColspan?: number | string | undefined;
   /**
    * The type of content: list (default) or table
-   * Default value: list
+   * Default value: 'list'
    */
   type?: "list" | "table" | undefined;
   /**
@@ -13147,7 +16036,6 @@ export interface QVirtualScrollProps {
   items?: readonly any[] | undefined;
   /**
    * Number of available items in the list; Required and used only if 'itemsFn' is provided
-   * Default value: void 0
    */
   itemsSize?: number | undefined;
   /**
@@ -13204,11 +16092,11 @@ export interface QVirtualScrollSlots {
    */
   default: (scope: {
     /**
-     * Item index in the options list
+     * Item index in the items list
      */
     index: number;
     /**
-     * Item data -- its value is taken from 'options' prop
+     * Item data -- its value is taken from 'items' prop
      */
     item: any;
   }) => VNode[];
@@ -13222,14 +16110,14 @@ export interface QVirtualScroll
    * @param edge The edge to align to if the item is not visible already (by default it aligns to end if scrolling towards the end and to start otherwise); If the '-force' version is used then it always aligns
    */
   scrollTo: (
-    index: string | number,
+    index: number | string,
     edge?:
       | "start"
       | "center"
       | "end"
       | "start-force"
       | "center-force"
-      | "end-force"
+      | "end-force",
   ) => void;
   /**
    * Resets the virtual scroll computations; Needed for custom edge-cases
@@ -13270,7 +16158,7 @@ export interface DialogChainObject {
   hide: () => DialogChainObject;
   /**
    * Updates the initial properties (given as create() param) except for 'component'
-   * @param opts Props (except 'component') which will overwrite the initial create() params; If create() was invoked with a custom dialog component then this param should contain the new componentProps
+   * @param opts If using with 'component' prop then the props to update the current 'componentProps' (will be shallowly merged on top of the previous 'componentProps'); Otherwise the props to be shallowly merged with the previous create() param Object
    * @returns Chained Object
    */
   update: (opts: any) => DialogChainObject;
@@ -13279,6 +16167,7 @@ export interface DialogChainObject {
 import { CookiesGetMethodType } from "./api";
 import { QDialogInputPrompt } from "./api";
 import { QDialogSelectionPrompt } from "./api";
+import { NamedColor } from "./api";
 export interface QDialogOptions {
   /**
    * CSS Class name to apply to the Dialog's QCard
@@ -13302,7 +16191,7 @@ export interface QDialogOptions {
   html?: boolean;
   /**
    * Position of the Dialog on screen. Standard is centered.
-   * Default value: standard
+   * Default value: 'standard'
    */
   position?: "top" | "right" | "bottom" | "left" | "standard";
   /**
@@ -13326,7 +16215,7 @@ export interface QDialogOptions {
         /**
          * Color name for component from the Quasar Color Palette
          */
-        color?: string;
+        color?: NamedColor;
       };
   /**
    * Props for an 'OK' button
@@ -13337,7 +16226,7 @@ export interface QDialogOptions {
         /**
          * See QBtn for available props
          */
-        [props: string]: any;
+        [props: string]: any | undefined;
       }
     | boolean;
   /**
@@ -13349,12 +16238,12 @@ export interface QDialogOptions {
         /**
          * See QBtn for available props
          */
-        [props: string]: any;
+        [props: string]: any | undefined;
       }
     | boolean;
   /**
    * What button to focus, unless you also have 'prompt' or 'options'
-   * Default value: ok
+   * Default value: 'ok'
    */
   focus?: "ok" | "cancel" | "none";
   /**
@@ -13364,11 +16253,12 @@ export interface QDialogOptions {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string;
+  color?: NamedColor;
   /**
    * Apply dark mode
+   * Default value: null
    */
-  dark?: boolean;
+  dark?: boolean | null;
   /**
    * User cannot dismiss Dialog if clicking outside of it or hitting ESC key; Also, an app route change won't dismiss it
    */
@@ -13403,12 +16293,12 @@ export interface QDialogOptions {
   fullHeight?: boolean;
   /**
    * One of Quasar's embedded transitions
-   * Default value: scale
+   * Default value: 'scale'
    */
   transitionShow?: string;
   /**
    * One of Quasar's embedded transitions
-   * Default value: scale
+   * Default value: 'scale'
    */
   transitionHide?: string;
   /**
@@ -13416,7 +16306,7 @@ export interface QDialogOptions {
    */
   component?: Component | string;
   /**
-   * User defined props which will be forwarded to underlying custom component if 'component' prop is used
+   * User defined props which will be forwarded to underlying custom component if 'component' prop is used; May also include any built-in QDialog option such as 'persistent' or 'seamless'
    */
   componentProps?: any;
 }
@@ -13449,15 +16339,15 @@ export interface QLoadingShowOptions {
   /**
    * Color name for spinner from the Quasar Color Palette
    */
-  spinnerColor?: string;
+  spinnerColor?: NamedColor;
   /**
    * Color name for text from the Quasar Color Palette
    */
-  messageColor?: string;
+  messageColor?: NamedColor;
   /**
    * Color name for background from the Quasar Color Palette
    */
-  backgroundColor?: string;
+  backgroundColor?: NamedColor;
   /**
    * One of the QSpinners
    */
@@ -13473,10 +16363,7 @@ export interface QLoadingShowOptions {
 }
 
 import { QLoadingUpdateOptions } from "./api";
-import { WebStorageGetItemMethodType } from "./api";
-import { WebStorageGetIndexMethodType } from "./api";
-import { WebStorageGetKeyMethodType } from "./api";
-import { WebStorageGetAllKeysMethodType } from "./api";
+import { QLoadingBarOptions } from "./api";
 import { QNotifyAction } from "./api";
 export interface QNotifyCreateOptions {
   /**
@@ -13486,11 +16373,11 @@ export interface QNotifyCreateOptions {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  color?: string;
+  color?: NamedColor;
   /**
-   * Color name for component from the Quasar Color Palette
+   * Overrides text color (if needed); Color name from the Quasar Color Palette
    */
-  textColor?: string;
+  textColor?: NamedColor;
   /**
    * The content of your message
    */
@@ -13510,7 +16397,7 @@ export interface QNotifyCreateOptions {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  iconColor?: string;
+  iconColor?: NamedColor;
   /**
    * Size in CSS units, including unit name
    */
@@ -13526,14 +16413,14 @@ export interface QNotifyCreateOptions {
   /**
    * Color name for component from the Quasar Color Palette
    */
-  spinnerColor?: string;
+  spinnerColor?: NamedColor;
   /**
    * Size in CSS units, including unit name
    */
   spinnerSize?: string;
   /**
    * Window side/corner to stick to
-   * Default value: bottom
+   * Default value: 'bottom'
    */
   position?:
     | "top-left"
@@ -13547,20 +16434,20 @@ export interface QNotifyCreateOptions {
     | "center";
   /**
    * Override the auto generated group with custom one; Grouped notifications cannot be updated; String or number value inform this is part of a specific group, regardless of its options; When a new notification is triggered with same group name, it replaces the old one and shows a badge with how many times the notification was triggered
-   * Default value: (message + caption + multiline + actions labels + position)
+   * Default value: # message + caption + multiline + actions labels + position
    */
   group?: boolean | string | number;
   /**
    * Color name for the badge from the Quasar Color Palette
    */
-  badgeColor?: string;
+  badgeColor?: NamedColor;
   /**
    * Color name for the badge text from the Quasar Color Palette
    */
-  badgeTextColor?: string;
+  badgeTextColor?: NamedColor;
   /**
    * Notification corner to stick badge to; If notification is on the left side then default is top-right otherwise it is top-left
-   * Default value: (top-left/top-right)
+   * Default value: # top-left/top-right
    */
   badgePosition?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
   /**
@@ -13588,7 +16475,7 @@ export interface QNotifyCreateOptions {
    */
   attrs?: any;
   /**
-   * Amount of time to display (in milliseconds)
+   * Amount of time to display (in milliseconds). Set to 0 to never dismiss automatically.
    * Default value: 5000
    */
   timeout?: number;
@@ -13616,6 +16503,10 @@ export interface QNotifyCreateOptions {
 
 import { QNotifyUpdateOptions } from "./api";
 import { QNotifyOptions } from "./api";
+import { WebStorageGetItemMethodType } from "./api";
+import { WebStorageGetIndexMethodType } from "./api";
+import { WebStorageGetKeyMethodType } from "./api";
+import { WebStorageGetAllKeysMethodType } from "./api";
 export interface QEditorCommand {
   /**
    * Label of the button
@@ -13657,7 +16548,7 @@ export interface QEditorCommand {
   /**
    * Pass the value "no-state" if the button should not have an "active" state
    */
-  type?: "no-state";
+  type?: null | "no-state" | null;
   /**
    * Lock the button label, so it doesn't change based on the child option selected.
    */
@@ -13676,10 +16567,12 @@ import { VueStyleObjectProp } from "./api";
 import { QEditorCaret } from "./api";
 import { ValidationRule } from "./api";
 import { QRejectedEntry } from "./api";
+import { QFileNativeElement } from "./api";
+import { QFormChildComponent } from "./api";
+import { QInputNativeElement } from "./api";
 import { QPopupProxyInnerComponent } from "./api";
 import { SliderMarkerLabels } from "./api";
 import { SliderMarkerLabelConfig } from "./api";
-import { SliderMarkerLabelArrayConfig } from "./api";
 import { SliderMarkerLabelObjectConfig } from "./api";
 import { QTreeNode } from "./api";
 import { QUploaderFactoryFn } from "./api";
@@ -13723,6 +16616,10 @@ declare module "./globals" {
          */
         classes?: VueClassProp;
         /**
+         * Style definitions to be attributed to this action element
+         */
+        style?: VueStyleProp;
+        /**
          * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
          */
         icon?: string;
@@ -13731,9 +16628,9 @@ declare module "./globals" {
          */
         img?: string;
         /**
-         * Display img as avatar (round borders)
+         * Path to an avatar image for this action
          */
-        avatar?: boolean;
+        avatar?: string;
         /**
          * Action label
          */
@@ -13741,7 +16638,7 @@ declare module "./globals" {
         /**
          * Any other custom props
          */
-        [key: string]: any;
+        [key: string]: any | undefined;
       }[];
       /**
        * Display actions as a grid instead of as a list
@@ -13749,14 +16646,15 @@ declare module "./globals" {
       grid?: boolean;
       /**
        * Apply dark mode
+       * Default value: null
        */
-      dark?: boolean;
+      dark?: boolean | null;
       /**
        * Put Bottom Sheet into seamless mode; Does not use a backdrop so user is able to interact with the rest of the page too
        */
       seamless?: boolean;
       /**
-       * User cannot dismiss Bottom Sheet if clicking outside of it or hitting ESC key
+       * User cannot dismiss Bottom Sheet if clicking outside of it or hitting ESC key; Also, an app route change won't dismiss it
        */
       persistent?: boolean;
     }) => DialogChainObject;
@@ -13770,296 +16668,892 @@ declare module "./globals" {
     dialog: (opts: QDialogOptions) => DialogChainObject;
     loading: Loading;
     loadingBar: LoadingBar;
-    localStorage: LocalStorage;
     /**
      * Creates a notification; Same as calling $q.notify(...)
      * @param opts Notification options
      * @returns Calling this function with no parameters hides the notification; When called with one Object parameter (the original notification must NOT be grouped), it updates the notification (specified properties are shallow merged with previous ones; note that group and position cannot be changed while updating and so they are ignored)
      */
     notify: (
-      opts: QNotifyCreateOptions | string
+      opts: QNotifyCreateOptions | string,
     ) => (props?: QNotifyUpdateOptions) => void;
     platform: Platform;
     screen: Screen;
+    localStorage: LocalStorage;
     sessionStorage: SessionStorage;
   }
 }
 
-declare module "@vue/runtime-core" {
+declare module "vue" {
   interface ComponentCustomProperties {
     $q: QVueGlobals;
+
+    // Directives
+
+    /**
+     * If value is 0 or 'false' then directive is disabled; if value is < 0 then it closes all popups in the chain; if value is 1 or 'true' or undefined then it closes only the parent popup; if value is > 1 it closes the specified number of parent popups in the chain (note that chained QMenus are considered 1 popup only & QPopupProxy separates chained menus)
+     *
+     * @see https://v2.quasar.dev/vue-directives/close-popup
+     */
+    vClosePopup: ClosePopup;
+
+    /**
+     * Function to call when scrolling occurs (identical to description of 'handler' prop of the Object form); If using the Object form, it is HIGHLY recommended to reference it from your vue component scope, otherwise the directive update cycle will continuously recreate the observer which hits performance hard
+     *
+     * Modifiers:
+     *  - once:
+     *    - type: boolean
+     *    - description: Call handler only once, when the conditions are first met
+     *    - examples:
+     *      - # v-intersection.once
+     *
+     * @see https://v2.quasar.dev/vue-directives/intersection
+     */
+    vIntersection: Intersection;
+
+    /**
+     * Configuration object or trigger value
+     *
+     * Directive argument:
+     *  - type: string
+     *  - description: x:x2:y:z, where x is the morph element name, x2 is the morph group, y is the animation duration (in milliseconds) and z is the amount of time to wait (in milliseconds) or the 'transitionend' string
+     *  - examples:
+     *    - # v-morph:name="options"
+     *    - # v-morph:name:groupName="options"
+     *    - # v-morph:name:groupName:400="options"
+     *    - # v-morph:name:groupName:400:100="options"
+     *    - # v-morph:name:groupName:400:transitionend="options"
+     *
+     * Modifiers:
+     *  - resize:
+     *    - type: boolean
+     *    - description: Use resize instead of scale transform for morph (forceResize option of the morph function)
+     *  - useCSS:
+     *    - type: boolean
+     *    - description: Use CSS animations for morph (forceCssAnimation option of the morph function)
+     *  - hideFromClone:
+     *    - type: boolean
+     *    - description: Hide the spacer for the initial element (hideFromClone option of the morph function)
+     *  - keepToClone:
+     *    - type: boolean
+     *    - description: Keep the final element visible while morphing (keepToClone option of the morph function)
+     *  - tween:
+     *    - type: boolean
+     *    - description: Use opacity tween morphing between initial and final elements (tween option of the morph function)
+     *
+     * @see https://v2.quasar.dev/vue-directives/morph
+     */
+    vMorph: Morph;
+
+    /**
+     * Function to call when mutation occurs; It is HIGHLY recommended to reference it from your vue component scope, otherwise the directive update cycle will continuously recreate the observer which hits performance hard
+     *
+     * Modifiers:
+     *  - once:
+     *    - type: boolean
+     *    - description: Call handler only once, when the first mutation was triggered, then stop monitoring
+     *    - examples:
+     *      - # v-mutation.once
+     *  - childList:
+     *    - type: boolean
+     *    - description: Monitor the target node (and, if 'subtree' is also set, its descendants) for the addition of new child nodes or removal of existing child nodes
+     *    - examples:
+     *      - # v-mutation.childList
+     *  - subtree:
+     *    - type: boolean
+     *    - description: Extend monitoring to the entire subtree of nodes rooted at target
+     *    - examples:
+     *      - # v-mutation.subtree
+     *  - attributes:
+     *    - type: boolean
+     *    - description: Watch for changes to the value of attributes on the node or nodes being monitored
+     *    - examples:
+     *      - # v-mutation.attributes
+     *  - characterData:
+     *    - type: boolean
+     *    - description: Monitor the specified target node or subtree for changes to the character data contained within the node or nodes
+     *    - examples:
+     *      - # v-mutation.characterData
+     *  - attributeOldValue:
+     *    - type: boolean
+     *    - description: Record the previous value of any attribute that changes when monitoring the node or nodes for attribute changes
+     *    - examples:
+     *      - # v-mutation.attributeOldValue
+     *  - characterDataOldValue:
+     *    - type: boolean
+     *    - description: Record the previous value of a node's text whenever the text changes on nodes being monitored
+     *    - examples:
+     *      - # v-mutation.characterDataOldValue
+     *
+     * @see https://v2.quasar.dev/vue-directives/mutation
+     */
+    vMutation: Mutation;
+
+    /**
+     * Boolean (if just wanting to enable/disable) or Object for configuring more options
+     *
+     * Directive argument:
+     *  - type: string
+     *  - description: Color name from Quasar Color Palette; Overrides default dynamic color
+     *  - examples:
+     *    - # v-ripple:orange-5
+     *
+     * Modifiers:
+     *  - early:
+     *    - type: boolean
+     *    - description: Trigger early/immediately on user interaction
+     *  - stop:
+     *    - type: boolean
+     *    - description: Stop click/touch event propagation
+     *    - examples:
+     *      - # v-ripple.stop
+     *  - center:
+     *    - type: boolean
+     *    - description: Ripple starts from the absolute center
+     *    - examples:
+     *      - # v-ripple.center
+     *
+     * @see https://v2.quasar.dev/vue-directives/material-ripple
+     */
+    vRipple: Ripple;
+
+    /**
+     * Function to call when scrolling occurs (use undefined to disable)
+     *
+     * @see https://v2.quasar.dev/vue-directives/scroll
+     */
+    vScroll: Scroll;
+
+    /**
+     * Function to call when scrolling and element comes into the viewport (use undefined to disable)
+     *
+     * @see https://v2.quasar.dev/vue-directives/scroll-fire
+     */
+    vScrollFire: ScrollFire;
+
+    /**
+     * Function to call after user has hold touch/click for the specified amount of time (use undefined to disable)
+     *
+     * Directive argument:
+     *  - type: string
+     *  - default: '600:5:7'
+     *  - description: x:y:z, where x is the amount of time to wait (in milliseconds), y is the touch event sensitivity (in pixels) and z is the mouse event sensitivity (in pixels)
+     *  - examples:
+     *    - # v-touch-hold:400="fnToCall"
+     *    - # v-touch-hold:400:15="fnToCall"
+     *    - # v-touch-hold:400:10:10="fnToCall"
+     *
+     * Modifiers:
+     *  - capture:
+     *    - type: boolean
+     *    - description: Use capture for touchstart event
+     *  - mouse:
+     *    - type: boolean
+     *    - description: Listen for mouse events too
+     *  - mouseCapture:
+     *    - type: boolean
+     *    - description: Use capture for mousedown event
+     *
+     * @see https://v2.quasar.dev/vue-directives/touch-hold
+     */
+    vTouchHold: TouchHold;
+
+    /**
+     * Handler for panning (use undefined to disable)
+     *
+     * Modifiers:
+     *  - stop:
+     *    - type: boolean
+     *    - description: Stop event propagation for touch events
+     *  - prevent:
+     *    - type: boolean
+     *    - description: Calls event.preventDefault() for touch events
+     *  - capture:
+     *    - type: boolean
+     *    - description: Use capture for touchstart event
+     *  - mouse:
+     *    - type: boolean
+     *    - description: Listen for mouse events too
+     *  - mouseCapture:
+     *    - type: boolean
+     *    - description: Use capture for mousedown event
+     *  - mouseAllDir:
+     *    - type: boolean
+     *    - description: Ignore initial mouse move direction (do not abort if the first mouse move is in an unaccepted direction)
+     *  - preserveCursor:
+     *    - type: boolean
+     *    - description: Prevent the mouse cursor from automatically displaying as grabbing when panning
+     *  - horizontal:
+     *    - type: boolean
+     *    - description: Catch horizontal (left/right) movement
+     *  - vertical:
+     *    - type: boolean
+     *    - description: Catch vertical (up/down) movement
+     *  - up:
+     *    - type: boolean
+     *    - description: Catch panning to up
+     *  - right:
+     *    - type: boolean
+     *    - description: Catch panning to right
+     *  - down:
+     *    - type: boolean
+     *    - description: Catch panning to down
+     *  - left:
+     *    - type: boolean
+     *    - description: Catch panning to left
+     *
+     * @see https://v2.quasar.dev/vue-directives/touch-pan
+     */
+    vTouchPan: TouchPan;
+
+    /**
+     * Handler for touch-repeat (use undefined to disable)
+     *
+     * Directive argument:
+     *  - type: string
+     *  - default: '0:600:300'
+     *  - description: String of numbers (at least one number) separated by ':' which defines the amount of time to wait for 1st handler call, 2nd, 3rd and so on; All subsequent calls will use last value as time to wait until triggering
+     *  - examples:
+     *    - # v-touch-repeat:0:400="fnToCall"
+     *
+     * Modifiers:
+     *  - capture:
+     *    - type: boolean
+     *    - description: Use capture for touchstart event
+     *  - mouse:
+     *    - type: boolean
+     *    - description: Listen for mouse events too
+     *  - mouseCapture:
+     *    - type: boolean
+     *    - description: Use capture for mousedown event
+     *  - keyCapture:
+     *    - type: boolean
+     *    - description: Use capture for keydown event
+     *  - esc:
+     *    - type: boolean
+     *    - description: Catch ESC key
+     *  - tab:
+     *    - type: boolean
+     *    - description: Catch TAB key
+     *  - enter:
+     *    - type: boolean
+     *    - description: Catch ENTER key
+     *  - space:
+     *    - type: boolean
+     *    - description: Catch SPACE key
+     *  - up:
+     *    - type: boolean
+     *    - description: Catch UP arrow key
+     *  - left:
+     *    - type: boolean
+     *    - description: Catch LEFT arrow key
+     *  - right:
+     *    - type: boolean
+     *    - description: Catch RIGHT arrow key
+     *  - down:
+     *    - type: boolean
+     *    - description: Catch DOWN key
+     *  - delete:
+     *    - type: boolean
+     *    - description: Catch DELETE key
+     *  - [keycode]:
+     *    - type: number
+     *    - description: Key code to catch
+     *    - examples:
+     *      - # v-touch-repeat.68="fnToCall"
+     *
+     * @see https://v2.quasar.dev/vue-directives/touch-repeat
+     */
+    vTouchRepeat: TouchRepeat;
+
+    /**
+     * Handler for swipe (use undefined to disable)
+     *
+     * Directive argument:
+     *  - type: string
+     *  - default: '6e-2:6:50'
+     *  - description: x:y:z, where x is minimum velocity (dist/time; please use float without a dot, example: 6e-2 which is equivalent to 6 * 10^-2 = 0.06), y is minimum distance on first move on mobile, z is minimum distance on desktop until deciding if it's a swipe indeed
+     *  - examples:
+     *    - # v-touch-swipe:7e-2:10:100="fnToCall"
+     *
+     * Modifiers:
+     *  - capture:
+     *    - type: boolean
+     *    - description: Use capture for touchstart event
+     *  - mouse:
+     *    - type: boolean
+     *    - description: Listen for mouse events too
+     *  - mouseCapture:
+     *    - type: boolean
+     *    - description: Use capture for mousedown event
+     *  - horizontal:
+     *    - type: boolean
+     *    - description: Catch horizontal (left/right) movement
+     *  - vertical:
+     *    - type: boolean
+     *    - description: Catch vertical (up/down) movement
+     *  - up:
+     *    - type: boolean
+     *    - description: Catch swipe to up
+     *  - right:
+     *    - type: boolean
+     *    - description: Catch swipe to right
+     *  - down:
+     *    - type: boolean
+     *    - description: Catch swipe to down
+     *  - left:
+     *    - type: boolean
+     *    - description: Catch swipe to left
+     *
+     * @see https://v2.quasar.dev/vue-directives/touch-swipe
+     */
+    vTouchSwipe: TouchSwipe;
   }
 }
 
-declare module "@vue/runtime-core" {
-  interface GlobalComponents {
-    QAjaxBar: GlobalComponentConstructor<QAjaxBarProps, QAjaxBarSlots>;
-    QAvatar: GlobalComponentConstructor<QAvatarProps, QAvatarSlots>;
-    QBadge: GlobalComponentConstructor<QBadgeProps, QBadgeSlots>;
-    QBanner: GlobalComponentConstructor<QBannerProps, QBannerSlots>;
-    QBar: GlobalComponentConstructor<QBarProps, QBarSlots>;
-    QBreadcrumbs: GlobalComponentConstructor<
-      QBreadcrumbsProps,
-      QBreadcrumbsSlots
-    >;
-    QBreadcrumbsEl: GlobalComponentConstructor<
-      QBreadcrumbsElProps,
-      QBreadcrumbsElSlots
-    >;
-    QBtnDropdown: GlobalComponentConstructor<
-      QBtnDropdownProps,
-      QBtnDropdownSlots
-    >;
-    QBtnGroup: GlobalComponentConstructor<QBtnGroupProps, QBtnGroupSlots>;
-    QBtnToggle: GlobalComponentConstructor<QBtnToggleProps, QBtnToggleSlots>;
-    QBtn: GlobalComponentConstructor<QBtnProps, QBtnSlots>;
-    QCard: GlobalComponentConstructor<QCardProps, QCardSlots>;
-    QCardActions: GlobalComponentConstructor<
-      QCardActionsProps,
-      QCardActionsSlots
-    >;
-    QCardSection: GlobalComponentConstructor<
-      QCardSectionProps,
-      QCardSectionSlots
-    >;
-    QCarousel: GlobalComponentConstructor<QCarouselProps, QCarouselSlots>;
-    QCarouselControl: GlobalComponentConstructor<
-      QCarouselControlProps,
-      QCarouselControlSlots
-    >;
-    QCarouselSlide: GlobalComponentConstructor<
-      QCarouselSlideProps,
-      QCarouselSlideSlots
-    >;
-    QChatMessage: GlobalComponentConstructor<
-      QChatMessageProps,
-      QChatMessageSlots
-    >;
-    QCheckbox: GlobalComponentConstructor<QCheckboxProps, QCheckboxSlots>;
-    QChip: GlobalComponentConstructor<QChipProps, QChipSlots>;
-    QCircularProgress: GlobalComponentConstructor<
-      QCircularProgressProps,
-      QCircularProgressSlots
-    >;
-    QColor: GlobalComponentConstructor<QColorProps, QColorSlots>;
-    QDate: GlobalComponentConstructor<QDateProps, QDateSlots>;
-    QDialog: GlobalComponentConstructor<QDialogProps, QDialogSlots>;
-    QDrawer: GlobalComponentConstructor<QDrawerProps, QDrawerSlots>;
-    QEditor: GlobalComponentConstructor<QEditorProps, QEditorSlots>;
-    QExpansionItem: GlobalComponentConstructor<
-      QExpansionItemProps,
-      QExpansionItemSlots
-    >;
-    QFab: GlobalComponentConstructor<QFabProps, QFabSlots>;
-    QFabAction: GlobalComponentConstructor<QFabActionProps, QFabActionSlots>;
-    QField: GlobalComponentConstructor<QFieldProps, QFieldSlots>;
-    QFile: GlobalComponentConstructor<QFileProps, QFileSlots>;
-    QFooter: GlobalComponentConstructor<QFooterProps, QFooterSlots>;
-    QForm: GlobalComponentConstructor<QFormProps, QFormSlots>;
-    QFormChildMixin: GlobalComponentConstructor<
-      QFormChildMixinProps,
-      QFormChildMixinSlots
-    >;
-    QHeader: GlobalComponentConstructor<QHeaderProps, QHeaderSlots>;
-    QIcon: GlobalComponentConstructor<QIconProps, QIconSlots>;
-    QImg: GlobalComponentConstructor<QImgProps, QImgSlots>;
-    QInfiniteScroll: GlobalComponentConstructor<
-      QInfiniteScrollProps,
-      QInfiniteScrollSlots
-    >;
-    QInnerLoading: GlobalComponentConstructor<
-      QInnerLoadingProps,
-      QInnerLoadingSlots
-    >;
-    QInput: GlobalComponentConstructor<QInputProps, QInputSlots>;
-    QIntersection: GlobalComponentConstructor<
-      QIntersectionProps,
-      QIntersectionSlots
-    >;
-    QItem: GlobalComponentConstructor<QItemProps, QItemSlots>;
-    QItemLabel: GlobalComponentConstructor<QItemLabelProps, QItemLabelSlots>;
-    QItemSection: GlobalComponentConstructor<
-      QItemSectionProps,
-      QItemSectionSlots
-    >;
-    QList: GlobalComponentConstructor<QListProps, QListSlots>;
-    QKnob: GlobalComponentConstructor<QKnobProps, QKnobSlots>;
-    QLayout: GlobalComponentConstructor<QLayoutProps, QLayoutSlots>;
-    QLinearProgress: GlobalComponentConstructor<
-      QLinearProgressProps,
-      QLinearProgressSlots
-    >;
-    QMarkupTable: GlobalComponentConstructor<
-      QMarkupTableProps,
-      QMarkupTableSlots
-    >;
-    QMenu: GlobalComponentConstructor<QMenuProps, QMenuSlots>;
-    QNoSsr: GlobalComponentConstructor<QNoSsrProps, QNoSsrSlots>;
-    QOptionGroup: GlobalComponentConstructor<
-      QOptionGroupProps,
-      QOptionGroupSlots
-    >;
-    QPageScroller: GlobalComponentConstructor<
-      QPageScrollerProps,
-      QPageScrollerSlots
-    >;
-    QPageSticky: GlobalComponentConstructor<QPageStickyProps, QPageStickySlots>;
-    QPage: GlobalComponentConstructor<QPageProps, QPageSlots>;
-    QPageContainer: GlobalComponentConstructor<
-      QPageContainerProps,
-      QPageContainerSlots
-    >;
-    QPagination: GlobalComponentConstructor<QPaginationProps, QPaginationSlots>;
-    QParallax: GlobalComponentConstructor<QParallaxProps, QParallaxSlots>;
-    QPopupEdit: GlobalComponentConstructor<QPopupEditProps, QPopupEditSlots>;
-    QPopupProxy: GlobalComponentConstructor<QPopupProxyProps, QPopupProxySlots>;
-    QPullToRefresh: GlobalComponentConstructor<
-      QPullToRefreshProps,
-      QPullToRefreshSlots
-    >;
-    QRadio: GlobalComponentConstructor<QRadioProps, QRadioSlots>;
-    QRange: GlobalComponentConstructor<QRangeProps, QRangeSlots>;
-    QRating: GlobalComponentConstructor<QRatingProps, QRatingSlots>;
-    QResizeObserver: GlobalComponentConstructor<
-      QResizeObserverProps,
-      QResizeObserverSlots
-    >;
-    QResponsive: GlobalComponentConstructor<QResponsiveProps, QResponsiveSlots>;
-    QScrollArea: GlobalComponentConstructor<QScrollAreaProps, QScrollAreaSlots>;
-    QScrollObserver: GlobalComponentConstructor<
-      QScrollObserverProps,
-      QScrollObserverSlots
-    >;
-    QSelect: GlobalComponentConstructor<QSelectProps, QSelectSlots>;
-    QSeparator: GlobalComponentConstructor<QSeparatorProps, QSeparatorSlots>;
-    QSkeleton: GlobalComponentConstructor<QSkeletonProps, QSkeletonSlots>;
-    QSlideItem: GlobalComponentConstructor<QSlideItemProps, QSlideItemSlots>;
-    QSlideTransition: GlobalComponentConstructor<
-      QSlideTransitionProps,
-      QSlideTransitionSlots
-    >;
-    QSlider: GlobalComponentConstructor<QSliderProps, QSliderSlots>;
-    QSpace: GlobalComponentConstructor<QSpaceProps, QSpaceSlots>;
-    QSpinner: GlobalComponentConstructor<QSpinnerProps, QSpinnerSlots>;
-    QSpinnerAudio: GlobalComponentConstructor<
-      QSpinnerAudioProps,
-      QSpinnerAudioSlots
-    >;
-    QSpinnerBall: GlobalComponentConstructor<
-      QSpinnerBallProps,
-      QSpinnerBallSlots
-    >;
-    QSpinnerBars: GlobalComponentConstructor<
-      QSpinnerBarsProps,
-      QSpinnerBarsSlots
-    >;
-    QSpinnerBox: GlobalComponentConstructor<QSpinnerBoxProps, QSpinnerBoxSlots>;
-    QSpinnerClock: GlobalComponentConstructor<
-      QSpinnerClockProps,
-      QSpinnerClockSlots
-    >;
-    QSpinnerComment: GlobalComponentConstructor<
-      QSpinnerCommentProps,
-      QSpinnerCommentSlots
-    >;
-    QSpinnerCube: GlobalComponentConstructor<
-      QSpinnerCubeProps,
-      QSpinnerCubeSlots
-    >;
-    QSpinnerDots: GlobalComponentConstructor<
-      QSpinnerDotsProps,
-      QSpinnerDotsSlots
-    >;
-    QSpinnerFacebook: GlobalComponentConstructor<
-      QSpinnerFacebookProps,
-      QSpinnerFacebookSlots
-    >;
-    QSpinnerGears: GlobalComponentConstructor<
-      QSpinnerGearsProps,
-      QSpinnerGearsSlots
-    >;
-    QSpinnerGrid: GlobalComponentConstructor<
-      QSpinnerGridProps,
-      QSpinnerGridSlots
-    >;
-    QSpinnerHearts: GlobalComponentConstructor<
-      QSpinnerHeartsProps,
-      QSpinnerHeartsSlots
-    >;
-    QSpinnerHourglass: GlobalComponentConstructor<
-      QSpinnerHourglassProps,
-      QSpinnerHourglassSlots
-    >;
-    QSpinnerInfinity: GlobalComponentConstructor<
-      QSpinnerInfinityProps,
-      QSpinnerInfinitySlots
-    >;
-    QSpinnerIos: GlobalComponentConstructor<QSpinnerIosProps, QSpinnerIosSlots>;
-    QSpinnerOrbit: GlobalComponentConstructor<
-      QSpinnerOrbitProps,
-      QSpinnerOrbitSlots
-    >;
-    QSpinnerOval: GlobalComponentConstructor<
-      QSpinnerOvalProps,
-      QSpinnerOvalSlots
-    >;
-    QSpinnerPie: GlobalComponentConstructor<QSpinnerPieProps, QSpinnerPieSlots>;
-    QSpinnerPuff: GlobalComponentConstructor<
-      QSpinnerPuffProps,
-      QSpinnerPuffSlots
-    >;
-    QSpinnerRadio: GlobalComponentConstructor<
-      QSpinnerRadioProps,
-      QSpinnerRadioSlots
-    >;
-    QSpinnerRings: GlobalComponentConstructor<
-      QSpinnerRingsProps,
-      QSpinnerRingsSlots
-    >;
-    QSpinnerTail: GlobalComponentConstructor<
-      QSpinnerTailProps,
-      QSpinnerTailSlots
-    >;
-    QSplitter: GlobalComponentConstructor<QSplitterProps, QSplitterSlots>;
-    QStep: GlobalComponentConstructor<QStepProps, QStepSlots>;
-    QStepper: GlobalComponentConstructor<QStepperProps, QStepperSlots>;
-    QStepperNavigation: GlobalComponentConstructor<
-      QStepperNavigationProps,
-      QStepperNavigationSlots
-    >;
-    QTabPanel: GlobalComponentConstructor<QTabPanelProps, QTabPanelSlots>;
-    QTabPanels: GlobalComponentConstructor<QTabPanelsProps, QTabPanelsSlots>;
-    QTable: GlobalComponentConstructor<QTableProps, QTableSlots>;
-    QTd: GlobalComponentConstructor<QTdProps, QTdSlots>;
-    QTh: GlobalComponentConstructor<QThProps, QThSlots>;
-    QTr: GlobalComponentConstructor<QTrProps, QTrSlots>;
-    QRouteTab: GlobalComponentConstructor<QRouteTabProps, QRouteTabSlots>;
-    QTab: GlobalComponentConstructor<QTabProps, QTabSlots>;
-    QTabs: GlobalComponentConstructor<QTabsProps, QTabsSlots>;
-    QTime: GlobalComponentConstructor<QTimeProps, QTimeSlots>;
-    QTimeline: GlobalComponentConstructor<QTimelineProps, QTimelineSlots>;
-    QTimelineEntry: GlobalComponentConstructor<
-      QTimelineEntryProps,
-      QTimelineEntrySlots
-    >;
-    QToggle: GlobalComponentConstructor<QToggleProps, QToggleSlots>;
-    QToolbar: GlobalComponentConstructor<QToolbarProps, QToolbarSlots>;
-    QToolbarTitle: GlobalComponentConstructor<
-      QToolbarTitleProps,
-      QToolbarTitleSlots
-    >;
-    QTooltip: GlobalComponentConstructor<QTooltipProps, QTooltipSlots>;
-    QTree: GlobalComponentConstructor<QTreeProps, QTreeSlots>;
-    QUploader: GlobalComponentConstructor<QUploaderProps, QUploaderSlots>;
-    QUploaderAddTrigger: GlobalComponentConstructor<
-      QUploaderAddTriggerProps,
-      QUploaderAddTriggerSlots
-    >;
-    QVideo: GlobalComponentConstructor<QVideoProps, QVideoSlots>;
-    QVirtualScroll: GlobalComponentConstructor<
-      QVirtualScrollProps,
-      QVirtualScrollSlots
-    >;
+interface _GlobalComponents {
+  QAjaxBar: GlobalComponentConstructor<QAjaxBarProps, QAjaxBarSlots>;
+  QAvatar: GlobalComponentConstructor<QAvatarProps, QAvatarSlots>;
+  QBadge: GlobalComponentConstructor<QBadgeProps, QBadgeSlots>;
+  QBanner: GlobalComponentConstructor<QBannerProps, QBannerSlots>;
+  QBar: GlobalComponentConstructor<QBarProps, QBarSlots>;
+  QBreadcrumbs: GlobalComponentConstructor<
+    QBreadcrumbsProps,
+    QBreadcrumbsSlots
+  >;
+  QBreadcrumbsEl: GlobalComponentConstructor<
+    QBreadcrumbsElProps,
+    QBreadcrumbsElSlots
+  >;
+  QBtn: GlobalComponentConstructor<QBtnProps, QBtnSlots>;
+  QBtnDropdown: GlobalComponentConstructor<
+    QBtnDropdownProps,
+    QBtnDropdownSlots
+  >;
+  QBtnGroup: GlobalComponentConstructor<QBtnGroupProps, QBtnGroupSlots>;
+  QBtnToggle: GlobalComponentConstructor<QBtnToggleProps, QBtnToggleSlots>;
+  QCard: GlobalComponentConstructor<QCardProps, QCardSlots>;
+  QCardActions: GlobalComponentConstructor<
+    QCardActionsProps,
+    QCardActionsSlots
+  >;
+  QCardSection: GlobalComponentConstructor<
+    QCardSectionProps,
+    QCardSectionSlots
+  >;
+  QCarousel: GlobalComponentConstructor<QCarouselProps, QCarouselSlots>;
+  QCarouselControl: GlobalComponentConstructor<
+    QCarouselControlProps,
+    QCarouselControlSlots
+  >;
+  QCarouselSlide: GlobalComponentConstructor<
+    QCarouselSlideProps,
+    QCarouselSlideSlots
+  >;
+  QChatMessage: GlobalComponentConstructor<
+    QChatMessageProps,
+    QChatMessageSlots
+  >;
+  QCheckbox: GlobalComponentConstructor<QCheckboxProps, QCheckboxSlots>;
+  QChip: GlobalComponentConstructor<QChipProps, QChipSlots>;
+  QCircularProgress: GlobalComponentConstructor<
+    QCircularProgressProps,
+    QCircularProgressSlots
+  >;
+  QColor: GlobalComponentConstructor<QColorProps, QColorSlots>;
+  QDate: GlobalComponentConstructor<QDateProps, QDateSlots>;
+  QDialog: GlobalComponentConstructor<QDialogProps, QDialogSlots>;
+  QDrawer: GlobalComponentConstructor<QDrawerProps, QDrawerSlots>;
+  QEditor: GlobalComponentConstructor<QEditorProps, QEditorSlots>;
+  QExpansionItem: GlobalComponentConstructor<
+    QExpansionItemProps,
+    QExpansionItemSlots
+  >;
+  QFab: GlobalComponentConstructor<QFabProps, QFabSlots>;
+  QFabAction: GlobalComponentConstructor<QFabActionProps, QFabActionSlots>;
+  QField: GlobalComponentConstructor<QFieldProps, QFieldSlots>;
+  QFile: GlobalComponentConstructor<QFileProps, QFileSlots>;
+  QFooter: GlobalComponentConstructor<QFooterProps, QFooterSlots>;
+  QForm: GlobalComponentConstructor<QFormProps, QFormSlots>;
+  QFormChildMixin: GlobalComponentConstructor<
+    QFormChildMixinProps,
+    QFormChildMixinSlots
+  >;
+  QHeader: GlobalComponentConstructor<QHeaderProps, QHeaderSlots>;
+  QIcon: GlobalComponentConstructor<QIconProps, QIconSlots>;
+  QImg: GlobalComponentConstructor<QImgProps, QImgSlots>;
+  QInfiniteScroll: GlobalComponentConstructor<
+    QInfiniteScrollProps,
+    QInfiniteScrollSlots
+  >;
+  QInnerLoading: GlobalComponentConstructor<
+    QInnerLoadingProps,
+    QInnerLoadingSlots
+  >;
+  QInput: GlobalComponentConstructor<QInputProps, QInputSlots>;
+  QIntersection: GlobalComponentConstructor<
+    QIntersectionProps,
+    QIntersectionSlots
+  >;
+  QItem: GlobalComponentConstructor<QItemProps, QItemSlots>;
+  QItemLabel: GlobalComponentConstructor<QItemLabelProps, QItemLabelSlots>;
+  QItemSection: GlobalComponentConstructor<
+    QItemSectionProps,
+    QItemSectionSlots
+  >;
+  QList: GlobalComponentConstructor<QListProps, QListSlots>;
+  QKnob: GlobalComponentConstructor<QKnobProps, QKnobSlots>;
+  QLayout: GlobalComponentConstructor<QLayoutProps, QLayoutSlots>;
+  QLinearProgress: GlobalComponentConstructor<
+    QLinearProgressProps,
+    QLinearProgressSlots
+  >;
+  QMarkupTable: GlobalComponentConstructor<
+    QMarkupTableProps,
+    QMarkupTableSlots
+  >;
+  QMenu: GlobalComponentConstructor<QMenuProps, QMenuSlots>;
+  QNoSsr: GlobalComponentConstructor<QNoSsrProps, QNoSsrSlots>;
+  QOptionGroup: GlobalComponentConstructor<
+    QOptionGroupProps,
+    QOptionGroupSlots
+  >;
+  QPage: GlobalComponentConstructor<QPageProps, QPageSlots>;
+  QPageContainer: GlobalComponentConstructor<
+    QPageContainerProps,
+    QPageContainerSlots
+  >;
+  QPageScroller: GlobalComponentConstructor<
+    QPageScrollerProps,
+    QPageScrollerSlots
+  >;
+  QPageSticky: GlobalComponentConstructor<QPageStickyProps, QPageStickySlots>;
+  QPagination: GlobalComponentConstructor<QPaginationProps, QPaginationSlots>;
+  QParallax: GlobalComponentConstructor<QParallaxProps, QParallaxSlots>;
+  QPopupEdit: GlobalComponentConstructor<QPopupEditProps, QPopupEditSlots>;
+  QPopupProxy: GlobalComponentConstructor<QPopupProxyProps, QPopupProxySlots>;
+  QPullToRefresh: GlobalComponentConstructor<
+    QPullToRefreshProps,
+    QPullToRefreshSlots
+  >;
+  QRadio: GlobalComponentConstructor<QRadioProps, QRadioSlots>;
+  QRange: GlobalComponentConstructor<QRangeProps, QRangeSlots>;
+  QRating: GlobalComponentConstructor<QRatingProps, QRatingSlots>;
+  QResizeObserver: GlobalComponentConstructor<
+    QResizeObserverProps,
+    QResizeObserverSlots
+  >;
+  QResponsive: GlobalComponentConstructor<QResponsiveProps, QResponsiveSlots>;
+  QScrollArea: GlobalComponentConstructor<QScrollAreaProps, QScrollAreaSlots>;
+  QScrollObserver: GlobalComponentConstructor<
+    QScrollObserverProps,
+    QScrollObserverSlots
+  >;
+  QSelect: GlobalComponentConstructor<QSelectProps, QSelectSlots>;
+  QSeparator: GlobalComponentConstructor<QSeparatorProps, QSeparatorSlots>;
+  QSkeleton: GlobalComponentConstructor<QSkeletonProps, QSkeletonSlots>;
+  QSlideItem: GlobalComponentConstructor<QSlideItemProps, QSlideItemSlots>;
+  QSlideTransition: GlobalComponentConstructor<
+    QSlideTransitionProps,
+    QSlideTransitionSlots
+  >;
+  QSlider: GlobalComponentConstructor<QSliderProps, QSliderSlots>;
+  QSpace: GlobalComponentConstructor<QSpaceProps, QSpaceSlots>;
+  QSpinner: GlobalComponentConstructor<QSpinnerProps, QSpinnerSlots>;
+  QSpinnerAudio: GlobalComponentConstructor<
+    QSpinnerAudioProps,
+    QSpinnerAudioSlots
+  >;
+  QSpinnerBall: GlobalComponentConstructor<
+    QSpinnerBallProps,
+    QSpinnerBallSlots
+  >;
+  QSpinnerBars: GlobalComponentConstructor<
+    QSpinnerBarsProps,
+    QSpinnerBarsSlots
+  >;
+  QSpinnerBox: GlobalComponentConstructor<QSpinnerBoxProps, QSpinnerBoxSlots>;
+  QSpinnerClock: GlobalComponentConstructor<
+    QSpinnerClockProps,
+    QSpinnerClockSlots
+  >;
+  QSpinnerComment: GlobalComponentConstructor<
+    QSpinnerCommentProps,
+    QSpinnerCommentSlots
+  >;
+  QSpinnerCube: GlobalComponentConstructor<
+    QSpinnerCubeProps,
+    QSpinnerCubeSlots
+  >;
+  QSpinnerDots: GlobalComponentConstructor<
+    QSpinnerDotsProps,
+    QSpinnerDotsSlots
+  >;
+  QSpinnerFacebook: GlobalComponentConstructor<
+    QSpinnerFacebookProps,
+    QSpinnerFacebookSlots
+  >;
+  QSpinnerGears: GlobalComponentConstructor<
+    QSpinnerGearsProps,
+    QSpinnerGearsSlots
+  >;
+  QSpinnerGrid: GlobalComponentConstructor<
+    QSpinnerGridProps,
+    QSpinnerGridSlots
+  >;
+  QSpinnerHearts: GlobalComponentConstructor<
+    QSpinnerHeartsProps,
+    QSpinnerHeartsSlots
+  >;
+  QSpinnerHourglass: GlobalComponentConstructor<
+    QSpinnerHourglassProps,
+    QSpinnerHourglassSlots
+  >;
+  QSpinnerInfinity: GlobalComponentConstructor<
+    QSpinnerInfinityProps,
+    QSpinnerInfinitySlots
+  >;
+  QSpinnerIos: GlobalComponentConstructor<QSpinnerIosProps, QSpinnerIosSlots>;
+  QSpinnerOrbit: GlobalComponentConstructor<
+    QSpinnerOrbitProps,
+    QSpinnerOrbitSlots
+  >;
+  QSpinnerOval: GlobalComponentConstructor<
+    QSpinnerOvalProps,
+    QSpinnerOvalSlots
+  >;
+  QSpinnerPie: GlobalComponentConstructor<QSpinnerPieProps, QSpinnerPieSlots>;
+  QSpinnerPuff: GlobalComponentConstructor<
+    QSpinnerPuffProps,
+    QSpinnerPuffSlots
+  >;
+  QSpinnerRadio: GlobalComponentConstructor<
+    QSpinnerRadioProps,
+    QSpinnerRadioSlots
+  >;
+  QSpinnerRings: GlobalComponentConstructor<
+    QSpinnerRingsProps,
+    QSpinnerRingsSlots
+  >;
+  QSpinnerTail: GlobalComponentConstructor<
+    QSpinnerTailProps,
+    QSpinnerTailSlots
+  >;
+  QSplitter: GlobalComponentConstructor<QSplitterProps, QSplitterSlots>;
+  QStep: GlobalComponentConstructor<QStepProps, QStepSlots>;
+  QStepper: GlobalComponentConstructor<QStepperProps, QStepperSlots>;
+  QStepperNavigation: GlobalComponentConstructor<
+    QStepperNavigationProps,
+    QStepperNavigationSlots
+  >;
+  QTabPanel: GlobalComponentConstructor<QTabPanelProps, QTabPanelSlots>;
+  QTabPanels: GlobalComponentConstructor<QTabPanelsProps, QTabPanelsSlots>;
+  QTable: GlobalComponentConstructor<QTableProps, QTableSlots>;
+  QTd: GlobalComponentConstructor<QTdProps, QTdSlots>;
+  QTh: GlobalComponentConstructor<QThProps, QThSlots>;
+  QTr: GlobalComponentConstructor<QTrProps, QTrSlots>;
+  QRouteTab: GlobalComponentConstructor<QRouteTabProps, QRouteTabSlots>;
+  QTab: GlobalComponentConstructor<QTabProps, QTabSlots>;
+  QTabs: GlobalComponentConstructor<QTabsProps, QTabsSlots>;
+  QTime: GlobalComponentConstructor<QTimeProps, QTimeSlots>;
+  QTimeline: GlobalComponentConstructor<QTimelineProps, QTimelineSlots>;
+  QTimelineEntry: GlobalComponentConstructor<
+    QTimelineEntryProps,
+    QTimelineEntrySlots
+  >;
+  QToggle: GlobalComponentConstructor<QToggleProps, QToggleSlots>;
+  QToolbar: GlobalComponentConstructor<QToolbarProps, QToolbarSlots>;
+  QToolbarTitle: GlobalComponentConstructor<
+    QToolbarTitleProps,
+    QToolbarTitleSlots
+  >;
+  QTooltip: GlobalComponentConstructor<QTooltipProps, QTooltipSlots>;
+  QTree: GlobalComponentConstructor<QTreeProps, QTreeSlots>;
+  QUploader: GlobalComponentConstructor<QUploaderProps, QUploaderSlots>;
+  QUploaderAddTrigger: GlobalComponentConstructor<
+    QUploaderAddTriggerProps,
+    QUploaderAddTriggerSlots
+  >;
+  QVideo: GlobalComponentConstructor<QVideoProps, QVideoSlots>;
+  QVirtualScroll: GlobalComponentConstructor<
+    QVirtualScrollProps,
+    QVirtualScrollSlots
+  >;
+}
+
+declare module "vue" {
+  interface GlobalComponents extends _GlobalComponents {}
+}
+
+declare module "@vue/runtime-dom" {
+  interface GlobalComponents extends _GlobalComponents {}
+}
+
+declare module "vue" {
+  interface GlobalComponents extends _GlobalComponents {}
+}
+
+declare module "./config.d.ts" {
+  interface QuasarUIConfiguration {
+    brand?: {
+      /**
+       * Main color of your app
+       */
+      primary?: string;
+      /**
+       * Secondary color of your app
+       */
+      secondary?: string;
+      /**
+       * Accent color of your app
+       */
+      accent?: string;
+      /**
+       * Dark color of your app
+       */
+      dark?: string;
+      /**
+       * Positive color of your app
+       */
+      positive?: string;
+      /**
+       * Negative color of your app
+       */
+      negative?: string;
+      /**
+       * Info color of your app
+       */
+      info?: string;
+      /**
+       * Warning color of your app
+       */
+      warning?: string;
+      /**
+       * Custom colors of your app, if any
+       */
+      [customColors: string]: string | undefined;
+    };
+    /**
+     * "'auto'" uses the OS/browser preference. "true" forces dark mode. "false" forces light mode.
+     */
+    dark?: boolean | "auto";
+    lang?: {
+      /**
+       * Whether to disable 'dir' and 'lang' HTML attributes getting added to the '<html>' tag. The 'dir' attribute is crucial when using RTL support. Disable this only if you need to handle these yourself for some reason.
+       */
+      noHtmlAttrs?: boolean;
+    };
+    loading?: {
+      /**
+       * Wait a number of millisecond before showing; Not worth showing for 100ms for example then hiding it, so wait until you're sure it's a process that will take some considerable amount of time
+       */
+      delay?: number;
+      /**
+       * Message to display
+       */
+      message?: string;
+      /**
+       * Default Loading group name
+       * Default value: '__default_quasar_group__'
+       */
+      group?: string;
+      /**
+       * Force render the message as HTML; This can lead to XSS attacks so make sure that you sanitize the content
+       */
+      html?: boolean;
+      /**
+       * Content wrapped element custom classes
+       */
+      boxClass?: string;
+      /**
+       * Spinner size (in pixels)
+       */
+      spinnerSize?: number;
+      /**
+       * Color name for spinner from the Quasar Color Palette
+       */
+      spinnerColor?: NamedColor;
+      /**
+       * Color name for text from the Quasar Color Palette
+       */
+      messageColor?: NamedColor;
+      /**
+       * Color name for background from the Quasar Color Palette
+       */
+      backgroundColor?: NamedColor;
+      /**
+       * One of the QSpinners
+       */
+      spinner?: Component;
+      /**
+       * Add a CSS class to the container element to easily customize the component
+       */
+      customClass?: string;
+    };
+    /**
+     * QAjaxBar component props, EXCEPT for 'hijack-filter' in quasar.config file (if using Quasar CLI)
+     */
+    loadingBar?: QLoadingBarOptions;
+    notify?: {
+      /**
+       * Optional type (that has been previously registered) or one of the out of the box ones ('positive', 'negative', 'warning', 'info', 'ongoing')
+       */
+      type?: string;
+      /**
+       * Color name for component from the Quasar Color Palette
+       */
+      color?: NamedColor;
+      /**
+       * Overrides text color (if needed); Color name from the Quasar Color Palette
+       */
+      textColor?: NamedColor;
+      /**
+       * The content of your message
+       */
+      message?: string;
+      /**
+       * The content of your optional caption
+       */
+      caption?: string;
+      /**
+       * Render the message as HTML; This can lead to XSS attacks, so make sure that you sanitize the message first
+       */
+      html?: boolean;
+      /**
+       * Icon name following Quasar convention; Make sure you have the icon library installed unless you are using 'img:' prefix; If 'none' (String) is used as value then no icon is rendered (but screen real estate will still be used for it)
+       */
+      icon?: string;
+      /**
+       * Color name for component from the Quasar Color Palette
+       */
+      iconColor?: NamedColor;
+      /**
+       * Size in CSS units, including unit name
+       */
+      iconSize?: string;
+      /**
+       * URL to an avatar/image; Suggestion: use public folder
+       */
+      avatar?: string;
+      /**
+       * Useful for notifications that are updated; Displays a Quasar spinner instead of an avatar or icon; If value is Boolean 'true' then the default QSpinner is shown
+       */
+      spinner?: boolean | Component;
+      /**
+       * Color name for component from the Quasar Color Palette
+       */
+      spinnerColor?: NamedColor;
+      /**
+       * Size in CSS units, including unit name
+       */
+      spinnerSize?: string;
+      /**
+       * Window side/corner to stick to
+       * Default value: 'bottom'
+       */
+      position?:
+        | "top-left"
+        | "top-right"
+        | "bottom-left"
+        | "bottom-right"
+        | "top"
+        | "bottom"
+        | "left"
+        | "right"
+        | "center";
+      /**
+       * Override the auto generated group with custom one; Grouped notifications cannot be updated; String or number value inform this is part of a specific group, regardless of its options; When a new notification is triggered with same group name, it replaces the old one and shows a badge with how many times the notification was triggered
+       * Default value: # message + caption + multiline + actions labels + position
+       */
+      group?: boolean | string | number;
+      /**
+       * Color name for the badge from the Quasar Color Palette
+       */
+      badgeColor?: NamedColor;
+      /**
+       * Color name for the badge text from the Quasar Color Palette
+       */
+      badgeTextColor?: NamedColor;
+      /**
+       * Notification corner to stick badge to; If notification is on the left side then default is top-right otherwise it is top-left
+       * Default value: # top-left/top-right
+       */
+      badgePosition?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+      /**
+       * Style definitions to be attributed to the badge
+       */
+      badgeStyle?: VueStyleProp;
+      /**
+       * Class definitions to be attributed to the badge
+       */
+      badgeClass?: VueClassProp;
+      /**
+       * Show progress bar to detail when notification will disappear automatically (unless timeout is 0)
+       */
+      progress?: boolean;
+      /**
+       * Class definitions to be attributed to the progress bar
+       */
+      progressClass?: VueClassProp;
+      /**
+       * Add CSS class(es) to the notification for easier customization
+       */
+      classes?: string;
+      /**
+       * Key-value for attributes to be set on the notification
+       */
+      attrs?: any;
+      /**
+       * Amount of time to display (in milliseconds). Set to 0 to never dismiss automatically.
+       * Default value: 5000
+       */
+      timeout?: number;
+      /**
+       * Notification actions (buttons); Unless 'noDismiss' is true, clicking/tapping on the button will close the notification; Also check 'closeBtn' convenience prop
+       */
+      actions?: QNotifyAction[];
+      /**
+       * Function to call when notification gets dismissed
+       */
+      onDismiss?: () => void;
+      /**
+       * Convenient way to add a dismiss button with a specific label, without using the 'actions' prop; If set to true, it uses a label according to the current Quasar language
+       */
+      closeBtn?: boolean | string;
+      /**
+       * Put notification into multi-line mode; If this prop isn't used and more than one 'action' is specified then notification goes into multi-line mode by default
+       */
+      multiLine?: boolean;
+    };
+    screen?: {
+      /**
+       * Whether to apply CSS classes for the current window breakpoint to the body element
+       */
+      bodyClasses?: boolean;
+    };
+    ripple?:
+      | boolean
+      | {
+          /**
+           * Trigger early/immediately on user interaction
+           */
+          early?: boolean;
+          /**
+           * Stop click/touch event propagation
+           */
+          stop?: boolean;
+          /**
+           * Ripple starts from the absolute center
+           */
+          center?: boolean;
+          /**
+           * Color name from Quasar Color Palette; Overrides default dynamic color
+           */
+          color?: string;
+          /**
+           * List of keyCode that should trigger the ripple
+           */
+          keyCodes?: readonly any[] | number;
+        };
   }
 }
 
@@ -14071,9 +17565,12 @@ declare module "./lang" {
     "az-Latn": true;
     bg: true;
     bn: true;
+    "bs-BA": true;
     ca: true;
     cs: true;
     da: true;
+    "de-CH": true;
+    "de-DE": true;
     de: true;
     el: true;
     "en-GB": true;
@@ -14088,21 +17585,24 @@ declare module "./lang" {
     fr: true;
     gn: true;
     he: true;
+    hi: true;
     hr: true;
     hu: true;
     id: true;
     is: true;
     it: true;
     ja: true;
+    kk: true;
     km: true;
     "ko-KR": true;
     "kur-CKB": true;
-    kz: true;
     lt: true;
     lu: true;
     lv: true;
+    mk: true;
     ml: true;
     mm: true;
+    "ms-MY": true;
     ms: true;
     my: true;
     "nb-NO": true;
@@ -14120,6 +17620,7 @@ declare module "./lang" {
     sv: true;
     ta: true;
     th: true;
+    tl: true;
     tr: true;
     ug: true;
     uk: true;
@@ -14140,6 +17641,7 @@ export * from "./extras";
 export * from "./lang";
 export * from "./api";
 export * from "./plugin";
+export * from "./config";
 
 export const AddressbarColor: AddressbarColor;
 export const AppFullscreen: AppFullscreen;
@@ -14148,13 +17650,15 @@ export const BottomSheet: BottomSheet;
 export const Cookies: Cookies;
 export const Dark: Dark;
 export const Dialog: Dialog;
+export const IconSet: IconSet;
+export const Lang: Lang;
 export const Loading: Loading;
 export const LoadingBar: LoadingBar;
-export const LocalStorage: LocalStorage;
 export const Meta: Meta;
 export const Notify: Notify;
 export const Platform: Platform;
 export const Screen: Screen;
+export const LocalStorage: LocalStorage;
 export const SessionStorage: SessionStorage;
 export const ClosePopup: ClosePopup;
 export const Intersection: Intersection;
@@ -14174,10 +17678,10 @@ export const QBanner: ComponentConstructor<QBanner>;
 export const QBar: ComponentConstructor<QBar>;
 export const QBreadcrumbs: ComponentConstructor<QBreadcrumbs>;
 export const QBreadcrumbsEl: ComponentConstructor<QBreadcrumbsEl>;
+export const QBtn: ComponentConstructor<QBtn>;
 export const QBtnDropdown: ComponentConstructor<QBtnDropdown>;
 export const QBtnGroup: ComponentConstructor<QBtnGroup>;
 export const QBtnToggle: ComponentConstructor<QBtnToggle>;
-export const QBtn: ComponentConstructor<QBtn>;
 export const QCard: ComponentConstructor<QCard>;
 export const QCardActions: ComponentConstructor<QCardActions>;
 export const QCardSection: ComponentConstructor<QCardSection>;
@@ -14219,10 +17723,10 @@ export const QMarkupTable: ComponentConstructor<QMarkupTable>;
 export const QMenu: ComponentConstructor<QMenu>;
 export const QNoSsr: ComponentConstructor<QNoSsr>;
 export const QOptionGroup: ComponentConstructor<QOptionGroup>;
-export const QPageScroller: ComponentConstructor<QPageScroller>;
-export const QPageSticky: ComponentConstructor<QPageSticky>;
 export const QPage: ComponentConstructor<QPage>;
 export const QPageContainer: ComponentConstructor<QPageContainer>;
+export const QPageScroller: ComponentConstructor<QPageScroller>;
+export const QPageSticky: ComponentConstructor<QPageSticky>;
 export const QPagination: ComponentConstructor<QPagination>;
 export const QParallax: ComponentConstructor<QParallax>;
 export const QPopupEdit: ComponentConstructor<QPopupEdit>;
@@ -14300,10 +17804,10 @@ declare module "./plugin" {
     QBar?: ComponentConstructor<QBar>;
     QBreadcrumbs?: ComponentConstructor<QBreadcrumbs>;
     QBreadcrumbsEl?: ComponentConstructor<QBreadcrumbsEl>;
+    QBtn?: ComponentConstructor<QBtn>;
     QBtnDropdown?: ComponentConstructor<QBtnDropdown>;
     QBtnGroup?: ComponentConstructor<QBtnGroup>;
     QBtnToggle?: ComponentConstructor<QBtnToggle>;
-    QBtn?: ComponentConstructor<QBtn>;
     QCard?: ComponentConstructor<QCard>;
     QCardActions?: ComponentConstructor<QCardActions>;
     QCardSection?: ComponentConstructor<QCardSection>;
@@ -14345,10 +17849,10 @@ declare module "./plugin" {
     QMenu?: ComponentConstructor<QMenu>;
     QNoSsr?: ComponentConstructor<QNoSsr>;
     QOptionGroup?: ComponentConstructor<QOptionGroup>;
-    QPageScroller?: ComponentConstructor<QPageScroller>;
-    QPageSticky?: ComponentConstructor<QPageSticky>;
     QPage?: ComponentConstructor<QPage>;
     QPageContainer?: ComponentConstructor<QPageContainer>;
+    QPageScroller?: ComponentConstructor<QPageScroller>;
+    QPageSticky?: ComponentConstructor<QPageSticky>;
     QPagination?: ComponentConstructor<QPagination>;
     QParallax?: ComponentConstructor<QParallax>;
     QPopupEdit?: ComponentConstructor<QPopupEdit>;
@@ -14419,17 +17923,324 @@ declare module "./plugin" {
   }
 
   interface QuasarDirectives {
-    ClosePopup?: ClosePopup;
-    Intersection?: Intersection;
-    Morph?: Morph;
-    Mutation?: Mutation;
-    Ripple?: Ripple;
-    Scroll?: Scroll;
-    ScrollFire?: ScrollFire;
-    TouchHold?: TouchHold;
-    TouchPan?: TouchPan;
-    TouchRepeat?: TouchRepeat;
-    TouchSwipe?: TouchSwipe;
+    /**
+     * If value is 0 or 'false' then directive is disabled; if value is < 0 then it closes all popups in the chain; if value is 1 or 'true' or undefined then it closes only the parent popup; if value is > 1 it closes the specified number of parent popups in the chain (note that chained QMenus are considered 1 popup only & QPopupProxy separates chained menus)
+     *
+     * @see https://v2.quasar.dev/vue-directives/close-popup
+     */
+    vClosePopup: ClosePopup;
+
+    /**
+     * Function to call when scrolling occurs (identical to description of 'handler' prop of the Object form); If using the Object form, it is HIGHLY recommended to reference it from your vue component scope, otherwise the directive update cycle will continuously recreate the observer which hits performance hard
+     *
+     * Modifiers:
+     *  - once:
+     *    - type: boolean
+     *    - description: Call handler only once, when the conditions are first met
+     *    - examples:
+     *      - # v-intersection.once
+     *
+     * @see https://v2.quasar.dev/vue-directives/intersection
+     */
+    vIntersection: Intersection;
+
+    /**
+     * Configuration object or trigger value
+     *
+     * Directive argument:
+     *  - type: string
+     *  - description: x:x2:y:z, where x is the morph element name, x2 is the morph group, y is the animation duration (in milliseconds) and z is the amount of time to wait (in milliseconds) or the 'transitionend' string
+     *  - examples:
+     *    - # v-morph:name="options"
+     *    - # v-morph:name:groupName="options"
+     *    - # v-morph:name:groupName:400="options"
+     *    - # v-morph:name:groupName:400:100="options"
+     *    - # v-morph:name:groupName:400:transitionend="options"
+     *
+     * Modifiers:
+     *  - resize:
+     *    - type: boolean
+     *    - description: Use resize instead of scale transform for morph (forceResize option of the morph function)
+     *  - useCSS:
+     *    - type: boolean
+     *    - description: Use CSS animations for morph (forceCssAnimation option of the morph function)
+     *  - hideFromClone:
+     *    - type: boolean
+     *    - description: Hide the spacer for the initial element (hideFromClone option of the morph function)
+     *  - keepToClone:
+     *    - type: boolean
+     *    - description: Keep the final element visible while morphing (keepToClone option of the morph function)
+     *  - tween:
+     *    - type: boolean
+     *    - description: Use opacity tween morphing between initial and final elements (tween option of the morph function)
+     *
+     * @see https://v2.quasar.dev/vue-directives/morph
+     */
+    vMorph: Morph;
+
+    /**
+     * Function to call when mutation occurs; It is HIGHLY recommended to reference it from your vue component scope, otherwise the directive update cycle will continuously recreate the observer which hits performance hard
+     *
+     * Modifiers:
+     *  - once:
+     *    - type: boolean
+     *    - description: Call handler only once, when the first mutation was triggered, then stop monitoring
+     *    - examples:
+     *      - # v-mutation.once
+     *  - childList:
+     *    - type: boolean
+     *    - description: Monitor the target node (and, if 'subtree' is also set, its descendants) for the addition of new child nodes or removal of existing child nodes
+     *    - examples:
+     *      - # v-mutation.childList
+     *  - subtree:
+     *    - type: boolean
+     *    - description: Extend monitoring to the entire subtree of nodes rooted at target
+     *    - examples:
+     *      - # v-mutation.subtree
+     *  - attributes:
+     *    - type: boolean
+     *    - description: Watch for changes to the value of attributes on the node or nodes being monitored
+     *    - examples:
+     *      - # v-mutation.attributes
+     *  - characterData:
+     *    - type: boolean
+     *    - description: Monitor the specified target node or subtree for changes to the character data contained within the node or nodes
+     *    - examples:
+     *      - # v-mutation.characterData
+     *  - attributeOldValue:
+     *    - type: boolean
+     *    - description: Record the previous value of any attribute that changes when monitoring the node or nodes for attribute changes
+     *    - examples:
+     *      - # v-mutation.attributeOldValue
+     *  - characterDataOldValue:
+     *    - type: boolean
+     *    - description: Record the previous value of a node's text whenever the text changes on nodes being monitored
+     *    - examples:
+     *      - # v-mutation.characterDataOldValue
+     *
+     * @see https://v2.quasar.dev/vue-directives/mutation
+     */
+    vMutation: Mutation;
+
+    /**
+     * Boolean (if just wanting to enable/disable) or Object for configuring more options
+     *
+     * Directive argument:
+     *  - type: string
+     *  - description: Color name from Quasar Color Palette; Overrides default dynamic color
+     *  - examples:
+     *    - # v-ripple:orange-5
+     *
+     * Modifiers:
+     *  - early:
+     *    - type: boolean
+     *    - description: Trigger early/immediately on user interaction
+     *  - stop:
+     *    - type: boolean
+     *    - description: Stop click/touch event propagation
+     *    - examples:
+     *      - # v-ripple.stop
+     *  - center:
+     *    - type: boolean
+     *    - description: Ripple starts from the absolute center
+     *    - examples:
+     *      - # v-ripple.center
+     *
+     * @see https://v2.quasar.dev/vue-directives/material-ripple
+     */
+    vRipple: Ripple;
+
+    /**
+     * Function to call when scrolling occurs (use undefined to disable)
+     *
+     * @see https://v2.quasar.dev/vue-directives/scroll
+     */
+    vScroll: Scroll;
+
+    /**
+     * Function to call when scrolling and element comes into the viewport (use undefined to disable)
+     *
+     * @see https://v2.quasar.dev/vue-directives/scroll-fire
+     */
+    vScrollFire: ScrollFire;
+
+    /**
+     * Function to call after user has hold touch/click for the specified amount of time (use undefined to disable)
+     *
+     * Directive argument:
+     *  - type: string
+     *  - default: '600:5:7'
+     *  - description: x:y:z, where x is the amount of time to wait (in milliseconds), y is the touch event sensitivity (in pixels) and z is the mouse event sensitivity (in pixels)
+     *  - examples:
+     *    - # v-touch-hold:400="fnToCall"
+     *    - # v-touch-hold:400:15="fnToCall"
+     *    - # v-touch-hold:400:10:10="fnToCall"
+     *
+     * Modifiers:
+     *  - capture:
+     *    - type: boolean
+     *    - description: Use capture for touchstart event
+     *  - mouse:
+     *    - type: boolean
+     *    - description: Listen for mouse events too
+     *  - mouseCapture:
+     *    - type: boolean
+     *    - description: Use capture for mousedown event
+     *
+     * @see https://v2.quasar.dev/vue-directives/touch-hold
+     */
+    vTouchHold: TouchHold;
+
+    /**
+     * Handler for panning (use undefined to disable)
+     *
+     * Modifiers:
+     *  - stop:
+     *    - type: boolean
+     *    - description: Stop event propagation for touch events
+     *  - prevent:
+     *    - type: boolean
+     *    - description: Calls event.preventDefault() for touch events
+     *  - capture:
+     *    - type: boolean
+     *    - description: Use capture for touchstart event
+     *  - mouse:
+     *    - type: boolean
+     *    - description: Listen for mouse events too
+     *  - mouseCapture:
+     *    - type: boolean
+     *    - description: Use capture for mousedown event
+     *  - mouseAllDir:
+     *    - type: boolean
+     *    - description: Ignore initial mouse move direction (do not abort if the first mouse move is in an unaccepted direction)
+     *  - preserveCursor:
+     *    - type: boolean
+     *    - description: Prevent the mouse cursor from automatically displaying as grabbing when panning
+     *  - horizontal:
+     *    - type: boolean
+     *    - description: Catch horizontal (left/right) movement
+     *  - vertical:
+     *    - type: boolean
+     *    - description: Catch vertical (up/down) movement
+     *  - up:
+     *    - type: boolean
+     *    - description: Catch panning to up
+     *  - right:
+     *    - type: boolean
+     *    - description: Catch panning to right
+     *  - down:
+     *    - type: boolean
+     *    - description: Catch panning to down
+     *  - left:
+     *    - type: boolean
+     *    - description: Catch panning to left
+     *
+     * @see https://v2.quasar.dev/vue-directives/touch-pan
+     */
+    vTouchPan: TouchPan;
+
+    /**
+     * Handler for touch-repeat (use undefined to disable)
+     *
+     * Directive argument:
+     *  - type: string
+     *  - default: '0:600:300'
+     *  - description: String of numbers (at least one number) separated by ':' which defines the amount of time to wait for 1st handler call, 2nd, 3rd and so on; All subsequent calls will use last value as time to wait until triggering
+     *  - examples:
+     *    - # v-touch-repeat:0:400="fnToCall"
+     *
+     * Modifiers:
+     *  - capture:
+     *    - type: boolean
+     *    - description: Use capture for touchstart event
+     *  - mouse:
+     *    - type: boolean
+     *    - description: Listen for mouse events too
+     *  - mouseCapture:
+     *    - type: boolean
+     *    - description: Use capture for mousedown event
+     *  - keyCapture:
+     *    - type: boolean
+     *    - description: Use capture for keydown event
+     *  - esc:
+     *    - type: boolean
+     *    - description: Catch ESC key
+     *  - tab:
+     *    - type: boolean
+     *    - description: Catch TAB key
+     *  - enter:
+     *    - type: boolean
+     *    - description: Catch ENTER key
+     *  - space:
+     *    - type: boolean
+     *    - description: Catch SPACE key
+     *  - up:
+     *    - type: boolean
+     *    - description: Catch UP arrow key
+     *  - left:
+     *    - type: boolean
+     *    - description: Catch LEFT arrow key
+     *  - right:
+     *    - type: boolean
+     *    - description: Catch RIGHT arrow key
+     *  - down:
+     *    - type: boolean
+     *    - description: Catch DOWN key
+     *  - delete:
+     *    - type: boolean
+     *    - description: Catch DELETE key
+     *  - [keycode]:
+     *    - type: number
+     *    - description: Key code to catch
+     *    - examples:
+     *      - # v-touch-repeat.68="fnToCall"
+     *
+     * @see https://v2.quasar.dev/vue-directives/touch-repeat
+     */
+    vTouchRepeat: TouchRepeat;
+
+    /**
+     * Handler for swipe (use undefined to disable)
+     *
+     * Directive argument:
+     *  - type: string
+     *  - default: '6e-2:6:50'
+     *  - description: x:y:z, where x is minimum velocity (dist/time; please use float without a dot, example: 6e-2 which is equivalent to 6 * 10^-2 = 0.06), y is minimum distance on first move on mobile, z is minimum distance on desktop until deciding if it's a swipe indeed
+     *  - examples:
+     *    - # v-touch-swipe:7e-2:10:100="fnToCall"
+     *
+     * Modifiers:
+     *  - capture:
+     *    - type: boolean
+     *    - description: Use capture for touchstart event
+     *  - mouse:
+     *    - type: boolean
+     *    - description: Listen for mouse events too
+     *  - mouseCapture:
+     *    - type: boolean
+     *    - description: Use capture for mousedown event
+     *  - horizontal:
+     *    - type: boolean
+     *    - description: Catch horizontal (left/right) movement
+     *  - vertical:
+     *    - type: boolean
+     *    - description: Catch vertical (up/down) movement
+     *  - up:
+     *    - type: boolean
+     *    - description: Catch swipe to up
+     *  - right:
+     *    - type: boolean
+     *    - description: Catch swipe to right
+     *  - down:
+     *    - type: boolean
+     *    - description: Catch swipe to down
+     *  - left:
+     *    - type: boolean
+     *    - description: Catch swipe to left
+     *
+     * @see https://v2.quasar.dev/vue-directives/touch-swipe
+     */
+    vTouchSwipe: TouchSwipe;
   }
 
   interface QuasarPlugins {
@@ -14440,13 +18251,15 @@ declare module "./plugin" {
     Cookies?: Cookies;
     Dark?: Dark;
     Dialog?: Dialog;
+    IconSet?: IconSet;
+    Lang?: Lang;
     Loading?: Loading;
     LoadingBar?: LoadingBar;
-    LocalStorage?: LocalStorage;
     Meta?: Meta;
     Notify?: Notify;
     Platform?: Platform;
     Screen?: Screen;
+    LocalStorage?: LocalStorage;
     SessionStorage?: SessionStorage;
   }
 }

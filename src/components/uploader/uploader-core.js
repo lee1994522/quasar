@@ -5,14 +5,14 @@ import QIcon from '../icon/QIcon.js'
 import QSpinner from '../spinner/QSpinner.js'
 import QCircularProgress from '../circular-progress/QCircularProgress.js'
 
-import useDark, { useDarkProps } from '../../composables/private/use-dark.js'
-import useFile, { useFileProps, useFileEmits } from '../../composables/private/use-file.js'
+import useDark, { useDarkProps } from '../../composables/private.use-dark/use-dark.js'
+import useFile, { useFileProps, useFileEmits } from '../../composables/private.use-file/use-file.js'
 
-import { stop } from '../../utils/event.js'
-import { humanStorageSize } from '../../utils/format.js'
-import { uploaderKey } from '../../utils/private/symbols.js'
-import { injectProp, injectMultipleProps } from '../../utils/private/inject-obj-prop.js'
-import { vmIsDestroyed } from '../../utils/private/vm.js'
+import { stop } from '../../utils/event/event.js'
+import { humanStorageSize } from '../../utils/format/format.js'
+import { uploaderKey } from '../../utils/private.symbols/symbols.js'
+import { injectProp, injectMultipleProps } from '../../utils/private.inject-obj-prop/inject-obj-prop.js'
+import { vmIsDestroyed } from '../../utils/private.vm/vm.js'
 
 function getProgressLabel (p) {
   return (p * 100).toFixed(2) + '%'
@@ -32,9 +32,13 @@ export const coreProps = {
   bordered: Boolean,
 
   noThumbnails: Boolean,
+  thumbnailFit: {
+    type: String,
+    default: 'cover'
+  },
+
   autoUpload: Boolean,
   hideUploadBtn: Boolean,
-
   disable: Boolean,
   readonly: Boolean
 }
@@ -44,7 +48,7 @@ export const coreEmits = [
   'start', 'finish', 'added', 'removed'
 ]
 
-export function getRenderer (getPlugin) {
+export function getRenderer (getPlugin, expose) {
   const vm = getCurrentInstance()
   const { props, slots, emit, proxy } = vm
   const { $q } = proxy
@@ -105,7 +109,13 @@ export function getRenderer (getPlugin) {
     maxTotalSizeNumber
   } = useFile({ editable, dnd, getFileInput, addFilesToQueue })
 
-  Object.assign(state, getPlugin({ props, slots, emit, helpers: state }))
+  Object.assign(state, getPlugin({
+    props,
+    slots,
+    emit,
+    helpers: state,
+    exposeApi: obj => { Object.assign(state, obj) }
+  }))
 
   if (state.isBusy === void 0) {
     state.isBusy = ref(false)
@@ -135,7 +145,7 @@ export function getRenderer (getPlugin) {
     editable.value === true
     && state.isBusy.value !== true
     && state.isUploading.value !== true
-    && state.queuedFiles.value.length > 0
+    && state.queuedFiles.value.length !== 0
   )
 
   provide(uploaderKey, renderInput)
@@ -215,7 +225,7 @@ export function getRenderer (getPlugin) {
       return false
     })
 
-    if (removed.files.length > 0) {
+    if (removed.files.length !== 0) {
       state.files.value = localFiles
       cb(removed)
       emit('removed', removed.files)
@@ -223,7 +233,7 @@ export function getRenderer (getPlugin) {
   }
 
   function removeFile (file) {
-    if (props.disable) { return }
+    if (props.disable) return
 
     if (file.__status === 'uploaded') {
       state.uploadedFiles.value = state.uploadedFiles.value.filter(f => f.__key !== file.__key)
@@ -268,7 +278,7 @@ export function getRenderer (getPlugin) {
       fileInput.value = ''
     }
 
-    if (localFiles === void 0) { return }
+    if (localFiles === void 0) return
 
     localFiles.forEach(file => {
       state.updateFileStatus(file, 'idle')
@@ -343,8 +353,8 @@ export function getRenderer (getPlugin) {
         h('div', {
           class: 'flex flex-center no-wrap q-gutter-xs'
         }, [
-          getBtn(state.queuedFiles.value.length > 0, 'removeQueue', removeQueuedFiles),
-          getBtn(state.uploadedFiles.value.length > 0, 'removeUploaded', removeUploadedFiles),
+          getBtn(state.queuedFiles.value.length !== 0, 'removeQueue', removeQueuedFiles),
+          getBtn(state.uploadedFiles.value.length !== 0, 'removeUploaded', removeUploadedFiles),
 
           state.isUploading.value === true
             ? h(QSpinner, { class: 'q-uploader__spinner' })
@@ -383,7 +393,7 @@ export function getRenderer (getPlugin) {
             : (file.__status === 'uploaded' ? ' q-uploader__file--uploaded' : '')
         ),
       style: props.noThumbnails !== true && file.__img !== void 0
-        ? { backgroundImage: 'url("' + file.__img.src + '")' }
+        ? { backgroundImage: 'url("' + file.__img.src + '")', backgroundSize: props.thumbnailFit }
         : null
     }, [
       h('div', {
@@ -426,7 +436,7 @@ export function getRenderer (getPlugin) {
 
   onBeforeUnmount(() => {
     state.isUploading.value === true && state.abort()
-    state.files.value.length > 0 && revokeImgURLs()
+    state.files.value.length !== 0 && revokeImgURLs()
   })
 
   const publicApi = {}
@@ -459,7 +469,23 @@ export function getRenderer (getPlugin) {
   })
 
   // expose public api (methods & computed props)
-  Object.assign(proxy, publicApi)
+  expose({
+    ...state,
+
+    upload,
+    reset,
+    removeUploadedFiles,
+    removeQueuedFiles,
+    removeFile,
+
+    pickFiles,
+    addFiles,
+
+    canAddFiles,
+    canUpload,
+    uploadSizeLabel,
+    uploadProgressLabel
+  })
 
   return () => {
     const children = [

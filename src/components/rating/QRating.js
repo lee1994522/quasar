@@ -2,13 +2,13 @@ import { h, ref, computed, onBeforeUpdate, getCurrentInstance } from 'vue'
 
 import QIcon from '../icon/QIcon.js'
 
-import useSize, { useSizeProps } from '../../composables/private/use-size.js'
-import { useFormProps, useFormAttrs, useFormInject } from '../../composables/private/use-form.js'
+import useSize, { useSizeProps } from '../../composables/private.use-size/use-size.js'
+import { useFormProps, useFormAttrs, useFormInject } from '../../composables/use-form/private.use-form.js'
 
-import { createComponent } from '../../utils/private/create.js'
-import { stopAndPrevent } from '../../utils/event.js'
-import { between } from '../../utils/format.js'
-import { hMergeSlot } from '../../utils/private/render.js'
+import { createComponent } from '../../utils/private.create/create.js'
+import { stopAndPrevent } from '../../utils/event/event.js'
+import { between } from '../../utils/format/format.js'
+import { hMergeSlot } from '../../utils/private.render/render.js'
 
 export default createComponent({
   name: 'QRating',
@@ -100,7 +100,7 @@ export default createComponent({
 
     const iconLabel = computed(() => {
       if (typeof props.iconAriaLabel === 'string') {
-        const label = props.iconAriaLabel.length > 0 ? `${ props.iconAriaLabel } ` : ''
+        const label = props.iconAriaLabel.length !== 0 ? `${ props.iconAriaLabel } ` : ''
         return i => `${ label }${ i }`
       }
 
@@ -216,13 +216,13 @@ export default createComponent({
         case 37: // LEFT ARROW
         case 40: // DOWN ARROW
           if (iconRefs[ `rt${ i - 1 }` ]) {
-            iconRefs[ `rt${ i - 1 }` ].$el.focus()
+            iconRefs[ `rt${ i - 1 }` ].focus()
           }
           return stopAndPrevent(e)
         case 39: // RIGHT ARROW
         case 38: // UP ARROW
           if (iconRefs[ `rt${ i + 1 }` ]) {
-            iconRefs[ `rt${ i + 1 }` ].$el.focus()
+            iconRefs[ `rt${ i + 1 }` ].focus()
           }
           return stopAndPrevent(e)
       }
@@ -245,7 +245,7 @@ export default createComponent({
         child.push(
           h('div', {
             key: i,
-            ref: vm => { iconRefs[ `rt${ i }` ] = vm },
+            ref: el => { iconRefs[ `rt${ i }` ] = el },
             class: 'q-rating__icon-container flex flex-center',
             ...attrs,
             onClick () { set(i) },

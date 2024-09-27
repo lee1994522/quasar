@@ -7,9 +7,9 @@ import QTooltip from '../tooltip/QTooltip.js'
 import QItem from '../item/QItem.js'
 import QItemSection from '../item/QItemSection.js'
 
-import { prevent, stop } from '../../utils/event.js'
-import { hSlot } from '../../utils/private/render.js'
-import { shouldIgnoreKey } from '../../utils/private/key-composition.js'
+import { prevent, stop } from '../../utils/event/event.js'
+import { hSlot } from '../../utils/private.render/render.js'
+import { shouldIgnoreKey } from '../../utils/private.keyboard/key-composition.js'
 
 function run (e, btn, eVm) {
   if (btn.handler) {
@@ -156,7 +156,11 @@ function getDropdown (eVm, btn) {
     textColor: highlight && !eVm.props.toolbarPush ? null : eVm.props.toolbarTextColor,
     label: btn.fixedLabel ? btn.label : label,
     icon: btn.fixedIcon ? (btn.icon !== null ? btn.icon : void 0) : icon,
-    contentClass
+    contentClass,
+    onShow: evt => eVm.emit('dropdownShow', evt),
+    onHide: evt => eVm.emit('dropdownHide', evt),
+    onBeforeShow: evt => eVm.emit('dropdownBeforeShow', evt),
+    onBeforeHide: evt => eVm.emit('dropdownBeforeHide', evt)
   }, () => Items)
 
   return Dropdown

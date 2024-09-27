@@ -1,8 +1,8 @@
 import { h, ref, computed, watch, onActivated, onDeactivated, onBeforeMount, onBeforeUnmount, nextTick, getCurrentInstance } from 'vue'
 
-import debounce from '../../utils/debounce.js'
-import { noop } from '../../utils/event.js'
-import { rtlHasScrollBug } from '../../utils/private/rtl.js'
+import debounce from '../../utils/debounce/debounce.js'
+import { noop } from '../../utils/event/event.js'
+import { rtlHasScrollBug } from '../../utils/private.rtl/rtl.js'
 
 const aggBucketSize = 1000
 
@@ -24,12 +24,16 @@ const setOverflowAnchor = __QUASAR_SSR__ || window.getComputedStyle(document.bod
       return
     }
 
-    cancelAnimationFrame(contentEl._qOverflowAnimationFrame)
+    if (contentEl._qOverflowAnimationFrame !== void 0) {
+      cancelAnimationFrame(contentEl._qOverflowAnimationFrame)
+    }
+
     contentEl._qOverflowAnimationFrame = requestAnimationFrame(() => {
       if (contentEl === null) {
         return
       }
 
+      contentEl._qOverflowAnimationFrame = void 0
       const children = contentEl.children || []
 
       filterProto
@@ -189,7 +193,7 @@ function sumSize (sizeAgg, size, from, to) {
 const commonVirtScrollProps = {
   virtualScrollSliceSize: {
     type: [ Number, String ],
-    default: null
+    default: 10
   },
 
   virtualScrollSliceRatioBefore: {
@@ -220,7 +224,7 @@ const commonVirtScrollProps = {
   tableColspan: [ Number, String ]
 }
 
-export const commonVirtPropsList = Object.keys(commonVirtScrollProps)
+export const commonVirtScrollPropsList = Object.keys(commonVirtScrollProps)
 
 export const useVirtualScrollProps = {
   virtualScrollHorizontal: Boolean,
@@ -297,7 +301,7 @@ export function useVirtualScroll ({
       scrollDetails,
       Math.min(virtualScrollLength.value - 1, Math.max(0, parseInt(toIndex, 10) || 0)),
       0,
-      scrollToEdges.indexOf(edge) > -1 ? edge : (prevToIndex > -1 && toIndex > prevToIndex ? 'end' : 'start')
+      scrollToEdges.indexOf(edge) !== -1 ? edge : (prevToIndex !== -1 && toIndex > prevToIndex ? 'end' : 'start')
     )
   }
 
@@ -387,7 +391,7 @@ export function useVirtualScroll ({
   }
 
   function setVirtualScrollSliceRange (scrollEl, scrollDetails, toIndex, offset, align) {
-    const alignForce = typeof align === 'string' && align.indexOf('-force') > -1
+    const alignForce = typeof align === 'string' && align.indexOf('-force') !== -1
     const alignEnd = alignForce === true ? align.replace('-force', '') : align
     const alignRange = alignEnd !== void 0 ? alignEnd : 'start'
 
@@ -706,7 +710,7 @@ export function useVirtualScroll ({
   })
 
   onActivated(() => {
-    if (shouldActivate !== true) { return }
+    if (shouldActivate !== true) return
 
     const scrollEl = getVirtualScrollTarget()
 

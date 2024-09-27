@@ -1,17 +1,17 @@
 import { h, withDirectives, ref, computed, watch, onMounted, onBeforeUnmount, nextTick, inject, getCurrentInstance } from 'vue'
 
-import useHistory from '../../composables/private/use-history.js'
-import useModelToggle, { useModelToggleProps, useModelToggleEmits } from '../../composables/private/use-model-toggle.js'
-import usePreventScroll from '../../composables/private/use-prevent-scroll.js'
-import useTimeout from '../../composables/private/use-timeout.js'
-import useDark, { useDarkProps } from '../../composables/private/use-dark.js'
+import useHistory from '../../composables/private.use-history/use-history.js'
+import useModelToggle, { useModelToggleProps, useModelToggleEmits } from '../../composables/private.use-model-toggle/use-model-toggle.js'
+import usePreventScroll from '../../composables/private.use-prevent-scroll/use-prevent-scroll.js'
+import useTimeout from '../../composables/use-timeout/use-timeout.js'
+import useDark, { useDarkProps } from '../../composables/private.use-dark/use-dark.js'
 
-import TouchPan from '../../directives/TouchPan.js'
+import TouchPan from '../../directives/touch-pan/TouchPan.js'
 
-import { createComponent } from '../../utils/private/create.js'
-import { between } from '../../utils/format.js'
-import { hSlot, hDir } from '../../utils/private/render.js'
-import { layoutKey, emptyRenderFn } from '../../utils/private/symbols.js'
+import { createComponent } from '../../utils/private.create/create.js'
+import { between } from '../../utils/format/format.js'
+import { hSlot, hDir } from '../../utils/private.render/render.js'
+import { layoutKey, emptyRenderFn } from '../../utils/private.symbols/symbols.js'
 
 const duration = 150
 
@@ -41,6 +41,7 @@ export default createComponent({
       type: Number,
       default: 57
     },
+    noMiniAnimation: Boolean,
 
     breakpoint: {
       type: Number,
@@ -83,7 +84,7 @@ export default createComponent({
       return emptyRenderFn
     }
 
-    let lastDesktopState, timerMini, layoutTotalWidthWatcher
+    let lastDesktopState, timerMini = null, layoutTotalWidthWatcher
 
     const belowBreakpoint = ref(
       props.behavior === 'mobile'
@@ -192,7 +193,7 @@ export default createComponent({
     const fixed = computed(() =>
       props.overlay === true
       || props.miniToOverlay === true
-      || $layout.view.value.indexOf(rightSide.value ? 'R' : 'L') > -1
+      || $layout.view.value.indexOf(rightSide.value ? 'R' : 'L') !== -1
       || ($q.platform.is.ios === true && $layout.isContainer.value === true)
     )
 
@@ -417,6 +418,7 @@ export default createComponent({
     watch(() => $q.lang.rtl, () => { applyPosition() })
 
     watch(() => props.mini, () => {
+      if (props.noMiniAnimation) return
       if (props.modelValue === true) {
         animateMini()
         $layout.animate()
@@ -458,7 +460,7 @@ export default createComponent({
     }
 
     function animateMini () {
-      clearTimeout(timerMini)
+      timerMini !== null && clearTimeout(timerMini)
 
       if (vm.proxy && vm.proxy.$el) {
         // need to speed it up and apply it immediately,
@@ -468,6 +470,7 @@ export default createComponent({
 
       flagMiniAnimate.value = true
       timerMini = setTimeout(() => {
+        timerMini = null
         flagMiniAnimate.value = false
         if (vm && vm.proxy && vm.proxy.$el) {
           vm.proxy.$el.classList.remove('q-drawer--mini-animate')
@@ -620,7 +623,11 @@ export default createComponent({
 
     onBeforeUnmount(() => {
       layoutTotalWidthWatcher !== void 0 && layoutTotalWidthWatcher()
-      clearTimeout(timerMini)
+
+      if (timerMini !== null) {
+        clearTimeout(timerMini)
+        timerMini = null
+      }
 
       showing.value === true && cleanup()
 

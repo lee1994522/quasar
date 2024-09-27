@@ -1,15 +1,15 @@
 import { h, ref, computed, watch, onBeforeUnmount, onMounted, nextTick, getCurrentInstance } from 'vue'
 
-import useField, { useFieldState, useFieldProps, useFieldEmits, fieldValueIsFilled } from '../../composables/private/use-field.js'
+import useField, { useFieldState, useFieldProps, useFieldEmits, fieldValueIsFilled } from '../../composables/private.use-field/use-field.js'
 import useMask, { useMaskProps } from './use-mask.js'
-import { useFormProps, useFormInputNameAttr } from '../../composables/private/use-form.js'
-import useFileFormDomProps from '../../composables/private/use-file-dom-props.js'
-import useKeyComposition from '../../composables/private/use-key-composition.js'
+import { useFormProps, useFormInputNameAttr } from '../../composables/use-form/private.use-form.js'
+import useFileFormDomProps from '../../composables/private.use-file/use-file-dom-props.js'
+import useKeyComposition from '../../composables/private.use-key-composition/use-key-composition.js'
 
-import { createComponent } from '../../utils/private/create.js'
-import { stop } from '../../utils/event.js'
-import { addFocusFn } from '../../utils/private/focus-manager.js'
-import { injectProp } from '../../utils/private/inject-obj-prop.js'
+import { createComponent } from '../../utils/private.create/create.js'
+import { stop } from '../../utils/event/event.js'
+import { addFocusFn } from '../../utils/private.focus/focus-manager.js'
+import { injectProp } from '../../utils/private.inject-obj-prop/inject-obj-prop.js'
 
 export default createComponent({
   name: 'QInput',
@@ -21,7 +21,10 @@ export default createComponent({
     ...useMaskProps,
     ...useFormProps,
 
-    modelValue: { required: false },
+    // override of useFieldProps > modelValue
+    modelValue: __QUASAR_SSR_SERVER__
+      ? {} // SSR does not know about FileList
+      : [ String, Number, FileList ],
 
     shadowText: String,
 
@@ -41,7 +44,7 @@ export default createComponent({
   emits: [
     ...useFieldEmits,
     'paste', 'change',
-    'keydown', 'animationend'
+    'keydown', 'click', 'animationend'
   ],
 
   setup (props, { emit, attrs }) {
@@ -49,7 +52,7 @@ export default createComponent({
     const { $q } = proxy
 
     const temp = {}
-    let emitCachedValue = NaN, typedNumber, stopValueWatcher, emitTimer, emitValueFn
+    let emitCachedValue = NaN, typedNumber, stopValueWatcher, emitTimer = null, emitValueFn
 
     const inputRef = ref(null)
     const nameProp = useFormInputNameAttr(props)
@@ -59,7 +62,8 @@ export default createComponent({
       hasMask,
       moveCursorForPaste,
       updateMaskValue,
-      onMaskedKeydown
+      onMaskedKeydown,
+      onMaskedClick
     } = useMask(props, emit, emitValue, inputRef)
 
     const formDomProps = useFileFormDomProps(props, /* type guard */ true)
@@ -67,7 +71,7 @@ export default createComponent({
 
     const onComposition = useKeyComposition(onInput)
 
-    const state = useFieldState()
+    const state = useFieldState({ changeEvent: true })
 
     const isTextarea = computed(() =>
       props.type === 'textarea' || props.autogrow === true
@@ -96,6 +100,8 @@ export default createComponent({
 
       if (hasMask.value === true) {
         evt.onKeydown = onMaskedKeydown
+        // reset selection anchor on pointer selection
+        evt.onClick = onMaskedClick
       }
 
       if (props.autogrow === true) {
@@ -261,6 +267,8 @@ export default createComponent({
 
     function emitValue (val, stopWatcher) {
       emitValueFn = () => {
+        emitTimer = null
+
         if (
           props.type !== 'number'
           && temp.hasOwnProperty('value') === true
@@ -288,7 +296,7 @@ export default createComponent({
       }
 
       if (props.debounce !== void 0) {
-        clearTimeout(emitTimer)
+        emitTimer !== null && clearTimeout(emitTimer)
         temp.value = val
         emitTimer = setTimeout(emitValueFn, props.debounce)
       }
@@ -303,18 +311,29 @@ export default createComponent({
         const inp = inputRef.value
         if (inp !== null) {
           const parentStyle = inp.parentNode.style
-          const { overflow } = inp.style
+          // chrome does not keep scroll #15498
+          const { scrollTop } = inp
+          // chrome calculates a smaller scrollHeight when in a .column container
+          const { overflowY, maxHeight } = $q.platform.is.firefox === true
+            ? {}
+            : window.getComputedStyle(inp)
+          // on firefox or if overflowY is specified as scroll #14263, #14344
+          // we don't touch overflow
+          // firefox is not so bad in the end
+          const changeOverflow = overflowY !== void 0 && overflowY !== 'scroll'
 
           // reset height of textarea to a small size to detect the real height
           // but keep the total control size the same
-          // Firefox rulez #14263, #14344
-          $q.platform.is.firefox !== true && (inp.style.overflow = 'hidden')
-          inp.style.height = '1px'
+          changeOverflow === true && (inp.style.overflowY = 'hidden')
           parentStyle.marginBottom = (inp.scrollHeight - 1) + 'px'
+          inp.style.height = '1px'
 
           inp.style.height = inp.scrollHeight + 'px'
-          inp.style.overflow = overflow
+          // we should allow scrollbars only
+          // if there is maxHeight and content is taller than maxHeight
+          changeOverflow === true && (inp.style.overflowY = parseInt(maxHeight, 10) < inp.scrollHeight ? 'auto' : 'hidden')
           parentStyle.marginBottom = ''
+          inp.scrollTop = scrollTop
         }
       })
     }
@@ -322,7 +341,11 @@ export default createComponent({
     function onChange (e) {
       onComposition(e)
 
-      clearTimeout(emitTimer)
+      if (emitTimer !== null) {
+        clearTimeout(emitTimer)
+        emitTimer = null
+      }
+
       emitValueFn !== void 0 && emitValueFn()
 
       emit('change', e.target.value)
@@ -331,7 +354,11 @@ export default createComponent({
     function onFinishEditing (e) {
       e !== void 0 && stop(e)
 
-      clearTimeout(emitTimer)
+      if (emitTimer !== null) {
+        clearTimeout(emitTimer)
+        emitTimer = null
+      }
+
       emitValueFn !== void 0 && emitValueFn()
 
       typedNumber = false
@@ -373,7 +400,7 @@ export default createComponent({
       hasShadow: computed(() =>
         props.type !== 'file'
         && typeof props.shadowText === 'string'
-        && props.shadowText.length > 0
+        && props.shadowText.length !== 0
       ),
 
       inputRef,
@@ -383,7 +410,10 @@ export default createComponent({
       hasValue,
 
       floatingLabel: computed(() =>
-        hasValue.value === true
+        (
+          hasValue.value === true
+          && (props.type !== 'number' || isNaN(innerValue.value) === false)
+        )
         || fieldValueIsFilled(props.displayValue)
       ),
 

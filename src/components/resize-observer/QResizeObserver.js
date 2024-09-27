@@ -1,9 +1,9 @@
 import { h, onMounted, onBeforeUnmount, getCurrentInstance, nextTick } from 'vue'
 
-import useCanRender from '../../composables/private/use-can-render.js'
+import useHydration from '../../composables/use-hydration/use-hydration.js'
 
-import { createComponent } from '../../utils/private/create.js'
-import { listenOpts, noop } from '../../utils/event.js'
+import { createComponent } from '../../utils/private.create/create.js'
+import { listenOpts, noop } from '../../utils/event/event.js'
 
 const hasObserver = typeof ResizeObserver !== 'undefined'
 const resizeProps = hasObserver === true
@@ -40,8 +40,10 @@ export default createComponent({
     }
 
     function emitEvent () {
-      clearTimeout(timer)
-      timer = null
+      if (timer !== null) {
+        clearTimeout(timer)
+        timer = null
+      }
 
       if (targetEl) {
         const { offsetWidth: width, offsetHeight: height } = targetEl
@@ -54,6 +56,9 @@ export default createComponent({
     }
 
     const { proxy } = getCurrentInstance()
+
+    // expose public method
+    proxy.trigger = trigger
 
     if (hasObserver === true) {
       let observer
@@ -75,7 +80,7 @@ export default createComponent({
       onMounted(() => { init() })
 
       onBeforeUnmount(() => {
-        clearTimeout(timer)
+        timer !== null && clearTimeout(timer)
 
         if (observer !== void 0) {
           if (observer.disconnect !== void 0) {
@@ -90,12 +95,15 @@ export default createComponent({
       return noop
     }
     else { // no observer, so fallback to old iframe method
-      const canRender = useCanRender()
+      const { isHydrated } = useHydration()
 
       let curDocView
 
       function cleanup () {
-        clearTimeout(timer)
+        if (timer !== null) {
+          clearTimeout(timer)
+          timer = null
+        }
 
         if (curDocView !== void 0) {
           // iOS is fuzzy, need to check it first
@@ -125,12 +133,10 @@ export default createComponent({
 
       onBeforeUnmount(cleanup)
 
-      // expose public method
-      proxy.trigger = trigger
-
       return () => {
-        if (canRender.value === true) {
+        if (isHydrated.value === true) {
           return h('object', {
+            class: 'q--avoid-card-border',
             style: resizeProps.style,
             tabindex: -1, // fix for Firefox
             type: 'text/html',

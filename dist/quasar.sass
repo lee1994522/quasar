@@ -1,8 +1,10 @@
 /*!
- * Quasar Framework v2.10.2
+ * Quasar Framework v2.17.0
  * (c) 2015-present Razvan Stoenescu
  * Released under the MIT License.
  */
+@use 'sass:math'
+
 @function str-replace($string, $search, $replace: '')
   $index: str-index($string, $search)
   @if $index
@@ -16,6 +18,7 @@
   @if $noProc
     @return str-fr($selector, $name, $i)
   @return join(str-fr($selector, '', $i), str-fr($selector, $name, $i), $separator: comma)
+
 $PI: 3.14159265359
 @function pow($number, $exp)
   $value: 1
@@ -33,22 +36,22 @@ $PI: 3.14159265359
       $value: $value * $i
   @return $value
 @function toFixed($number, $power)
-  @return round($number * $power) / $power
+  @return math.div(round($number * $power), $power)
 @function sin($angle)
   $sin: 0
   
-  $rad: $angle / 180 * $PI
+  $rad: math.div($angle, 180) * $PI
   
   @for $i from 0 through 25
-    $sin: $sin + pow(-1, $i) * pow($rad, (2 * $i + 1)) / fact(2 * $i + 1)
+    $sin: $sin + math.div(pow(-1, $i) * pow($rad, (2 * $i + 1)), fact(2 * $i + 1))
   @return $sin
 @function cos($angle)
   $cos: 0
   
-  $rad: $angle / 180 * $PI
+  $rad: math.div($angle, 180) * $PI
   
   @for $i from 0 through 25
-    $cos: $cos + pow(-1, $i) * pow($rad, 2 * $i) / fact(2 * $i)
+    $cos: $cos + math.div(pow(-1, $i) * pow($rad, 2 * $i), fact(2 * $i))
   @return $cos
 $space-base   : 16px !default
 $space-x-base : $space-base !default
@@ -468,79 +471,239 @@ $shadow-up-22 : 0 -10px 14px -6px $elevation-umbra, 0 -22px 35px 3px $elevation-
 $shadow-up-23 : 0 -11px 14px -7px $elevation-umbra, 0 -23px 36px 3px $elevation-penumbra, 0 -9px 44px 8px $elevation-ambient !default
 $shadow-up-24 : 0 -11px 15px -7px $elevation-umbra, 0 -24px 38px 3px $elevation-penumbra, 0 -9px 46px 8px $elevation-ambient !default
 $shadows-up: ($shadow-up-1, $shadow-up-2, $shadow-up-3, $shadow-up-4, $shadow-up-5, $shadow-up-6, $shadow-up-7, $shadow-up-8, $shadow-up-9, $shadow-up-10, $shadow-up-11, $shadow-up-12, $shadow-up-13, $shadow-up-14, $shadow-up-15, $shadow-up-16, $shadow-up-17, $shadow-up-18, $shadow-up-19, $shadow-up-20, $shadow-up-21, $shadow-up-22, $shadow-up-23, $shadow-up-24)
-$generic-border-radius          : 4px !default
-$generic-hover-transition       : .3s cubic-bezier(.25, .8, .5, 1) !default
-$typography-font-family         : 'Roboto', '-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif !default
-$min-line-height                : 1.12 !default
-$button-border-radius           : 3px !default
-$button-padding                 : 4px 16px !default
-$button-dense-padding           : .285em !default
-$button-transition              : $generic-hover-transition !default
-$button-font-size               : 14px !default
-$button-line-height             : 1.715em !default
-$button-font-weight             : 500 !default
-$button-shadow                  : $shadow-2 !default
-$button-shadow-active           : $shadow-5 !default
-$button-rounded-border-radius   : 28px !default
-$button-push-border-radius      : 7px !default
-$chat-message-received-color    : #000 !default
-$chat-message-received-bg       : $green-4 !default
-$chat-message-sent-color        : #000 !default
-$chat-message-sent-bg           : $grey-4 !default
-$chat-message-avatar-size       : 48px !default
-$chat-message-border-radius     : $generic-border-radius !default
-$chat-message-distance          : 8px !default
-$chat-message-text-padding      : 8px !default
-$item-base-color                : $grey-5 !default
-$editor-border-color            : $separator-color !default
-$editor-border-dark-color       : $separator-dark-color !default
-$editor-content-padding         : 10px !default
-$editor-content-min-height      : 10em !default
-$editor-toolbar-padding         : 4px !default
-$editor-hr-color                : $editor-border-color !default
-$editor-hr-dark-color           : $editor-border-dark-color !default
-$editor-button-gutter           : 4px !default
-$table-transition               : $generic-hover-transition !default
-$table-border-radius            : $generic-border-radius !default
-$table-box-shadow               : $shadow-2 !default
-$table-border-color             : $separator-color !default
-$table-hover-background         : rgba(0, 0, 0, .03) !default
-$table-selected-background      : rgba(0, 0, 0, .06) !default
-$table-dark-border-color        : $separator-dark-color !default
-$table-dark-hover-background    : rgba(255, 255, 255, .07) !default
-$table-dark-selected-background : rgba(255, 255, 255, .1) !default
-$toolbar-min-height             : 50px !default
-$toolbar-padding                : 0 12px !default
-$toolbar-inset-size             : 58px !default
-$toolbar-title-font-size        : 21px !default
-$toolbar-title-font-weight      : normal !default
-$toolbar-title-letter-spacing   : .01em !default
-$toolbar-title-padding          : 0 12px !default
-$layout-border                  : 1px solid $separator-color !default
-$layout-shadow                  : 0 0 10px 2px rgba(0,0,0,0.2), 0 0px 10px rgba(0,0,0,0.24) !default
-$menu-background                : #fff !default
-$menu-box-shadow                : $shadow-2 !default
-$menu-max-width                 : 95vw !default
-$rating-grade-color             : $yellow !default
-$rating-shadow                  : 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24) !default
-$tooltip-color                  : #fafafa !default
-$tooltip-background             : $grey-7 !default
-$tooltip-padding                : 6px 10px !default
-$tooltip-border-radius          : $generic-border-radius !default
-$tooltip-fontsize               : 10px !default
-$tooltip-mobile-padding         : 8px 16px !default
-$tooltip-mobile-fontsize        : 14px !default
-$option-focus-transition        : .22s cubic-bezier(0,0,.2,1) !default
-$input-font-size                : 14px !default
-$input-text-color               : rgba(0,0,0,.87) !default
-$input-label-color              : rgba(0,0,0,.6) !default
-$input-autofill-color           : inherit !default
-$img-loading-font-size          : 50px !default
-$img-content-position           : absolute !default
-$img-content-padding            : 16px !default
-$img-content-color              : #fff !default
-$img-content-background         : rgba(0, 0, 0, .47) !default
-*, *:before, *:after 
+$dark-shadow-color         : #fff !default
+$inset-dark-shadow         : 0 7px 9px -7px rgba($dark-shadow-color, .7) inset !default
+$inset-dark-shadow-down    : 0 -7px 9px -7px rgba($dark-shadow-color, .7) inset !default
+$elevation-dark-umbra      : rgba($dark-shadow-color, .2) !default
+$elevation-dark-penumbra   : rgba($dark-shadow-color, .14) !default
+$elevation-dark-ambient    : rgba($dark-shadow-color, .12) !default
+$dark-shadow-0  : 0 0 0 $elevation-dark-umbra, 0 0 0 $elevation-dark-penumbra, 0 0 0 $elevation-dark-ambient !default
+$dark-shadow-1  : 0 1px 3px $elevation-dark-umbra, 0 1px 1px $elevation-dark-penumbra, 0 2px 1px -1px $elevation-dark-ambient !default
+$dark-shadow-2  : 0 1px 5px $elevation-dark-umbra, 0 2px 2px $elevation-dark-penumbra, 0 3px 1px -2px $elevation-dark-ambient !default
+$dark-shadow-3  : 0 1px 8px $elevation-dark-umbra, 0 3px 4px $elevation-dark-penumbra, 0 3px 3px -2px $elevation-dark-ambient !default
+$dark-shadow-4  : 0 2px 4px -1px $elevation-dark-umbra, 0 4px 5px $elevation-dark-penumbra, 0 1px 10px $elevation-dark-ambient !default
+$dark-shadow-5  : 0 3px 5px -1px $elevation-dark-umbra, 0 5px 8px $elevation-dark-penumbra, 0 1px 14px $elevation-dark-ambient !default
+$dark-shadow-6  : 0 3px 5px -1px $elevation-dark-umbra, 0 6px 10px $elevation-dark-penumbra, 0 1px 18px $elevation-dark-ambient !default
+$dark-shadow-7  : 0 4px 5px -2px $elevation-dark-umbra, 0 7px 10px 1px $elevation-dark-penumbra, 0 2px 16px 1px $elevation-dark-ambient !default
+$dark-shadow-8  : 0 5px 5px -3px $elevation-dark-umbra, 0 8px 10px 1px $elevation-dark-penumbra, 0 3px 14px 2px $elevation-dark-ambient !default
+$dark-shadow-9  : 0 5px 6px -3px $elevation-dark-umbra, 0 9px 12px 1px $elevation-dark-penumbra, 0 3px 16px 2px $elevation-dark-ambient !default
+$dark-shadow-10 : 0 6px 6px -3px $elevation-dark-umbra, 0 10px 14px 1px $elevation-dark-penumbra, 0 4px 18px 3px $elevation-dark-ambient !default
+$dark-shadow-11 : 0 6px 7px -4px $elevation-dark-umbra, 0 11px 15px 1px $elevation-dark-penumbra, 0 4px 20px 3px $elevation-dark-ambient !default
+$dark-shadow-12 : 0 7px 8px -4px $elevation-dark-umbra, 0 12px 17px 2px $elevation-dark-penumbra, 0 5px 22px 4px $elevation-dark-ambient !default
+$dark-shadow-13 : 0 7px 8px -4px $elevation-dark-umbra, 0 13px 19px 2px $elevation-dark-penumbra, 0 5px 24px 4px $elevation-dark-ambient !default
+$dark-shadow-14 : 0 7px 9px -4px $elevation-dark-umbra, 0 14px 21px 2px $elevation-dark-penumbra, 0 5px 26px 4px $elevation-dark-ambient !default
+$dark-shadow-15 : 0 8px 9px -5px $elevation-dark-umbra, 0 15px 22px 2px $elevation-dark-penumbra, 0 6px 28px 5px $elevation-dark-ambient !default
+$dark-shadow-16 : 0 8px 10px -5px $elevation-dark-umbra, 0 16px 24px 2px $elevation-dark-penumbra, 0 6px 30px 5px $elevation-dark-ambient !default
+$dark-shadow-17 : 0 8px 11px -5px $elevation-dark-umbra, 0 17px 26px 2px $elevation-dark-penumbra, 0 6px 32px 5px $elevation-dark-ambient !default
+$dark-shadow-18 : 0 9px 11px -5px $elevation-dark-umbra, 0 18px 28px 2px $elevation-dark-penumbra, 0 7px 34px 6px $elevation-dark-ambient !default
+$dark-shadow-19 : 0 9px 12px -6px $elevation-dark-umbra, 0 19px 29px 2px $elevation-dark-penumbra, 0 7px 36px 6px $elevation-dark-ambient !default
+$dark-shadow-20 : 0 10px 13px -6px $elevation-dark-umbra, 0 20px 31px 3px $elevation-dark-penumbra, 0 8px 38px 7px $elevation-dark-ambient !default
+$dark-shadow-21 : 0 10px 13px -6px $elevation-dark-umbra, 0 21px 33px 3px $elevation-dark-penumbra, 0 8px 40px 7px $elevation-dark-ambient !default
+$dark-shadow-22 : 0 10px 14px -6px $elevation-dark-umbra, 0 22px 35px 3px $elevation-dark-penumbra, 0 8px 42px 7px $elevation-dark-ambient !default
+$dark-shadow-23 : 0 11px 14px -7px $elevation-dark-umbra, 0 23px 36px 3px $elevation-dark-penumbra, 0 9px 44px 8px $elevation-dark-ambient !default
+$dark-shadow-24 : 0 11px 15px -7px $elevation-dark-umbra, 0 24px 38px 3px $elevation-dark-penumbra, 0 9px 46px 8px $elevation-dark-ambient !default
+$dark-shadows: ($dark-shadow-1, $dark-shadow-2, $dark-shadow-3, $dark-shadow-4, $dark-shadow-5, $dark-shadow-6, $dark-shadow-7, $dark-shadow-8, $dark-shadow-9, $dark-shadow-10, $dark-shadow-11, $dark-shadow-12, $dark-shadow-13, $dark-shadow-14, $dark-shadow-15, $dark-shadow-16, $dark-shadow-17, $dark-shadow-18, $dark-shadow-19, $dark-shadow-20, $dark-shadow-21, $dark-shadow-22, $dark-shadow-23, $dark-shadow-24)
+$dark-shadow-up-0  : 0 0 0 $elevation-dark-umbra, 0 0 0 $elevation-dark-penumbra, 0 0 0 $elevation-dark-ambient !default
+$dark-shadow-up-1  : 0 -1px 3px $elevation-dark-umbra, 0 -1px 1px $elevation-dark-penumbra, 0 -2px 1px -1px $elevation-dark-ambient !default
+$dark-shadow-up-2  : 0 -1px 5px $elevation-dark-umbra, 0 -2px 2px $elevation-dark-penumbra, 0 -3px 1px -2px $elevation-dark-ambient !default
+$dark-shadow-up-3  : 0 -1px 8px $elevation-dark-umbra, 0 -3px 4px $elevation-dark-penumbra, 0 -3px 3px -2px $elevation-dark-ambient !default
+$dark-shadow-up-4  : 0 -2px 4px -1px $elevation-dark-umbra, 0 -4px 5px $elevation-dark-penumbra, 0 -1px 10px $elevation-dark-ambient !default
+$dark-shadow-up-5  : 0 -3px 5px -1px $elevation-dark-umbra, 0 -5px 8px $elevation-dark-penumbra, 0 -1px 14px $elevation-dark-ambient !default
+$dark-shadow-up-6  : 0 -3px 5px -1px $elevation-dark-umbra, 0 -6px 10px $elevation-dark-penumbra, 0 -1px 18px $elevation-dark-ambient !default
+$dark-shadow-up-7  : 0 -4px 5px -2px $elevation-dark-umbra, 0 -7px 10px 1px $elevation-dark-penumbra, 0 -2px 16px 1px $elevation-dark-ambient !default
+$dark-shadow-up-8  : 0 -5px 5px -3px $elevation-dark-umbra, 0 -8px 10px 1px $elevation-dark-penumbra, 0 -3px 14px 2px $elevation-dark-ambient !default
+$dark-shadow-up-9  : 0 -5px 6px -3px $elevation-dark-umbra, 0 -9px 12px 1px $elevation-dark-penumbra, 0 -3px 16px 2px $elevation-dark-ambient !default
+$dark-shadow-up-10 : 0 -6px 6px -3px $elevation-dark-umbra, 0 -10px 14px 1px $elevation-dark-penumbra, 0 -4px 18px 3px $elevation-dark-ambient !default
+$dark-shadow-up-11 : 0 -6px 7px -4px $elevation-dark-umbra, 0 -11px 15px 1px $elevation-dark-penumbra, 0 -4px 20px 3px $elevation-dark-ambient !default
+$dark-shadow-up-12 : 0 -7px 8px -4px $elevation-dark-umbra, 0 -12px 17px 2px $elevation-dark-penumbra, 0 -5px 22px 4px $elevation-dark-ambient !default
+$dark-shadow-up-13 : 0 -7px 8px -4px $elevation-dark-umbra, 0 -13px 19px 2px $elevation-dark-penumbra, 0 -5px 24px 4px $elevation-dark-ambient !default
+$dark-shadow-up-14 : 0 -7px 9px -4px $elevation-dark-umbra, 0 -14px 21px 2px $elevation-dark-penumbra, 0 -5px 26px 4px $elevation-dark-ambient !default
+$dark-shadow-up-15 : 0 -8px 9px -5px $elevation-dark-umbra, 0 -15px 22px 2px $elevation-dark-penumbra, 0 -6px 28px 5px $elevation-dark-ambient !default
+$dark-shadow-up-16 : 0 -8px 10px -5px $elevation-dark-umbra, 0 -16px 24px 2px $elevation-dark-penumbra, 0 -6px 30px 5px $elevation-dark-ambient !default
+$dark-shadow-up-17 : 0 -8px 11px -5px $elevation-dark-umbra, 0 -17px 26px 2px $elevation-dark-penumbra, 0 -6px 32px 5px $elevation-dark-ambient !default
+$dark-shadow-up-18 : 0 -9px 11px -5px $elevation-dark-umbra, 0 -18px 28px 2px $elevation-dark-penumbra, 0 -7px 34px 6px $elevation-dark-ambient !default
+$dark-shadow-up-19 : 0 -9px 12px -6px $elevation-dark-umbra, 0 -19px 29px 2px $elevation-dark-penumbra, 0 -7px 36px 6px $elevation-dark-ambient !default
+$dark-shadow-up-20 : 0 -10px 13px -6px $elevation-dark-umbra, 0 -20px 31px 3px $elevation-dark-penumbra, 0 -8px 38px 7px $elevation-dark-ambient !default
+$dark-shadow-up-21 : 0 -10px 13px -6px $elevation-dark-umbra, 0 -21px 33px 3px $elevation-dark-penumbra, 0 -8px 40px 7px $elevation-dark-ambient !default
+$dark-shadow-up-22 : 0 -10px 14px -6px $elevation-dark-umbra, 0 -22px 35px 3px $elevation-dark-penumbra, 0 -8px 42px 7px $elevation-dark-ambient !default
+$dark-shadow-up-23 : 0 -11px 14px -7px $elevation-dark-umbra, 0 -23px 36px 3px $elevation-dark-penumbra, 0 -9px 44px 8px $elevation-dark-ambient !default
+$dark-shadow-up-24 : 0 -11px 15px -7px $elevation-dark-umbra, 0 -24px 38px 3px $elevation-dark-penumbra, 0 -9px 46px 8px $elevation-dark-ambient !default
+$dark-shadows-up: ($dark-shadow-up-1, $dark-shadow-up-2, $dark-shadow-up-3, $dark-shadow-up-4, $dark-shadow-up-5, $dark-shadow-up-6, $dark-shadow-up-7, $dark-shadow-up-8, $dark-shadow-up-9, $dark-shadow-up-10, $dark-shadow-up-11, $dark-shadow-up-12, $dark-shadow-up-13, $dark-shadow-up-14, $dark-shadow-up-15, $dark-shadow-up-16, $dark-shadow-up-17, $dark-shadow-up-18, $dark-shadow-up-19, $dark-shadow-up-20, $dark-shadow-up-21, $dark-shadow-up-22, $dark-shadow-up-23, $dark-shadow-up-24)
+$generic-border-radius                    : 4px !default
+$generic-hover-transition                 : .3s cubic-bezier(.25, .8, .5, 1) !default
+$typography-font-family                   : 'Roboto', '-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif !default
+$min-line-height                          : 1.12 !default
+$avatar-font-size                         : 48px !default
+$avatar-content-font-size                 : .5em !default
+$avatar-content-line-height               : .5em !default
+$badge-font-size                          : 12px !default
+$badge-line-height                        : 1 !default
+$badge-min-height                         : $badge-font-size * $badge-line-height !default
+$banner-avatar-font-size                  : 46px !default
+$banner-avatar-icon-font-size             : 40px !default
+$banner-avatar-dense-font-size            : 28px !default
+$bar-inner-font-size                      : 16px !default
+$bar-button-font-size                     : 11px !default
+$bar-dense-font-size                      : 14px !default
+$bar-dense-button-font-size               : 8px !default
+$bar-height                               : $bar-inner-font-size * 2 !default
+$bar-dense-height                         : $bar-dense-font-size + 10px !default
+$breadcrumbs-icon-font-size               : 125% !default
+$button-border-radius                     : 3px !default
+$button-padding                           : 4px 16px !default
+$button-dense-padding                     : .285em !default
+$button-fab-icon-font-size                : 24px !default
+$button-transition                        : $generic-hover-transition !default
+$button-font-size                         : 14px !default
+$button-line-height                       : 1.715em !default
+$button-font-weight                       : 500 !default
+$button-shadow                            : $shadow-2 !default
+$button-shadow-active                     : $shadow-5 !default
+$button-rounded-border-radius             : 28px !default
+$button-push-border-radius                : 7px !default
+$carousel-arrow-icon-font-size            : 28px !default
+$chat-message-name-font-size              : small !default
+$chat-message-stamp-font-size             : $chat-message-name-font-size !default
+$chat-message-label-font-size             : $chat-message-name-font-size !default
+$chat-message-received-color              : #000 !default
+$chat-message-received-bg                 : $green-4 !default
+$chat-message-sent-color                  : #000 !default
+$chat-message-sent-bg                     : $grey-4 !default
+$chat-message-avatar-size                 : 48px !default
+$chat-message-border-radius               : $generic-border-radius !default
+$chat-message-distance                    : 8px !default
+$chat-message-text-padding                : 8px !default
+$checkbox-inner-font-size                 : 40px !default
+$chip-height                              : 2em !default
+$chip-font-size                           : 14px !default
+$chip-avatar-font-size                    : $chip-height !default
+$chip-dense-height                        : 1.5em !default
+$chip-dense-avatar-font-size              : $chip-dense-height !default
+$color-picker-tune-tab-input-font-size    : 11px !default
+$date-header-subtitle-font-size           : 14px !default
+$date-header-subtitle-line-height         : 1.75 !default
+$date-header-subtitle-letter-spacing      : .00938em !default
+$date-header-title-label-font-size        : 24px !default
+$date-header-title-label-line-height      : 1.2 !default
+$date-header-title-label-letter-spacing   : .00735em !default
+$date-calendar-weekdays-inner-font-size   : 12px !default
+$dialog-title-font-size                   : 1.25rem !default
+$dialog-title-line-height                 : 1.6 !default
+$dialog-title-letter-spacing              : .0125em !default
+$dialog-progress-font-size                : 4rem !default
+$field-marginal-font-size                 : 24px !default
+$field-marginal-avatar-font-size          : 32px !default
+$field-bottom-font-size                   : 12px !default
+$field-bottom-line-height                 : 1 !default
+$field-with-bottom-padding-bottom         : $field-bottom-font-size * $field-bottom-line-height + 8px !default
+$field-label-font-size                    : 16px !default
+$field-label-line-height                  : 1.25 !default
+$field-label-top                          : 18px !default
+$field-label-letter-spacing               : .00937em !default
+$field-dense-bottom-font-size             : 11px !default
+$field-dense-with-bottom-padding-bottom   : $field-dense-bottom-font-size * $field-bottom-line-height + 8px !default
+$field-dense-label-font-size              : 14px !default
+$field-dense-label-top                    : 10px !default
+$field-dense-marginal-avatar-font-size    : 24px !default
+$item-base-color                          : $grey-5 !default
+$item-section-side-icon-font-size         : 24px !default
+$item-section-side-avatar-font-size       : 40px !default
+$item-label-header-font-size              : .875rem !default
+$item-label-header-line-height            : 1.25rem !default
+$item-label-header-letter-spacing         : .01786em !default
+$editor-border-color                      : $separator-color !default
+$editor-border-dark-color                 : $separator-dark-color !default
+$editor-content-padding                   : 10px !default
+$editor-content-min-height                : 10em !default
+$editor-toolbar-padding                   : 4px !default
+$editor-hr-color                          : $editor-border-color !default
+$editor-hr-dark-color                     : $editor-border-dark-color !default
+$editor-button-gutter                     : 4px !default
+$knob-font-size                           : 48px !default
+$radio-inner-font-size                    : 40px !default
+$slide-item-active-text-font-size         : 14px !default
+$slide-item-active-icon-font-size         : 1.714em !default
+$slider-text-font-size                    : 12px !default
+$stepper-title-font-size                  : 14px !default
+$stepper-title-line-height                : 1.285714 !default
+$stepper-title-letter-spacing             : .1px !default
+$stepper-caption-font-size                : 12px !default
+$stepper-caption-line-height              : 1.16667 !default
+$stepper-dot-font-size                    : 14px !default
+$stepper-tab-font-size                    : 14px !default
+$stepper-dot-error-with-icon-font-size    : 24px !default
+$tabs-icon-font-size                      : 24px !default
+$tabs-icon-font-width                     : $tabs-icon-font-size !default
+$tabs-icon-font-height                    : $tabs-icon-font-size !default
+$tabs-alert-icon-font-size                : 18px !default
+$tabs-arrow-font-size                     : 32px !default
+$table-transition                         : $generic-hover-transition !default
+$table-border-radius                      : $generic-border-radius !default
+$table-box-shadow                         : $shadow-2 !default
+$table-th-font-size                       : 12px !default
+$table-tbody-td-font-size                 : 13px !default
+$table-title-font-size                    : 20px !default
+$table-bottom-font-size                   : 12px !default
+$table-nodata-icon-font-size              : 200% !default
+$table-sort-icon-font-size                : 120% !default
+$table-grid-item-title-font-size          : 12px !default
+$table-grid-item-value-font-size          : 13px !default
+$table-dense-sort-icon-font-size          : 110% !default
+$table-border-color                       : $separator-color !default
+$table-hover-background                   : rgba(0, 0, 0, .03) !default
+$table-selected-background                : rgba(0, 0, 0, .06) !default
+$table-dark-border-color                  : $separator-dark-color !default
+$table-dark-hover-background              : rgba(255, 255, 255, .07) !default
+$table-dark-selected-background           : rgba(255, 255, 255, .1) !default
+$table-box-shadow-dark                    : $dark-shadow-2 !default
+$time-header-label-font-size              : 28px !default
+$time-clock-position-font-size            : 12px !default
+$timeline-subtitle-font-size              : 12px !default
+$timeline-subtitle-letter-spacing         : 1px !default
+$timeline-dot-icon-font-size              : 16px !default
+$timeline-comfortable-heading-font-size   : 200% !default
+$toolbar-min-height                       : 50px !default
+$toolbar-padding                          : 0 12px !default
+$toolbar-inset-size                       : 58px !default
+$toolbar-title-font-size                  : 21px !default
+$toolbar-title-font-weight                : normal !default
+$toolbar-title-letter-spacing             : .01em !default
+$toolbar-title-padding                    : 0 12px !default
+$tree-icon-font-size                      : 21px !default
+$layout-border                            : 1px solid $separator-color !default
+$layout-shadow                            : 0 0 10px 2px rgba($shadow-color,0.2), 0 0px 10px rgba($shadow-color,0.24) !default
+$layout-shadow-dark                       : 0 0 10px 2px rgba($dark-shadow-color,.2), 0 0px 10px rgba($dark-shadow-color,.24) !default
+$menu-background                          : #fff !default
+$menu-box-shadow                          : $shadow-2 !default
+$menu-box-shadow-dark                     : $dark-shadow-2 !default
+$menu-max-width                           : 95vw !default
+$menu-max-height                          : 65vh !default
+$rating-grade-color                       : $yellow !default
+$rating-shadow                            : 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24) !default
+$tooltip-color                            : #fafafa !default
+$tooltip-background                       : $grey-7 !default
+$tooltip-padding                          : 6px 10px !default
+$tooltip-border-radius                    : $generic-border-radius !default
+$tooltip-fontsize                         : 10px !default
+$tooltip-mobile-padding                   : 8px 16px !default
+$tooltip-mobile-fontsize                  : 14px !default
+$tooltip-max-width                        : 95vw !default
+$tooltip-max-height                       : 65vh !default
+$uploader-title-font-size                 : 14px !default
+$uploader-title-line-height               : 1.285714 !default
+$uploader-subtitle-font-size              : 12px !default
+$uploader-subtitle-line-height            : 1.5 !default
+$option-focus-transition                  : .22s cubic-bezier(0,0,.2,1) !default
+$input-font-size                          : 14px !default
+$input-text-color                         : rgba(0,0,0,.87) !default
+$input-label-color                        : rgba(0,0,0,.6) !default
+$input-autofill-color                     : inherit !default
+$img-loading-font-size                    : 50px !default
+$img-content-position                     : absolute !default
+$img-content-padding                      : 16px !default
+$img-content-color                        : #fff !default
+$img-content-background                   : rgba(0, 0, 0, .47) !default
+*, *:before, *:after
   box-sizing: inherit
   -webkit-tap-highlight-color: transparent
   -moz-tap-highlight-color: transparent
@@ -576,13 +739,14 @@ abbr[title]
   text-decoration: underline dotted
 img
   border-style: none
-svg:not(:root)
-  overflow: hidden
 /*
  * line 1: Correct the inheritance and scaling of font size in all browsers.
  * line 2: Correct the odd `em` font sizing in all browsers.
  */
-code, kbd, pre, samp
+code,
+kbd,
+pre,
+samp
   font-family: monospace, monospace
   font-size: 1em
 /*
@@ -666,6 +830,8 @@ input[type='search']::-webkit-search-decoration
   > img
     width: 100%
     height: 100%
+  > div
+    box-sizing: border-box 
 .q-icon,
 .material-icons,
 .material-icons-outlined,
@@ -720,12 +886,12 @@ input[type='search']::-webkit-search-decoration
   vertical-align: middle
   display: inline-block
   border-radius: 50%
-  font-size: 48px
+  font-size: $avatar-font-size
   height: 1em
   width: 1em
   &__content
-    font-size: .5em
-    line-height: .5em
+    font-size: $avatar-content-font-size
+    line-height: $avatar-content-line-height
   &__content, img:not(.q-icon):not(.q-img__image)
     border-radius: inherit
     height: inherit
@@ -737,9 +903,9 @@ input[type='search']::-webkit-search-decoration
   color: #fff
   padding: 2px 6px
   border-radius: $generic-border-radius
-  font-size: 12px
-  line-height: 12px
-  min-height: 12px
+  font-size: $badge-font-size
+  line-height: $badge-line-height
+  min-height: $badge-min-height
   font-weight: normal
   vertical-align: baseline
   &--single-line
@@ -768,9 +934,9 @@ input[type='search']::-webkit-search-decoration
   &__avatar
     min-width: 1px !important
     > .q-avatar
-      font-size: 46px
+      font-size: $banner-avatar-font-size
     > .q-icon
-      font-size: 40px
+      font-size: $banner-avatar-icon-font-size
   &__avatar:not(:empty) + &__content
     padding-left: 16px
   &__actions
@@ -786,7 +952,7 @@ input[type='search']::-webkit-search-decoration
       padding-top: 12px
     .q-banner__avatar
       > .q-avatar, > .q-icon
-        font-size: 28px
+        font-size: $banner-avatar-dense-font-size
     .q-banner__avatar:not(:empty) + .q-banner__content
       padding-left: 8px
     .q-banner__actions
@@ -804,25 +970,25 @@ input[type='search']::-webkit-search-decoration
     margin-left: 0
   &--standard
     padding: 0 12px
-    height: 32px
+    height: $bar-height
     font-size: 18px
     > div
-      font-size: 16px
+      font-size: $bar-inner-font-size
     .q-btn
-      font-size: 11px
+      font-size: $bar-button-font-size
   &--dense
     padding: 0 8px
-    height: 24px
-    font-size: 14px
+    height: $bar-dense-height
+    font-size: $bar-dense-font-size
     .q-btn
-      font-size: 8px
+      font-size: $bar-dense-button-font-size
   &--dark
     background: rgba(255,255,255,.15)
 .q-breadcrumbs
   &__el
     color: inherit
   &__el-icon
-    font-size: 125%
+    font-size: $breadcrumbs-icon-font-size
     &--with-label
       margin-right: 8px
 [dir=rtl] .q-breadcrumbs__separator .q-icon
@@ -921,7 +1087,7 @@ input[type='search']::-webkit-search-decoration
       margin-left: 6px
   &--fab, &--fab-mini
     .q-icon
-      font-size: 24px
+      font-size: $button-fab-icon-font-size
   &--fab
     padding: 16px
     min-height: 56px
@@ -1048,27 +1214,20 @@ input[type='search']::-webkit-search-decoration
   position: relative
   > div,
   > img
-    &:first-child
+    &:not(.q--avoid-card-border)
+      border-top-left-radius: 0
+      border-top-right-radius: 0
+      border-bottom-left-radius: 0
+      border-bottom-right-radius: 0
+    &:nth-child(1 of :not(.q--avoid-card-border))
       border-top: 0
       border-top-left-radius: inherit
       border-top-right-radius: inherit
-  > div,
-  > img
-    &:last-child
+    &:nth-last-child(1 of :not(.q--avoid-card-border))
       border-bottom: 0
       border-bottom-left-radius: inherit
       border-bottom-right-radius: inherit
-  > div,
-  > img
-    &:not(:first-child)
-      border-top-left-radius: 0
-      border-top-right-radius: 0
-  > div,
-  > img
-    &:not(:last-child)
-      border-bottom-left-radius: 0
-      border-bottom-right-radius: 0
-  > div
+  > div:not(.q--avoid-card-border)
     border-left: 0
     border-right: 0
     box-shadow: none
@@ -1076,6 +1235,7 @@ input[type='search']::-webkit-search-decoration
     border: 1px solid $separator-color
   &--dark
     border-color: $separator-dark-color
+    box-shadow: $dark-shadow-2
   &__section
     position: relative
     &--vert
@@ -1083,26 +1243,25 @@ input[type='search']::-webkit-search-decoration
     &--horiz
       > div,
       > img
-        &:first-child
-          border-top-left-radius: inherit
-          border-bottom-left-radius: inherit
-        &:last-child
-          border-top-right-radius: inherit
-          border-bottom-right-radius: inherit
-        &:not(:first-child)
+        &:not(.q--avoid-card-border)
           border-top-left-radius: 0
           border-bottom-left-radius: 0
-        &:not(:last-child)
           border-top-right-radius: 0
           border-bottom-right-radius: 0
-      > div
+        &:nth-child(1 of :not(.q--avoid-card-border))
+          border-top-left-radius: inherit
+          border-bottom-left-radius: inherit
+        &:nth-last-child(1 of :not(.q--avoid-card-border))
+          border-top-right-radius: inherit
+          border-bottom-right-radius: inherit
+      > div:not(.q--avoid-card-border)
         border-top: 0
         border-bottom: 0
         box-shadow: none
   &__actions
     padding: 8px
     align-items: center
-    .q-btn
+    .q-btn--rectangle
       padding: 0 8px
     &--horiz
       > .q-btn-item + .q-btn-item,
@@ -1139,7 +1298,7 @@ input[type='search']::-webkit-search-decoration
   &__arrow
     pointer-events: none
     .q-icon
-      font-size: 28px
+      font-size: $carousel-arrow-icon-font-size
     .q-btn
       pointer-events: all
   &__prev-arrow--horizontal,
@@ -1223,16 +1382,18 @@ input[type='search']::-webkit-search-decoration
       padding-right: 60px
   &.fullscreen
     height: 100%
-.q-message-name, .q-message-stamp, .q-message-label
-  font-size: small
+.q-message-name
+  font-size: $chat-message-name-font-size
 .q-message-label
   margin: (3 * $chat-message-distance) 0
   text-align: center
+  font-size: $chat-message-label-font-size
 .q-message-stamp
   color: inherit
   margin-top: 4px
   opacity: .6
   display: none
+  font-size: $chat-message-stamp-font-size
 .q-message-avatar
   border-radius: 50%
   width: $chat-message-avatar-size
@@ -1321,7 +1482,7 @@ $checkbox-transition: .22s cubic-bezier(0,0,.2,1) 0ms
     transform-origin: 50% 50%
     transform: rotate(-280deg) scale(0)
   &__inner
-    font-size: 40px
+    font-size: $checkbox-inner-font-size
     width: 1em
     min-width: 1em
     height: 1em
@@ -1387,7 +1548,6 @@ body.desktop
     &:hover
       .q-checkbox__inner:before
         transform: scale3d(1.4, 1.4, 1)
-$chip-height: 2em
 .q-chip
   vertical-align: middle
   border-radius: 16px
@@ -1398,7 +1558,7 @@ $chip-height: 2em
   margin: 4px
   background: #e0e0e0
   color: rgba(0,0,0,.87)
-  font-size: 14px
+  font-size: $chip-font-size
   padding: .5em .9em
   &--colored, &--dark
     .q-chip__icon
@@ -1407,7 +1567,7 @@ $chip-height: 2em
     background: transparent !important
     border: 1px solid currentColor
   .q-avatar
-    font-size: $chip-height
+    font-size: $chip-avatar-font-size
     margin-left: -.45em
     margin-right: .2em
     border-radius: 16px
@@ -1435,9 +1595,9 @@ $chip-height: 2em
   &--dense
     border-radius: 12px
     padding: 0 .4em
-    height: 1.5em
+    height: $chip-dense-height
     .q-avatar
-      font-size: 1.5em
+      font-size: $chip-dense-avatar-font-size
       margin-left: -.27em
       margin-right: .1em
       border-radius: 12px
@@ -1451,8 +1611,12 @@ $chip-height: 2em
     border-radius: $generic-border-radius
     .q-avatar
       border-radius: ($generic-border-radius - 1px) 0 0 ($generic-border-radius - 1px)
-body.desktop .q-chip--clickable:focus
-  box-shadow: $shadow-1
+body.desktop
+  .q-chip--clickable:focus
+    box-shadow: $shadow-1
+  &.body--dark
+    .q-chip--clickable:focus
+      box-shadow: $dark-shadow-1
 .q-circular-progress
   display: inline-block
   position: relative
@@ -1561,7 +1725,7 @@ body.desktop .q-chip--clickable:focus
     border-radius: 50%
     transform: translate(-5px, -5px)
   &__hue .q-slider__track
-    background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%) !important 
+    background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%) !important
     opacity: 1
   &__alpha
     .q-slider__track-container
@@ -1590,7 +1754,7 @@ body.desktop .q-chip--clickable:focus
       margin-left: 18px
       margin-right: 18px
     input
-      font-size: 11px
+      font-size: $color-picker-tune-tab-input-font-size
       border: 1px solid $grey-4
       border-radius: $generic-border-radius
       width: 3.5em
@@ -1620,6 +1784,7 @@ body.desktop .q-chip--clickable:focus
   .q-tab-panels
     background: inherit
   &--dark
+    box-shadow: $dark-shadow-2
     .q-color-picker__tune-tab input
       border: 1px solid rgba(#fff, .3)
     .q-slider__thumb
@@ -1652,13 +1817,13 @@ body.desktop .q-chip--clickable:focus
     &--active, &:hover, &:focus
       opacity: 1
   &__header-subtitle
-    font-size: 14px
-    line-height: 1.75
-    letter-spacing: .00938em
+    font-size: $date-header-subtitle-font-size
+    line-height: $date-header-subtitle-line-height
+    letter-spacing: $date-header-subtitle-letter-spacing
   &__header-title-label
-    font-size: 24px
-    line-height: 1.2
-    letter-spacing: .00735em
+    font-size: $date-header-title-label-font-size
+    line-height: $date-header-title-label-line-height
+    letter-spacing: $date-header-title-label-letter-spacing
   &__view
     height: 100%
     width: 100%
@@ -1678,7 +1843,7 @@ body.desktop .q-chip--clickable:focus
     height: 12.5%
     > div
       opacity: .38
-      font-size: 12px
+      font-size: $date-calendar-weekdays-inner-font-size
   &__calendar-item
     display: inline-flex
     align-items: center
@@ -1825,15 +1990,16 @@ body.desktop .q-chip--clickable:focus
   &--landscape-minimal
     width: 310px
   &--dark
+    box-shadow: $dark-shadow-2
     border-color: $separator-dark-color
 .q-dialog
   &__title
-    font-size: 1.25rem
+    font-size: $dialog-title-font-size
     font-weight: 500
-    line-height: 2rem
-    letter-spacing: .0125em
+    line-height: $dialog-title-line-height
+    letter-spacing: $dialog-title-letter-spacing
   &__progress
-    font-size: 4rem
+    font-size: $dialog-progress-font-size
   &__inner
     outline: 0
     > div
@@ -1842,7 +2008,6 @@ body.desktop .q-chip--clickable:focus
       -webkit-overflow-scrolling: touch
       will-change: scroll-position
       border-radius: $generic-border-radius
-      box-shadow: $shadow-4
     &--square > div
       border-radius: 0 !important
     > .q-card
@@ -1913,42 +2078,6 @@ body.q-ios-padding .q-dialog__inner
     max-width: 560px
 .q-body--dialog
   overflow: hidden
-.q-bottom-sheet
-  padding-bottom: 8px
-  &__avatar
-    border-radius: 50%
-  &--list
-    width: 400px
-    .q-icon, img
-      font-size: 24px
-      width: 24px
-      height: 24px
-  &--grid
-    width: 700px
-    .q-bottom-sheet__item
-      padding: 8px
-      text-align: center
-      min-width: 100px
-    .q-icon, img, .q-bottom-sheet__empty-icon
-      font-size: 48px
-      width: 48px
-      height: 48px
-      margin-bottom: 8px
-    .q-separator
-      margin: 12px 0
-  &__item
-    flex: 0 0 33.3333%
-@media (min-width: $breakpoint-sm-min)
-  .q-bottom-sheet__item
-    flex: 0 0 25%
-.q-dialog-plugin
-  width: 400px
-  &__form
-    max-height: 50vh
-  .q-card__section + .q-card__section
-    padding-top: 0
-  &--progress
-    text-align: center
 .q-editor
   border: 1px solid $editor-border-color
   border-radius: $generic-border-radius
@@ -2139,8 +2268,8 @@ body.q-ios-padding .q-dialog__inner
         padding-right: .285em
         padding-left: .571em
   &__icon-holder
-    min-width: 24px
-    min-height: 24px
+    min-width: $button-fab-icon-font-size
+    min-height: $button-fab-icon-font-size
     position: relative
     &--opened
       .q-fab__icon
@@ -2215,15 +2344,15 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
   ::-ms-reveal
     display: none
   &--with-bottom
-    padding-bottom: 20px
+    padding-bottom: $field-with-bottom-padding-bottom
   &__marginal
     height: 56px
     color: rgba(0,0,0,.54)
-    font-size: 24px
+    font-size: $field-marginal-font-size
     > * + *
       margin-left: 2px
     .q-avatar
-      font-size: 32px
+      font-size: $field-marginal-avatar-font-size
   &__before, &__prepend
     padding-right: 12px
   &__after, &__append
@@ -2235,9 +2364,9 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
   &__inner
     text-align: left
   &__bottom
-    font-size: 12px
+    font-size: $field-bottom-font-size
     min-height: 20px
-    line-height: 1
+    line-height: $field-bottom-line-height
     color: rgba(0,0,0,.54)
     padding: 8px 12px 0
     backface-visibility: hidden
@@ -2312,8 +2441,14 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
       -webkit-animation-fill-mode: both
     &:-webkit-autofill + .q-field__label
       transform: translateY(-40%) scale(.75)
-    &[type="number"]:invalid + .q-field__label
-      transform: translateY(-40%) scale(.75)
+    &[type="color"],
+    &[type="date"],
+    &[type="datetime-local"],
+    &[type="month"],
+    &[type="time"],
+    &[type="week"]
+      + .q-field__label
+        transform: translateY(-40%) scale(.75)
     &:invalid
       box-shadow: none
   &__native[type="file"]
@@ -2347,17 +2482,18 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
       pointer-events: none
     .q-field__control > div
       opacity: .6 !important
-      &, * 
+      &,
+      *
         outline: 0 !important
   &__label
     left: 0
-    top: 18px
+    top: $field-label-top
     max-width: 100%
     color: $input-label-color
-    font-size: 16px
-    line-height: 20px
+    font-size: $field-label-font-size
+    line-height: $field-label-line-height
     font-weight: 400
-    letter-spacing: .00937em
+    letter-spacing: $field-label-letter-spacing
     text-decoration: inherit
     text-transform: inherit
     transform-origin: left top
@@ -2537,15 +2673,17 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
         padding-top: 14px
         padding-bottom: 2px
   &--dense
+    .q-field--with-bottom
+      padding-bottom: $field-dense-with-bottom-padding-bottom
     .q-field__shadow
       top: 0
     .q-field__control, .q-field__marginal
       height: 40px
     .q-field__bottom
-      font-size: 11px
+      font-size: $field-dense-bottom-font-size
     .q-field__label
-      font-size: 14px
-      top: 10px
+      font-size: $field-dense-label-font-size
+      top: $field-dense-label-top
     .q-field__before, .q-field__prepend
       padding-right: 6px
     .q-field__after, .q-field__append
@@ -2554,14 +2692,20 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
       padding-left: 2px
     .q-field__marginal
       .q-avatar
-        font-size: 24px
+        font-size: $field-dense-marginal-avatar-font-size
     &.q-field--float .q-field__label
       transform: translateY(-30%) scale(.75)
     .q-field__native, .q-field__input
       &:-webkit-autofill + .q-field__label
         transform: translateY(-30%) scale(.75)
-      &[type="number"]:invalid + .q-field__label
-        transform: translateY(-30%) scale(.75)
+      &[type="color"],
+      &[type="date"],
+      &[type="datetime-local"],
+      &[type="month"],
+      &[type="time"],
+      &[type="week"]
+        + .q-field__label
+          transform: translateY(-30%) scale(.75)
   &--borderless, &--standard
     .q-field__bottom,
     &.q-field--dense .q-field__control
@@ -2688,6 +2832,7 @@ $field-transition-label-right-up: .324s cubic-bezier(.4,0,.2,1)
       pointer-events: none
 .q-inner-loading
   background: $light-dimmed-background
+  border-radius: inherit
   &--dark
     background: $dimmed-background
   &__label
@@ -2756,9 +2901,9 @@ body.mobile .q-textarea,
       min-width: 0
       max-width: 100%
       > .q-icon
-        font-size: 24px
+        font-size: $item-section-side-icon-font-size
       > .q-avatar
-        font-size: 40px
+        font-size: $item-section-side-avatar-font-size
     &--avatar
       color: inherit
       min-width: 56px
@@ -2783,9 +2928,9 @@ body.mobile .q-textarea,
     &--header
       color: $grey-7
       padding: 16px
-      font-size: .875rem
-      line-height: 1.25rem
-      letter-spacing: .01786em
+      font-size: $item-label-header-font-size
+      line-height: $item-label-header-line-height
+      letter-spacing: $item-label-header-letter-spacing
       .q-separator--spaced + &, .q-list--padding &
         padding-top: 8px
     & + .q-item__label
@@ -2835,7 +2980,7 @@ body.mobile .q-textarea,
   &.q-router-link--active, &--active
     color: var(--q-primary)
 .q-knob
-  font-size: 48px
+  font-size: $knob-font-size
   &--editable
     cursor: pointer
     outline: 0
@@ -2850,9 +2995,12 @@ body.mobile .q-textarea,
       box-shadow: none
       transition: box-shadow .24s ease-in-out
     &:focus:before
-      box-shadow: $shadow-4
+      box-shadow: $shadow-2
+body.body--dark .q-knob--editable:focus:before
+  box-shadow: $dark-shadow-2
 .q-layout
   width: 100%
+  outline: 0
 .q-layout-container
   position: relative
   width: 100%
@@ -2963,14 +3111,14 @@ body.mobile .q-textarea,
     pointer-events: auto
 body.q-ios-padding
   .q-layout--standard .q-header > .q-toolbar:nth-child(1),
-  .q-layout--standard .q-header > .q-tabs:nth-child(1) .q-tabs-head,
+  .q-layout--standard .q-header > .q-tabs:nth-child(1) .q-tabs__content,
   .q-layout--standard .q-drawer--top-padding .q-drawer__content
     padding-top: $ios-statusbar-height
     min-height: ($toolbar-min-height + $ios-statusbar-height)
     padding-top: env(safe-area-inset-top)
     min-height: calc(env(safe-area-inset-top) + #{$toolbar-min-height})
   .q-layout--standard .q-footer > .q-toolbar:last-child,
-  .q-layout--standard .q-footer > .q-tabs:last-child .q-tabs-head,
+  .q-layout--standard .q-footer > .q-tabs:nth-last-child(1 of :not(.q-layout__shadow)) .q-tabs__content,
   .q-layout--standard .q-drawer--top-padding .q-drawer__content
     padding-bottom: env(safe-area-inset-bottom)
     min-height: calc(env(safe-area-inset-bottom) + #{$toolbar-min-height})
@@ -3000,6 +3148,8 @@ body:not(.q-body--layout-animate)
 body.body--dark
   .q-header, .q-footer, .q-drawer
     border-color: $separator-dark-color
+  .q-layout__shadow:after
+    box-shadow: $layout-shadow-dark
 body.platform-ios
   .q-layout--containerized
     
@@ -3050,9 +3200,10 @@ body.platform-ios
     &--dark
       background: rgba(255,255,255,.6)
   &__stripe
-    transition: width var(--q-linear-progress-speed)
     background-image: linear-gradient(45deg, rgba(255,255,255,.15) 25%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, rgba(255,255,255,0) 75%, rgba(255,255,255,0)) !important
     background-size: 40px 40px !important
+    &--with-transition
+      transition: width var(--q-linear-progress-speed)
 @keyframes q-linear-progress--indeterminate
   0%
     transform: translate3d(-35%, 0, 0) scale3d(.35, 1, 1)
@@ -3070,17 +3221,19 @@ body.platform-ios
 .q-menu
   position: fixed !important
   display: inline-block
-  max-width: $menu-max-width
+  max-width: $menu-max-width 
+  max-height: $menu-max-height 
   box-shadow: $menu-box-shadow
   background: $menu-background
   border-radius: $generic-border-radius
   overflow-y: auto
   overflow-x: hidden
   outline: 0
-  max-height: 65vh
   z-index: $z-menu
   &--square
     border-radius: 0
+  &--dark
+    box-shadow: $menu-box-shadow-dark
 .q-option-group
   &--inline
     > div
@@ -3159,7 +3312,7 @@ $radio-transition: .22s cubic-bezier(0,0,.2,1) 0ms
     transform: scale3d(0, 0, 1)
     transition: transform $radio-transition
   &__inner
-    font-size: 40px
+    font-size: $radio-inner-font-size
     width: 1em
     min-width: 1em
     height: 1em
@@ -3370,10 +3523,10 @@ body.platform-ios
   --q-skeleton-speed: 1500ms
   background: $separator-color
   border-radius: $generic-border-radius
-  &--anim
-    cursor: wait
   
   box-sizing: border-box
+  &--anim
+    cursor: wait
   &:before
     content: '\00a0'
   &--type
@@ -3488,10 +3641,10 @@ body.platform-ios
   background: white
   &__left, &__right, &__top, &__bottom
     visibility: hidden
-    font-size: 14px
+    font-size: $slide-item-active-text-font-size
     color: #fff
     .q-icon
-      font-size: 1.714em
+      font-size: $slide-item-active-icon-font-size
   &__left
     background: $green
     padding: 8px 16px
@@ -3707,7 +3860,7 @@ body.platform-ios
     text-align: center
   &__text
     color: #fff
-    font-size: 12px
+    font-size: $slider-text-font-size
   &--no-value
     .q-slider__thumb,
     .q-slider__inner,
@@ -3845,29 +3998,30 @@ body.platform-ios
   border-radius: $generic-border-radius
   background: #fff
   &__title
-    font-size: 14px
-    line-height: 18px
-    letter-spacing: .1px
+    font-size: $stepper-title-font-size
+    line-height: $stepper-title-line-height
+    letter-spacing: $stepper-title-letter-spacing
   &__caption
-    font-size: 12px
-    line-height: 14px
+    font-size: $stepper-caption-font-size
+    line-height: $stepper-caption-line-height
   &__dot
     contain: layout
     margin-right: 8px
-    font-size: 14px
-    width: 24px
-    min-width: 24px
-    height: 24px
+    font-size: $stepper-dot-font-size
+    width: calc($stepper-dot-font-size + 10px)
+    min-width: calc($stepper-dot-font-size + 10px)
+    height: calc($stepper-dot-font-size + 10px)
     border-radius: 50%
     background: currentColor
     span
       color: #fff
   &__tab
     padding: 8px 24px
-    font-size: 14px
+    font-size: $stepper-tab-font-size
     color: $grey
     flex-direction: row
   &--dark
+    box-shadow: $dark-shadow-2
     .q-stepper__dot span
       color: #000
   &__tab
@@ -3890,7 +4044,7 @@ body.platform-ios
         background: transparent !important
         span
           color: currentColor
-          font-size: 24px
+          font-size: $stepper-dot-error-with-icon-font-size
   &__header
     border-top-left-radius: inherit
     border-top-right-radius: inherit
@@ -3947,6 +4101,8 @@ body.platform-ios
         display: none
   &__nav
     padding-top: 24px
+  &--flat
+    box-shadow: none
   &--bordered
     border: 1px solid $separator-color
   &--horizontal
@@ -4047,7 +4203,7 @@ body.platform-ios
     height: 48px
   th
     font-weight: 500
-    font-size: 12px
+    font-size: $table-th-font-size
     user-select: none
     &.sortable
       cursor: pointer
@@ -4064,7 +4220,7 @@ body.platform-ios
     border-style: solid
     border-width: 0
   tbody td
-    font-size: 13px
+    font-size: $table-tbody-td-font-size
   &__card
     color: #000
     background-color: #fff
@@ -4090,7 +4246,7 @@ body.platform-ios
     .q-table__control
       flex-wrap: wrap
   &__title
-    font-size: 20px
+    font-size: $table-title-font-size
     letter-spacing: .005em
     font-weight: 400
   &__separator
@@ -4108,11 +4264,11 @@ body.platform-ios
   &__bottom
     min-height: 50px
     padding: 4px 14px 4px 16px
-    font-size: 12px
+    font-size: $table-bottom-font-size
     .q-table__control
       min-height: 24px
   &__bottom-nodata-icon
-    font-size: 200%
+    font-size: $table-nodata-icon-font-size
     margin-right: 8px
   &__bottom-item
     margin-right: 16px
@@ -4122,13 +4278,17 @@ body.platform-ios
   &__sort-icon
     transition: transform $table-transition
     opacity: 0
-    font-size: 120%
+    font-size: $table-sort-icon-font-size
     &--left, &--center
       margin-left: 4px
     &--right
       margin-right: 4px
   &--col-auto-width
     width: 1px
+.q-table__card--dark,
+.q-table--dark
+  box-shadow: $table-box-shadow-dark
+.q-table
   &--flat
     box-shadow: none
   &--bordered
@@ -4169,9 +4329,9 @@ body.platform-ios
   &__grid-item-title
     opacity: .54
     font-weight: 500
-    font-size: 12px
+    font-size: $table-grid-item-title-font-size
   &__grid-item-value
-    font-size: 13px
+    font-size: $table-grid-item-value-font-size
   &__grid-item
     padding: 4px
     transition: transform $table-transition
@@ -4196,7 +4356,7 @@ body.platform-ios
   .q-table__bottom
     min-height: 33px
   .q-table__sort-icon
-    font-size: 110%
+    font-size: $table-dense-sort-icon-font-size
   .q-table
     th, td
       padding: 4px 8px
@@ -4214,9 +4374,9 @@ body.platform-ios
       padding: 0
     .q-field__marginal
       height: 24px
-.q-table__bottom 
+.q-table__bottom
   border-top: 1px solid $table-border-color
-.q-table 
+.q-table
   thead, tr, th, td
     border-color: $table-border-color
   tbody
@@ -4237,7 +4397,8 @@ body.platform-ios
       content: ''
 body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no-hover):before
   content: ''
-.q-table__card--dark, .q-table--dark
+.q-table__card--dark,
+.q-table--dark
   border-color: $table-dark-border-color
 .q-table--dark
   .q-table__bottom, thead, tr, th, td
@@ -4275,9 +4436,9 @@ body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no
       top: 0
       right: -16px
   &__icon
-    width: 24px
-    height: 24px
-    font-size: 24px
+    width: $tabs-icon-font-width
+    height: $tabs-icon-font-height
+    font-size: $tabs-icon-font-size
   &__label
     font-size: $button-font-size
     line-height: $button-line-height
@@ -4297,7 +4458,7 @@ body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no
   &__alert-icon
     top: 2px
     right: -12px
-    font-size: 18px
+    font-size: $tabs-alert-icon-font-size
   &__indicator
     opacity: 0
     height: 2px
@@ -4324,15 +4485,19 @@ body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no
     &.q-tabs__arrows--inside
       .q-tabs__arrow--faded
         display: none
-  &--not-scrollable
+  &--not-scrollable,
+  body.mobile &--scrollable.q-tabs--mobile-without-arrows
+    &.q-tabs__arrows--outside
+      padding-left: 0
+      padding-right: 0
     .q-tabs__arrow
       display: none
     .q-tabs__content
       border-radius: inherit
   &__arrow
     cursor: pointer
-    font-size: 32px
-    min-width: 36px
+    font-size: $tabs-arrow-font-size
+    min-width: calc($tabs-arrow-font-size + 4px)
     text-shadow: 0 0 3px #fff, 0 0 1px #fff, 0 0 1px #000
     transition: opacity .3s
   &__content
@@ -4410,7 +4575,7 @@ body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no
   &__actions
     padding: 0 16px 16px
   &__header-label
-    font-size: 28px
+    font-size: $time-header-label-font-size
     line-height: 1
     letter-spacing: -.00833em
     > div + div
@@ -4483,7 +4648,7 @@ body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no
     min-height: 32px
     width: 32px
     height: 32px
-    font-size: 12px
+    font-size: $time-clock-position-font-size
     line-height: 32px
     margin: 0
     padding: 0
@@ -4541,6 +4706,7 @@ body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no
       margin-top: 12px
   &--dark
     border-color: $separator-dark-color
+    box-shadow: $dark-shadow-2
 .q-timeline
   padding: 0
   width: 100%
@@ -4557,11 +4723,11 @@ body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no
     margin-top: 0
     margin-bottom: 16px
   &__subtitle
-    font-size: 12px
+    font-size: $timeline-subtitle-font-size
     margin-bottom: 8px
     opacity: .6
     text-transform: uppercase
-    letter-spacing: 1px
+    letter-spacing: $timeline-subtitle-letter-spacing
     font-weight: 700
   &__dot
     position: absolute
@@ -4592,7 +4758,7 @@ body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no
       top: 0
       left: 0
       right: 0
-      font-size: 16px
+      font-size: $timeline-dot-icon-font-size
       height: 38px
       line-height: 38px
       width: 100%
@@ -4664,7 +4830,7 @@ body.desktop .q-table > tbody > tr:not(.q-tr--no-hover):hover > td:not(.q-td--no
     .q-timeline
       &__heading
         display: table-row
-        font-size: 200%
+        font-size: $timeline-comfortable-heading-font-size
         > div
           display: table-cell
       &__entry
@@ -4807,8 +4973,11 @@ $toggle-transition: .22s cubic-bezier(.4,0,.2,1)
       color: #fff
       &--truthy
         color: var(--q-primary)
-    .q-toggle__thumb:before
-      opacity: .32 !important
+    .q-toggle__thumb
+      &:after
+        box-shadow: none
+      &:before
+        opacity: .32 !important
   &--dense
     .q-toggle__inner
       width: .8em
@@ -4886,6 +5055,8 @@ body.desktop
   overflow-y: auto
   overflow-x: hidden
   padding: $tooltip-padding
+  max-width: $tooltip-max-width 
+  max-height: $tooltip-max-height 
   @media (max-width: $breakpoint-xs-max)
     font-size: $tooltip-mobile-fontsize
     padding: $tooltip-mobile-padding
@@ -4962,7 +5133,7 @@ body.desktop
     color: $grey
   &__icon,
   &__node-header-content .q-icon
-    font-size: 21px
+    font-size: $tree-icon-font-size
   &__img
     height: 42px
     border-radius: 2px
@@ -5106,7 +5277,6 @@ body.desktop
       height: 200px
       min-width: 200px
       background-position: 50% 50%
-      background-size: cover
       background-repeat: no-repeat
       &:before
         content: none
@@ -5128,18 +5298,19 @@ body.desktop
     font-size: 24px
     margin-right: 4px
   &__title
-    font-size: 14px
+    font-size: $uploader-title-font-size
     font-weight: bold
-    line-height: 18px
+    line-height: $uploader-title-line-height
     word-break: break-word
   &__subtitle
-    font-size: 12px
-    line-height: 18px
+    font-size: $uploader-subtitle-font-size
+    line-height: $uploader-subtitle-line-height
   &--disable
     .q-uploader__header, .q-uploader__list
       pointer-events: none
   &--dark
     border-color: $separator-dark-color
+    box-shadow: $dark-shadow-2
     .q-uploader__file
       border-color: $separator-dark-color
     .q-uploader__dnd, .q-uploader__overlay
@@ -5234,6 +5405,42 @@ img.responsive
   position: fixed !important
   right: 200vw !important
   bottom: 200vh !important
+.q-bottom-sheet
+  padding-bottom: 8px
+  &__avatar
+    border-radius: 50%
+  &--list
+    width: 400px
+    .q-icon, img
+      font-size: 24px
+      width: 24px
+      height: 24px
+  &--grid
+    width: 700px
+    .q-bottom-sheet__item
+      padding: 8px
+      text-align: center
+      min-width: 100px
+    .q-icon, img, .q-bottom-sheet__empty-icon
+      font-size: 48px
+      width: 48px
+      height: 48px
+      margin-bottom: 8px
+    .q-separator
+      margin: 12px 0
+  &__item
+    flex: 0 0 33.3333%
+@media (min-width: $breakpoint-sm-min)
+  .q-bottom-sheet__item
+    flex: 0 0 25%
+.q-dialog-plugin
+  width: 400px
+  &__form
+    max-height: 50vh
+  .q-card__section + .q-card__section
+    padding-top: 0
+  &--progress
+    text-align: center
 .q-loading
   color: #000
   
@@ -6696,12 +6903,22 @@ body.q-ios-padding .q-notifications__list
     box-shadow: nth($shadows, $z)
   .shadow-up-#{$z}
     box-shadow: nth($shadows-up, $z)
+.inset-shadow
+  box-shadow: $inset-shadow
+.inset-shadow-down
+  box-shadow: $inset-shadow-down
+body.body--dark
+  @for $z from 1 through 24
+    .shadow-#{$z}
+      box-shadow: nth($dark-shadows, $z)
+    .shadow-up-#{$z}
+      box-shadow: nth($dark-shadows-up, $z)
+  .inset-shadow
+    box-shadow: $inset-dark-shadow
+  .inset-shadow-down
+    box-shadow: $inset-dark-shadow-down
 .no-shadow, .shadow-0
   box-shadow: none !important
-.inset-shadow
-  box-shadow: $inset-shadow !important
-.inset-shadow-down
-  box-shadow: $inset-shadow-down !important
 .z-marginals
   z-index: $z-marginals
 .z-notify
@@ -6710,6 +6927,7 @@ body.q-ios-padding .q-notifications__list
   z-index: $z-fullscreen
 .z-inherit
   z-index: inherit !important
+
 @mixin fg($name, $size)
   $noProcNotZero: $size > 0
   @media (min-width: $size)
@@ -6738,13 +6956,13 @@ body.q-ios-padding .q-notifications__list
       .row
         #{str-fe('> .col<name>-<i>', $name, $noProcNotZero, $ic)}
           height: auto
-          width: toFixed(percentage($i / $flex-cols), 10000)
+          width: toFixed(percentage(math.div($i, $flex-cols)), 10000)
         @if $i != 0 or $name != ''
           #{str-fe('> .offset<name>-<i>', $name, $noProcNotZero, $ic)}
-            margin-left: toFixed(percentage($i / $flex-cols), 10000)
+            margin-left: toFixed(percentage(math.div($i, $flex-cols)), 10000)
       .column
         #{str-fe('> .col<name>-<i>', $name, $noProcNotZero, $ic)}
-          height: toFixed(percentage($i / $flex-cols), 10000)
+          height: toFixed(percentage(math.div($i, $flex-cols)), 10000)
           width: auto
       @if $size == 0 and $i == $flex-cols
         .row > .col-all
@@ -6906,7 +7124,8 @@ img.responsive
   height: auto
 .non-selectable
   user-select: none !important
-.scroll
+.scroll,
+body.mobile .scroll--mobile
   overflow: auto
 .scroll, .scroll-x, .scroll-y
   -webkit-overflow-scrolling: touch
@@ -6936,7 +7155,7 @@ img.responsive
   cursor: progress
 [aria-controls]
   cursor: pointer
-[aria-disabled]
+[aria-disabled='true']
   cursor: default
 .rotate-45
   transform: rotate(45deg) #{"/* rtl:ignore */"}
@@ -7347,15 +7566,18 @@ sup
 .readonly
   cursor: default !important
 .disabled, [disabled]
-  &, * 
+  &,
+  *
     outline: 0 !important
     cursor: not-allowed !important
 .disabled, [disabled]
   opacity: .6 !important
 .hidden
   display: none !important
-.invisible
+.invisible, .invisible *
   visibility: hidden !important
+  transition: none !important
+  animation: none !important
 .transparent
   background: transparent !important
 .overflow-auto

@@ -1,7 +1,7 @@
 import { h, ref, computed, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue'
 
-import { createComponent } from '../../utils/private/create.js'
-import { between } from '../../utils/format.js'
+import { createComponent } from '../../utils/private.create/create.js'
+import { between } from '../../utils/format/format.js'
 
 const
   xhr = __QUASAR_SSR_SERVER__ ? null : XMLHttpRequest,
@@ -51,7 +51,7 @@ function highjackAjax (stackEntry) {
 
   stack.push(stackEntry)
 
-  if (highjackCount > 1) { return }
+  if (highjackCount > 1) return
 
   xhr.prototype.open = function (_, url) {
     const stopStack = []
@@ -119,7 +119,7 @@ export default createComponent({
     const onScreen = ref(false)
     const animate = ref(true)
 
-    let sessions = 0, timer, speed
+    let sessions = 0, timer = null, speed
 
     const classes = computed(() =>
       `q-loading-bar q-loading-bar--${ props.position }`
@@ -171,24 +171,36 @@ export default createComponent({
         if (oldSpeed === 0 && newSpeed > 0) {
           planNextStep()
         }
-        else if (oldSpeed > 0 && newSpeed <= 0) {
+        else if (timer !== null && oldSpeed > 0 && newSpeed <= 0) {
           clearTimeout(timer)
+          timer = null
         }
 
         return sessions
       }
 
-      clearTimeout(timer)
+      timer !== null && clearTimeout(timer)
       emit('start')
 
       progress.value = 0
 
+      /**
+       * We're trying to avoid side effects if start() is called inside a watchEffect()
+       * so we're accessing the _value property directly (under the covers implementation detail of ref())
+       *
+       * Otherwise, any refs() accessed here would be marked as deps for the watchEffect()
+       * -- and we are changing them below, which would cause an infinite loop
+       */
+
       timer = setTimeout(() => {
+        timer = null
         animate.value = true
         newSpeed > 0 && planNextStep()
-      }, onScreen.value === true ? 500 : 1)
+        // eslint-disable-next-line vue/no-ref-as-operand
+      }, onScreen._value === true ? 500 : 1)
 
-      if (onScreen.value !== true) {
+      // eslint-disable-next-line vue/no-ref-as-operand
+      if (onScreen._value !== true) {
         onScreen.value = true
         animate.value = false
       }
@@ -210,13 +222,18 @@ export default createComponent({
         return sessions
       }
 
-      clearTimeout(timer)
+      if (timer !== null) {
+        clearTimeout(timer)
+        timer = null
+      }
+
       emit('stop')
 
       const end = () => {
         animate.value = true
         progress.value = 100
         timer = setTimeout(() => {
+          timer = null
           onScreen.value = false
         }, 1000)
       }
@@ -234,6 +251,7 @@ export default createComponent({
     function planNextStep () {
       if (progress.value < 100) {
         timer = setTimeout(() => {
+          timer = null
           increment()
           planNextStep()
         }, speed)
@@ -254,7 +272,7 @@ export default createComponent({
     })
 
     onBeforeUnmount(() => {
-      clearTimeout(timer)
+      timer !== null && clearTimeout(timer)
       hijacked === true && restoreAjax(start)
     })
 
